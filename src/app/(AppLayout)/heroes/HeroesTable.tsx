@@ -18,14 +18,28 @@ import { IHero } from "@/types/types";
 type HeroStatsProps = {
   pick: number;
   win: number;
+  totalPicks: number;
 };
-const HeroStats = ({ pick, win }: HeroStatsProps) => {
+const HeroStats = ({ pick, win, totalPicks }: HeroStatsProps) => {
   const winRate = Math.floor((win / pick) * 100);
+  const pickRate = Math.floor((pick / totalPicks) * 100);
   return (
     <div className="flex justify-evenly">
-      <span>{pick}</span>
-      <div>
-        {win}
+      <div className="flex flex-col items-center">
+        <span>{pick}</span>
+        <span>{pickRate}%</span>
+        <Progress
+          aria-label="Loading..."
+          color={
+            pickRate <= 12 ? "danger" : pickRate <= 15 ? "warning" : "success"
+          }
+          size="sm"
+          value={pickRate}
+        />
+      </div>
+      <div className="flex flex-col items-center justify-center">
+        <span>{win}</span>
+        <span>{winRate}%</span>
         <Progress
           aria-label="Loading..."
           color={
@@ -42,6 +56,15 @@ const HeroStats = ({ pick, win }: HeroStatsProps) => {
 type Props = {
   data: IHero[];
 };
+
+function calculateAllHeroesPicks(heroes: IHero[]): number {
+  return heroes.reduce((total, hero) => total + getTotalPicks(hero), 0);
+}
+
+function calculateRankPicks(heroes: IHero[], rank: number): number {
+  //@ts-expect-error
+  return heroes.reduce((total, hero) => total + hero[`${rank}_pick`], 0);
+}
 
 function getTotalPicks(hero: IHero): number {
   return (
@@ -70,13 +93,21 @@ function getTotalWins(hero: IHero): number {
 }
 
 export default function HeroesTable({ data }: Props) {
-  const totalPicks = data.reduce((total, hero) => total + hero["1_pick"], 0);
-  function calculateAllHeroesPicks(heroes: IHero[]): number {
-    return heroes.reduce((total, hero) => total + getTotalWins(hero), 0);
-  }
+  const totalPicks = Math.round(calculateAllHeroesPicks(data) / 10);
+  const ranksPicks_1 =
+    (calculateRankPicks(data, 1) +
+      calculateRankPicks(data, 2) +
+      calculateRankPicks(data, 3)) /
+    10;
+  const ranksPicks_2 = calculateRankPicks(data, 4) / 10;
+  const ranksPicks_3 = calculateRankPicks(data, 5) / 10;
+  const ranksPicks_4 = calculateRankPicks(data, 6) / 10;
+  const ranksPicks_5 =
+    (calculateRankPicks(data, 7) + calculateRankPicks(data, 8)) / 10;
+
   return (
     <>
-      <div>{calculateAllHeroesPicks(data)}</div>
+      <div>{totalPicks} matches</div>
       <Table>
         <TableHeader>
           <TableColumn>Hero</TableColumn>
@@ -187,37 +218,43 @@ export default function HeroesTable({ data }: Props) {
               <TableCell>
                 <HeroStats
                   pick={getTotalPicks(hero)}
+                  totalPicks={totalPicks}
                   win={getTotalWins(hero)}
                 />
               </TableCell>
               <TableCell>
                 <HeroStats
                   pick={hero["1_pick"] + hero["2_pick"] + hero["3_pick"]}
+                  totalPicks={ranksPicks_1}
                   win={hero["1_win"] + hero["2_win"] + hero["3_win"]}
                 />
               </TableCell>
               <TableCell>
                 <HeroStats
                   pick={hero["4_pick"]}
+                  totalPicks={ranksPicks_2}
                   win={hero["4_win"]}
                 />
               </TableCell>
               <TableCell>
                 <HeroStats
                   pick={hero["5_pick"]}
+                  totalPicks={ranksPicks_3}
                   win={hero["5_win"]}
                 />
               </TableCell>
               <TableCell>
                 <HeroStats
                   pick={hero["6_pick"]}
+                  totalPicks={ranksPicks_4}
                   win={hero["6_win"]}
                 />
               </TableCell>
               <TableCell>
                 <HeroStats
-                  pick={hero["7_pick"]}
-                  win={hero["7_win"]}
+                  pick={hero["7_pick"] + hero["8_pick"]}
+                  totalPicks={ranksPicks_5}
+                  win={hero["7_win"] + hero["8_win"]}
                 />
               </TableCell>
             </TableRow>

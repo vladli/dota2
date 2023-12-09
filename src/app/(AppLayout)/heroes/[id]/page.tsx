@@ -14,11 +14,11 @@ export default async function page({ params }: Props) {
   const data = await getHero(Number(params.id));
   return (
     <main>
-      <section className="relative h-[15rem] bg-content1">
-        <div className="relative flex h-full w-full items-center">
+      <section className="relative flex h-[15rem] justify-around bg-content1">
+        <div className="relative flex h-full w-full items-center justify-center md:justify-start">
           <HeroCard hero={data} />
         </div>
-        <div className="absolute right-0 top-0 w-[20rem]">
+        <div className="hidden w-[20rem] md:flex">
           <video
             autoPlay
             loop

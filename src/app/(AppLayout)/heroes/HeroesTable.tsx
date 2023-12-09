@@ -22,9 +22,9 @@ type HeroStatsProps = {
 };
 const HeroStats = ({ pick, win, totalPicks }: HeroStatsProps) => {
   const winRate = Math.floor((win / pick) * 100);
-  const pickRate = Math.floor((pick / totalPicks) * 100);
+  const pickRate = Number(((pick / totalPicks) * 100).toFixed(1));
   return (
-    <div className="flex justify-evenly">
+    <div className="flex justify-evenly gap-1">
       <div className="flex flex-col items-center">
         <span>{pick}</span>
         <span>{pickRate}%</span>
@@ -205,6 +205,7 @@ export default function HeroesTable({ data }: Props) {
               <TableCell className="flex items-center gap-2">
                 <Image
                   alt="Hero"
+                  className="min-w-[100px]"
                   src={STEAM_IMAGE + hero.img}
                   width={100}
                 />

@@ -67,21 +67,34 @@ export interface IHeroAbilities {
 }
 
 export interface IAbility {
-  [key: string]: {
-    dname: string;
-    behavior: string;
-    dmg_type: string;
-    bkbpierce: string;
-    desc: string;
-    attrib: {
-      key: string;
-      header: string;
-      value: string | string[];
-      generated?: boolean;
-    }[];
-    lore: string;
-    img: string;
-    mc?: string | string[];
-    cd?: string | string[];
-  };
+  dname: string;
+  behavior: string;
+  dmg_type: string;
+  bkbpierce: string;
+  desc: string;
+  attrib: {
+    key: string;
+    header: string;
+    value: string | string[];
+    generated?: boolean;
+  }[];
+  lore: string;
+  img: string;
+  mc?: string | string[];
+  cd?: string | string[];
+}
+export interface IHeroAbility {
+  [key: string]: IAbility;
+}
+export interface IHeroAghanim {
+  hero_name: string;
+  hero_id: number;
+  has_scepter: boolean;
+  scepter_desc?: string;
+  scepter_skill_name?: string;
+  scepter_new_skill?: boolean;
+  has_shard: boolean;
+  shard_desc?: string;
+  shard_skill_name?: string;
+  shard_new_skill?: boolean;
 }

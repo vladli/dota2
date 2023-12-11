@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Card,
   CardBody,
@@ -9,10 +9,14 @@ import {
 } from "@nextui-org/react";
 import { useQuery } from "@tanstack/react-query";
 
-import { getAbilities, getHeroAbilities } from "@/actions/actions";
+import {
+  getAbilities,
+  getAganimDescription,
+  getHeroAbilities,
+} from "@/actions/actions";
 import { STEAM_IMAGE } from "@/lib/constants";
-import { cn } from "@/lib/utils";
-import { IAbility, IHero } from "@/types/types";
+import { cn, findAbilityByDname } from "@/lib/utils";
+import { IAbility, IHero, IHeroAbility } from "@/types/types";
 type Props = {
   hero: IHero;
 };
@@ -22,16 +26,38 @@ export default function HeroAbilities({ hero }: Props) {
     queryKey: ["abilities"],
     queryFn: () => getAbilities(),
   });
-  const { data } = useQuery({
+  const { isLoading, data } = useQuery({
     queryKey: ["hero", hero.name],
     queryFn: () => getHeroAbilities(hero.name),
   });
-  const [selectedAbility, setSelectedAbility] = useState<string | null>(null);
+  const { isLoading: isHeroAghanimLoading, data: heroAghanim } = useQuery({
+    queryKey: ["heroAghanim", hero.name],
+    queryFn: () => getAganimDescription(hero.name),
+  });
+  const [selectedAbility, setSelectedAbility] = useState<string | undefined>(
+    undefined
+  );
+  const [heroShard, setHeroShard] = useState<IAbility | null>(null);
+  const [heroAghs, setHeroAghs] = useState<IAbility | null>(null);
+
+  useEffect(() => {
+    if (!isLoading) setSelectedAbility(data?.abilities[0]);
+  }, [isLoading]);
+  useEffect(() => {
+    if (!isHeroAghanimLoading) {
+      setHeroShard(
+        findAbilityByDname(abilities, heroAghanim?.shard_skill_name)
+      );
+      setHeroAghs(
+        findAbilityByDname(abilities, heroAghanim?.scepter_skill_name)
+      );
+    }
+  }, [isHeroAghanimLoading]);
   return (
     <section className="flex flex-col items-center gap-2 p-4">
       <h1 className="text-xl font-semibold uppercase">Ability Details</h1>
       <div className="flex flex-col gap-2">
-        <div className="flex justify-center gap-2">
+        <div className="flex items-center justify-center gap-2">
           {abilities &&
             data?.abilities?.map((ability, index) => (
               <div
@@ -47,28 +73,121 @@ export default function HeroAbilities({ hero }: Props) {
                 />
               </div>
             ))}
+          {heroAghs && (
+            <div
+              className="relative"
+              onClick={() => setSelectedAbility("aghs")}
+            >
+              <Image
+                alt=""
+                className="absolute bottom-1 right-0 z-50"
+                removeWrapper
+                src="/img/hero_stats/scepter_0.png"
+                width={40}
+              />
+              <Image
+                alt=""
+                className={cn("hover:scale-105 cursor-pointer", {
+                  grayscale: selectedAbility !== "aghs",
+                })}
+                src={STEAM_IMAGE + heroAghs.img}
+              />
+            </div>
+          )}
+          {heroShard && (
+            <div
+              className="relative"
+              onClick={() => setSelectedAbility("shard")}
+            >
+              <Image
+                alt=""
+                className="absolute bottom-1 right-0 z-50"
+                removeWrapper
+                src="/img/hero_stats/shard_0.png"
+                width={40}
+              />
+              <Image
+                alt=""
+                className={cn("hover:scale-105 cursor-pointer", {
+                  grayscale: selectedAbility !== "shard",
+                })}
+                src={STEAM_IMAGE + heroShard.img}
+              />
+            </div>
+          )}
         </div>
-        {abilities && selectedAbility && (
-          <AbilityDescription
-            abilities={abilities}
-            selectedAbility={selectedAbility}
+        {abilities && selectedAbility === "aghs" ? (
+          <AghanimDescription
+            img={heroAghs?.img}
+            newSkill={heroAghanim?.scepter_new_skill}
+            text={heroAghanim?.scepter_desc}
+            title={heroAghanim?.scepter_skill_name}
           />
+        ) : selectedAbility === "shard" ? (
+          <AghanimDescription
+            img={heroShard?.img}
+            newSkill={heroAghanim?.shard_new_skill}
+            text={heroAghanim?.shard_desc}
+            title={heroAghanim?.shard_skill_name}
+          />
+        ) : (
+          abilities &&
+          selectedAbility && (
+            <AbilityDescription
+              abilities={abilities}
+              selectedAbility={selectedAbility}
+            />
+          )
         )}
       </div>
     </section>
   );
 }
+
+const AghanimDescription = ({
+  img,
+  newSkill,
+  text,
+  title,
+}: {
+  img: string | undefined;
+  newSkill: boolean | undefined;
+  text: string | undefined;
+  title: string | undefined;
+}) => {
+  return (
+    <section className="flex justify-center">
+      <Card>
+        <CardHeader className="gap-2">
+          <Image
+            alt=""
+            className="min-w-[120px]"
+            src={STEAM_IMAGE + img}
+          />
+          <div className="flex flex-col">
+            <h1 className="text-xl font-bold uppercase">{title}</h1>
+            <p className="w-fit rounded-md bg-blue-800/50 p-1">
+              {newSkill ? "GRANTS NEW ABILITY" : "ABILITY UPGRADE"}
+            </p>
+            <p className="font-medium">{text}</p>
+          </div>
+        </CardHeader>
+      </Card>
+    </section>
+  );
+};
+
 const AbilityDescription = ({
   abilities,
   selectedAbility,
 }: {
-  abilities: IAbility;
+  abilities: IHeroAbility;
   selectedAbility: string;
 }) => {
   const ability = abilities[selectedAbility];
   return (
     <section className="flex justify-center">
-      <Card className="">
+      <Card>
         <CardHeader className="gap-2">
           <Image
             alt=""
@@ -127,7 +246,7 @@ const AbilityDescription = ({
           </div>
         </CardBody>
         {ability.lore && (
-          <CardFooter className="font-medium">{ability.lore}</CardFooter>
+          <CardFooter className="italic">{ability.lore}</CardFooter>
         )}
       </Card>
     </section>

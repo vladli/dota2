@@ -1,6 +1,11 @@
 "use server";
 
-import { IAbility, IHero, IHeroAbilities } from "@/types/types";
+import {
+  IHero,
+  IHeroAbilities,
+  IHeroAbility,
+  IHeroAghanim,
+} from "@/types/types";
 
 export async function fetchData(
   url: string,
@@ -47,8 +52,18 @@ export async function getHeroAbilities(hero: string): Promise<IHeroAbilities> {
   return data[hero];
 }
 
-export async function getAbilities(): Promise<IAbility> {
+export async function getAbilities(): Promise<IHeroAbility> {
   const url = `/constants/abilities`;
   const data = await fetchData(url);
   return data;
+}
+
+export async function getAganimDescription(
+  heroName: string
+): Promise<IHeroAghanim> {
+  const url = `/constants/aghs_desc`;
+  const data = fetchData(url);
+  return data.then((res) =>
+    res.find((hero: IHeroAghanim) => hero.hero_name === heroName)
+  );
 }

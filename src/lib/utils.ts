@@ -19,3 +19,12 @@ export function getHeroPrimaryAttribute(hero: IHero) {
   if (hero.primary_attr === "str") return hero.base_str;
   return 0;
 }
+
+export function findAbilityByDname(abilities: any, dname: string | undefined) {
+  for (const key in abilities) {
+    if (abilities[key].dname === dname) {
+      return abilities[key];
+    }
+  }
+  return null; // Ability not found
+}

@@ -17,32 +17,34 @@ export default function HeroTalents({ hero }: Props) {
     queryKey: ["hero", hero.name],
     queryFn: () => getHeroAbilities(hero.name),
   });
-  if (!abilities || !data) return null;
+
   return (
     <section className="m-4 flex flex-col items-center gap-4">
       <h1 className="text-xl font-semibold uppercase">Talents</h1>
-      <section className="grid grid-rows-4">
-        <Talent
-          left={abilities[data.talents[7].name].dname}
-          level={25}
-          right={abilities[data.talents[6].name].dname}
-        />
-        <Talent
-          left={abilities[data.talents[5].name].dname}
-          level={20}
-          right={abilities[data.talents[4].name].dname}
-        />
-        <Talent
-          left={abilities[data.talents[3].name].dname}
-          level={15}
-          right={abilities[data.talents[2].name].dname}
-        />
-        <Talent
-          left={abilities[data.talents[1].name].dname}
-          level={10}
-          right={abilities[data.talents[0].name].dname}
-        />
-      </section>
+      {abilities && data && (
+        <section className="grid grid-rows-4">
+          <Talent
+            left={abilities[data.talents[7].name].dname}
+            level={25}
+            right={abilities[data.talents[6].name].dname}
+          />
+          <Talent
+            left={abilities[data.talents[5].name].dname}
+            level={20}
+            right={abilities[data.talents[4].name].dname}
+          />
+          <Talent
+            left={abilities[data.talents[3].name].dname}
+            level={15}
+            right={abilities[data.talents[2].name].dname}
+          />
+          <Talent
+            left={abilities[data.talents[1].name].dname}
+            level={10}
+            right={abilities[data.talents[0].name].dname}
+          />
+        </section>
+      )}
     </section>
   );
 }

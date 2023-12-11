@@ -1,4 +1,4 @@
-import { Divider } from "@nextui-org/react";
+import { Card, Divider } from "@nextui-org/react";
 
 import { getHero } from "@/actions/actions";
 import { HERO_VIDEO } from "@/lib/constants";
@@ -8,6 +8,7 @@ import HeroAbilities from "./HeroAbilities";
 import HeroAttributes from "./HeroAttributes";
 import HeroCard from "./HeroCard";
 import HeroStats from "./HeroStats";
+import HeroTalents from "./HeroTalents";
 
 type Props = {
   params: {
@@ -18,8 +19,8 @@ type Props = {
 export default async function page({ params }: Props) {
   const data = await getHero(Number(params.id));
   return (
-    <main>
-      <section className="relative flex h-[15rem] justify-around bg-content1">
+    <Card>
+      <section className="relative flex h-[15rem] justify-around">
         <div className="relative flex h-full w-full items-center justify-center md:justify-start">
           <HeroCard hero={data} />
         </div>
@@ -36,7 +37,7 @@ export default async function page({ params }: Props) {
         </div>
       </section>
       <Divider />
-      <section className="flex justify-around bg-content1">
+      <section className="flex justify-evenly">
         <HeroAttributes hero={data} />
         <div>
           <Divider orientation="vertical" />
@@ -44,9 +45,13 @@ export default async function page({ params }: Props) {
         <HeroStats hero={data} />
       </section>
       <Divider />
-      <section className="flex flex-col items-center justify-around bg-content1">
+      <section className="flex justify-center">
+        <HeroTalents hero={data} />
+      </section>
+      <Divider />
+      <section className="flex flex-col items-center justify-around">
         <HeroAbilities hero={data} />
       </section>
-    </main>
+    </Card>
   );
 }

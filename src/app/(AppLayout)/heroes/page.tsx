@@ -5,5 +5,9 @@ import HeroesTable from "./HeroesTable";
 export default async function page() {
   const data = await getHeroStats();
 
-  return <HeroesTable data={data} />;
+  return (
+    <main className="p-4">
+      <HeroesTable data={data} />
+    </main>
+  );
 }

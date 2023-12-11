@@ -28,3 +28,14 @@ export function findAbilityByDname(abilities: any, dname: string | undefined) {
   }
   return null; // Ability not found
 }
+
+export function steamID64ToSteamID3(steamID64: string) {
+  const baseID = BigInt("76561197960265728");
+
+  const steamID64BigInt = BigInt(steamID64);
+
+  const result = steamID64BigInt - baseID;
+
+  // Add "U" to the beginning and return the result as a string
+  return result.toString();
+}

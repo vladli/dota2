@@ -4,6 +4,7 @@ import { getHero } from "@/actions/actions";
 import { HERO_VIDEO } from "@/lib/constants";
 import { getHeroName } from "@/lib/utils";
 
+import HeroAbilities from "./HeroAbilities";
 import HeroAttributes from "./HeroAttributes";
 import HeroCard from "./HeroCard";
 import HeroStats from "./HeroStats";
@@ -41,6 +42,10 @@ export default async function page({ params }: Props) {
           <Divider orientation="vertical" />
         </div>
         <HeroStats hero={data} />
+      </section>
+      <Divider />
+      <section className="flex flex-col items-center justify-around bg-content1">
+        <HeroAbilities hero={data} />
       </section>
     </main>
   );

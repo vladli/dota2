@@ -57,3 +57,31 @@ export interface IHero {
   null_pick: number;
   null_win: number;
 }
+
+export interface IHeroAbilities {
+  abilities: string[];
+  talents: {
+    name: string;
+    level: number;
+  }[];
+}
+
+export interface IAbility {
+  [key: string]: {
+    dname: string;
+    behavior: string;
+    dmg_type: string;
+    bkbpierce: string;
+    desc: string;
+    attrib: {
+      key: string;
+      header: string;
+      value: string | string[];
+      generated?: boolean;
+    }[];
+    lore: string;
+    img: string;
+    mc?: string | string[];
+    cd?: string | string[];
+  };
+}

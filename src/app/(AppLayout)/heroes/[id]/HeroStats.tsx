@@ -59,7 +59,7 @@ export default function HeroStats({ hero }: Props) {
   ];
   return (
     <section className="m-4 flex flex-col items-center gap-4">
-      <h1 className="text-xl font-medium uppercase">Stats</h1>
+      <h1 className="text-xl font-semibold uppercase">Stats</h1>
       <section className="flex w-full flex-col gap-10 md:flex-row">
         <div className="flex flex-col items-center">
           <Heading value="Attack" />

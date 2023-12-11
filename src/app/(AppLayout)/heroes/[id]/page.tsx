@@ -1,8 +1,12 @@
+import { Divider } from "@nextui-org/react";
+
 import { getHero } from "@/actions/actions";
 import { HERO_VIDEO } from "@/lib/constants";
 import { getHeroName } from "@/lib/utils";
 
+import HeroAttributes from "./HeroAttributes";
 import HeroCard from "./HeroCard";
+import HeroStats from "./HeroStats";
 
 type Props = {
   params: {
@@ -29,6 +33,14 @@ export default async function page({ params }: Props) {
             />
           </video>
         </div>
+      </section>
+      <Divider />
+      <section className="flex justify-around bg-content1">
+        <HeroAttributes hero={data} />
+        <div>
+          <Divider orientation="vertical" />
+        </div>
+        <HeroStats hero={data} />
       </section>
     </main>
   );

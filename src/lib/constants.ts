@@ -4,8 +4,10 @@ export const HERO_VIDEO =
 
 export const HERO_STATS = {
   strengthHp: 22, //+22 HP
+  strengthHpRegen: 0.1, //+0.1 HP Regeneration
   agilityArmor: 0.166, //+0.166 Armor
   intelligenceMana: 12, //+12 Mana
+  intelligenceManaRegen: 0.05, //+0.05 Mana Regeneration
 } as const; // 1 stat = ...
 
 export const HERO_ATTRIBUTE = {

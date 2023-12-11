@@ -39,6 +39,15 @@ export default function HeroCard({ hero }: Props) {
             </div>
           ))}
         </h2>
+        <h3 className="flex items-center gap-2 text-lg font-medium">
+          <Image
+            alt=""
+            radius="none"
+            src={`/img/hero_stats/${hero.attack_type}.svg`}
+            width={24}
+          />
+          {hero.attack_type}
+        </h3>
       </div>
     </section>
   );

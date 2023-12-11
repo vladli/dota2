@@ -35,15 +35,15 @@ export default function Header() {
           />
           <NavbarBrand>
             <NextLink
-              className="group flex items-center"
+              className="group flex items-center gap-2"
               href="/"
             >
               <Image
                 alt=""
                 className="cursor-pointer transition-all group-hover:scale-110"
-                height={64}
+                height={32}
                 src="/img/dota2.png"
-                width={64}
+                width={32}
               />
               <span className="text-lg font-bold">Dota 2 Stats</span>
             </NextLink>

@@ -21,6 +21,7 @@ async function handler(
     callbacks: {
       jwt({ token, account, profile }) {
         if (account?.provider === "steam") {
+          console.log(account);
           token.steamId = steamID64ToSteamID3(account.steamId as string);
           // @ts-expect-error
           token.steam = profile;

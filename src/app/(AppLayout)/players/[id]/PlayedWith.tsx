@@ -10,7 +10,7 @@ export default async function PlayedWith({ steamId }: Props) {
   const data = await getPlayerPlayedWith(steamId);
   return (
     <section className="mt-4">
-      <TableTitle>Players Played With</TableTitle>
+      <TableTitle>Played With</TableTitle>
       <PlayedWithTable data={data} />
     </section>
   );

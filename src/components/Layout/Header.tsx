@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
 import {
-  Link,
   Navbar,
   NavbarBrand,
   NavbarContent,
@@ -10,11 +9,14 @@ import {
   NavbarMenuItem,
   NavbarMenuToggle,
 } from "@nextui-org/react";
+import { motion } from "framer-motion";
 import Image from "next/image";
-import NextLink from "next/link";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import { albertus_font } from "@/app/fonts";
 import { menu } from "@/lib/data";
+import { cn } from "@/lib/utils";
 
 import UserMenu from "./UserMenu";
 
@@ -34,7 +36,7 @@ export default function Header() {
             className="md:hidden"
           />
           <NavbarBrand>
-            <NextLink
+            <Link
               className="group flex items-center gap-2"
               href="/"
             >
@@ -45,8 +47,15 @@ export default function Header() {
                 src="/img/dota2.png"
                 width={32}
               />
-              <span className="text-lg font-bold">Dota 2 Stats</span>
-            </NextLink>
+              <span
+                className={cn(
+                  albertus_font.className,
+                  "text-xl font-semibold uppercase"
+                )}
+              >
+                Dota 2 Stats
+              </span>
+            </Link>
           </NavbarBrand>
         </NavbarContent>
         <NavbarContent
@@ -59,10 +68,23 @@ export default function Header() {
               key={name}
             >
               <Link
-                as={NextLink}
-                color={pathname === url ? "primary" : "foreground"}
+                className={cn(
+                  albertus_font.className,
+                  "relative text-lg uppercase"
+                )}
                 href={url}
               >
+                {pathname === url && (
+                  <motion.span
+                    className="absolute -inset-1 border-b-2 border-red-500"
+                    layoutId="active"
+                    transition={{
+                      type: "spring",
+                      stiffness: 380,
+                      damping: 30,
+                    }}
+                  />
+                )}
                 {name}
               </Link>
             </NavbarItem>
@@ -75,11 +97,20 @@ export default function Header() {
           {menu.map(({ name, url }, index) => (
             <NavbarMenuItem key={index}>
               <Link
-                className="w-full"
-                color={pathname === url ? "primary" : "foreground"}
+                className="relative w-full"
                 href={url}
-                size="lg"
               >
+                {pathname === url && (
+                  <motion.span
+                    className="absolute -inset-1 border-b-2 border-red-500"
+                    layoutId="active"
+                    transition={{
+                      type: "spring",
+                      stiffness: 380,
+                      damping: 30,
+                    }}
+                  />
+                )}
                 {name}
               </Link>
             </NavbarMenuItem>

@@ -5,6 +5,9 @@ import {
   IHeroAbilities,
   IHeroAbility,
   IHeroAghanim,
+  IMatch,
+  IPeer,
+  IPlayer,
 } from "@/types/types";
 
 export async function fetchData(
@@ -66,4 +69,32 @@ export async function getAganimDescription(
   return data.then((res) =>
     res.find((hero: IHeroAghanim) => hero.hero_name === heroName)
   );
+}
+
+export async function getPlayer(steamId: string): Promise<IPlayer> {
+  const url = `/players/${steamId}`;
+  const data = await fetchData(url);
+  return data;
+}
+
+export async function getPlayerWinRate(
+  steamId: string
+): Promise<{ win: number; lose: number }> {
+  const url = `/players/${steamId}/wl`;
+  const data = await fetchData(url);
+  return data;
+}
+
+export async function getPlayerRecentMatches(
+  steamId: string
+): Promise<IMatch[]> {
+  const url = `/players/${steamId}/recentMatches`;
+  const data = await fetchData(url);
+  return data;
+}
+
+export async function getPlayerPlayedWith(steamId: string): Promise<IPeer[]> {
+  const url = `/players/${steamId}/peers`;
+  const data = await fetchData(url);
+  return data;
 }

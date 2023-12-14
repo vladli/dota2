@@ -98,3 +98,74 @@ export interface IHeroAghanim {
   shard_skill_name?: string;
   shard_new_skill?: boolean;
 }
+
+export interface IPlayer {
+  competitive_rank: number;
+  profile: {
+    account_id: number;
+    personaname: string;
+    name: string | null;
+    plus: boolean;
+    cheese: number;
+    steamid: string;
+    avatar: string;
+    avatarmedium: string;
+    avatarfull: string;
+    profileurl: string;
+    last_login: string;
+    loccountrycode: string;
+    status: string | null;
+    is_contributor: boolean;
+    is_subscriber: boolean;
+  };
+  solo_competitive_rank: number;
+  leaderboard_rank: number | null;
+  rank_tier: number;
+}
+export interface IMatch {
+  match_id: number;
+  player_slot: number;
+  radiant_win: boolean;
+  duration: number;
+  game_mode: number;
+  lobby_type: number;
+  hero_id: number;
+  start_time: number;
+  version: number | null;
+  kills: number;
+  deaths: number;
+  assists: number;
+  average_rank: number;
+  xp_per_min: number;
+  gold_per_min: number;
+  hero_damage: number;
+  tower_damage: number;
+  hero_healing: number;
+  last_hits: number;
+  lane: number | null;
+  lane_role: number | null;
+  is_roaming: boolean | null;
+  cluster: number;
+  leaver_status: number;
+  party_size: number | null;
+}
+
+export interface IPeer {
+  account_id: number;
+  last_played: number;
+  win: number;
+  games: number;
+  with_win: number;
+  with_games: number;
+  against_win: number;
+  against_games: number;
+  with_gpm_sum: number;
+  with_xpm_sum: number;
+  personaname: string;
+  name: string | null;
+  is_contributor: boolean;
+  is_subscriber: boolean;
+  last_login: string;
+  avatar: string;
+  avatarfull: string;
+}

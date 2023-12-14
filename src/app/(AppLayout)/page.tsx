@@ -6,13 +6,16 @@ export default function page() {
         autoPlay
         className="absolute top-0 min-h-screen object-cover"
         loop
-        muted
         playsInline
         preload="auto"
       >
         <source
           src="https://cdn.cloudflare.steamstatic.com/apps/dota2/videos/dota_react/homepage/dota_montage_webm.webm"
           type="video/webm"
+        />
+        <source
+          src="https://cdn.cloudflare.steamstatic.com/apps/dota2/videos/dota_react/homepage/dota_montage_02.mp4"
+          type="video/mp4"
         />
       </video>
     </div>

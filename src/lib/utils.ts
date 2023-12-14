@@ -39,3 +39,36 @@ export function steamID64ToSteamID3(steamID64: string) {
   // Add "U" to the beginning and return the result as a string
   return result.toString();
 }
+
+export function getRankName(rank: string): string {
+  const rankNames: Record<string, string> = {
+    "1": "Herald",
+    "2": "Guardian",
+    "3": "Crusader",
+    "4": "Archon",
+    "5": "Legend",
+    "6": "Ancient",
+    "7": "Divine",
+    "8": "Immortal",
+  };
+  return rankNames[rank];
+}
+
+export function secondsToTime(seconds: number): string {
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const remainingSeconds = seconds % 60;
+
+  // Add leading zeros if needed
+  const formattedMinutes = minutes < 10 ? "0" + minutes : minutes.toString();
+  const formattedSeconds =
+    remainingSeconds < 10
+      ? "0" + remainingSeconds
+      : remainingSeconds.toString();
+
+  if (hours > 0) {
+    const formattedHours = hours < 10 ? "0" + hours : hours.toString();
+    return formattedHours + ":" + formattedMinutes + ":" + formattedSeconds;
+  }
+  return formattedMinutes + ":" + formattedSeconds;
+}

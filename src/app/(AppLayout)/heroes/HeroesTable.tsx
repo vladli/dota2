@@ -108,7 +108,7 @@ export default function HeroesTable({ data }: Props) {
   return (
     <>
       <div>{totalPicks} matches</div>
-      <Table>
+      <Table aria-label="HeroesTable">
         <TableHeader>
           <TableColumn>Hero</TableColumn>
           <TableColumn>

@@ -80,17 +80,29 @@ export default async function PlayerCard({ steamId, player }: Props) {
           showArrow
         >
           <div>
-            <Image
-              alt="rankStar"
-              className="absolute -top-2"
-              src={`/img/ranks/rank_star_${player.rank_tier.toString()[1]}.png`}
-              width={100}
-            />
-            <Image
-              alt="rank"
-              src={`/img/ranks/${player.rank_tier.toString()[0]}.png`}
-              width={100}
-            />
+            {player.rank_tier ? (
+              <>
+                <Image
+                  alt="rankStar"
+                  className="absolute -top-2"
+                  src={`/img/ranks/rank_star_${
+                    player.rank_tier.toString()[1]
+                  }.png`}
+                  width={100}
+                />
+                <Image
+                  alt="rank"
+                  src={`/img/ranks/${player.rank_tier.toString()[0]}.png`}
+                  width={100}
+                />
+              </>
+            ) : (
+              <Image
+                alt="rank"
+                src={`/img/ranks/0.png`}
+                width={100}
+              />
+            )}
           </div>
         </Tooltip>
       </div>

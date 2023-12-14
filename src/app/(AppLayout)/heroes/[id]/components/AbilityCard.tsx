@@ -12,12 +12,7 @@ import {
 
 import { STEAM_IMAGE } from "@/lib/constants";
 import { findAbilityByDname } from "@/lib/utils";
-import {
-  IAbility,
-  IHeroAbilities,
-  IHeroAbility,
-  IHeroAghanim,
-} from "@/types/types";
+import { IHeroAbilities, IHeroAbility, IHeroAghanim } from "@/types/types";
 
 type Props = {
   abilities: IHeroAbility;
@@ -28,13 +23,8 @@ export default function AbilityCard({ abilities, aghanim, data }: Props) {
   const [selectedAbility, setSelectedAbility] = useState<string | undefined>(
     data?.abilities?.[0]
   );
-  const [heroShard, setHeroShard] = useState<IAbility | null>(
-    findAbilityByDname(abilities, aghanim.shard_skill_name)
-  );
-  const [heroAghs, setHeroAghs] = useState<IAbility | null>(
-    findAbilityByDname(abilities, aghanim.scepter_skill_name)
-  );
-  console.log(data);
+  const heroShard = findAbilityByDname(abilities, aghanim.shard_skill_name);
+  const heroAghs = findAbilityByDname(abilities, aghanim.scepter_skill_name);
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-center justify-center gap-2">

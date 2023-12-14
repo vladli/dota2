@@ -79,7 +79,7 @@ export default async function PlayerCard({ steamId, player }: Props) {
           offset={13}
           showArrow
         >
-          <div>
+          <div className="cursor-help">
             {player.rank_tier ? (
               <>
                 <Image

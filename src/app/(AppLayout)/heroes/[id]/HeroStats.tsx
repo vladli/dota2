@@ -116,7 +116,7 @@ const Stat = ({
       placement="left"
       showArrow
     >
-      <div className="flex items-center gap-1 place-self-start font-medium">
+      <div className="flex cursor-help items-center gap-1 place-self-start font-medium">
         <Image
           alt=""
           radius="none"

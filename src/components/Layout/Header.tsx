@@ -23,6 +23,7 @@ import UserMenu from "./UserMenu";
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
+
   return (
     <header className="relative z-50 select-none">
       <Navbar

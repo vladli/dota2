@@ -21,8 +21,10 @@ export default function PlayedWithTable({ data }: Props) {
   return (
     <Table
       aria-label="PlayedWithTable"
-      classNames={{ base: "border p-1 rounded-xl border-content2" }}
-      removeWrapper
+      classNames={{
+        base: "border p-1 rounded-xl border-content2",
+        wrapper: "bg-transparent shadow-none",
+      }}
     >
       <TableHeader>
         <TableColumn>PLAYER</TableColumn>
@@ -30,14 +32,16 @@ export default function PlayedWithTable({ data }: Props) {
         <TableColumn>WIN RATE</TableColumn>
       </TableHeader>
       <TableBody>
-        {data.slice(0, 5).map((peer) => (
+        {data.slice(0, 6).map((peer) => (
           <TableRow key={peer.account_id}>
             <TableCell>
               <div className="flex items-center gap-2">
                 <Image
                   alt=""
-                  radius="none"
-                  src={peer.avatar}
+                  className="min-w-[40px]"
+                  radius="sm"
+                  src={peer.avatarfull}
+                  width={40}
                 />
                 <div className="flex flex-col">
                   <Link href={`/players/${peer.account_id}`}>

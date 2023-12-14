@@ -1,22 +1,12 @@
-"use client";
-
-import { useQuery } from "@tanstack/react-query";
-
 import { getAbilities, getHeroAbilities } from "@/actions/actions";
 import { IHero } from "@/types/types";
 
 type Props = {
   hero: IHero;
 };
-export default function HeroTalents({ hero }: Props) {
-  const { data: abilities } = useQuery({
-    queryKey: ["abilities"],
-    queryFn: () => getAbilities(),
-  });
-  const { data } = useQuery({
-    queryKey: ["hero", hero.name],
-    queryFn: () => getHeroAbilities(hero.name),
-  });
+export default async function HeroTalents({ hero }: Props) {
+  const abilities = await getAbilities();
+  const data = await getHeroAbilities(hero.name);
 
   return (
     <section className="m-4 flex flex-col items-center gap-4">

@@ -169,3 +169,14 @@ export interface IPeer {
   avatar: string;
   avatarfull: string;
 }
+
+export interface IFavoriteHeroes {
+  hero_id: number;
+  last_played: number;
+  games: number;
+  win: number;
+  with_games: number;
+  with_win: number;
+  against_games: number;
+  against_win: number;
+}

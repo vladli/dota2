@@ -72,3 +72,7 @@ export function secondsToTime(seconds: number): string {
   }
   return formattedMinutes + ":" + formattedSeconds;
 }
+
+export function getHeroById(heroes: IHero[], id: number) {
+  return heroes.find((hero) => hero.id === id);
+}

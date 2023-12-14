@@ -1,6 +1,7 @@
 "use server";
 
 import {
+  IFavoriteHeroes,
   IHero,
   IHeroAbilities,
   IHeroAbility,
@@ -95,6 +96,14 @@ export async function getPlayerRecentMatches(
 
 export async function getPlayerPlayedWith(steamId: string): Promise<IPeer[]> {
   const url = `/players/${steamId}/peers`;
+  const data = await fetchData(url);
+  return data;
+}
+
+export async function getPlayerFavoriteHeroes(
+  steamId: string
+): Promise<IFavoriteHeroes[]> {
+  const url = `/players/${steamId}/heroes`;
   const data = await fetchData(url);
   return data;
 }

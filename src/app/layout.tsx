@@ -6,7 +6,10 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Dota 2 Stats",
+  title: {
+    template: "%s | Dota 2 Stats",
+    default: "Dota 2 Stats",
+  },
 };
 
 export default function RootLayout({

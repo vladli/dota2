@@ -1,4 +1,5 @@
 import { Card, Divider } from "@nextui-org/react";
+import { notFound } from "next/navigation";
 
 import { getHero } from "@/actions/actions";
 import { HERO_VIDEO } from "@/lib/constants";
@@ -10,6 +11,13 @@ import HeroCard from "./HeroCard";
 import HeroStats from "./HeroStats";
 import HeroTalents from "./HeroTalents";
 
+export async function generateMetadata({ params }: Props) {
+  const data = await getHero(Number(params.id));
+  return {
+    title: data?.localized_name || "UNKNOWN",
+  };
+}
+
 type Props = {
   params: {
     id: string;
@@ -18,6 +26,7 @@ type Props = {
 
 export default async function page({ params }: Props) {
   const data = await getHero(Number(params.id));
+  if (!data) return notFound();
   return (
     <main className="p-4">
       <Card>

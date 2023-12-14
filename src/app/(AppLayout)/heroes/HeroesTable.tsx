@@ -205,9 +205,10 @@ export default function HeroesTable({ data }: Props) {
               <TableCell className="flex items-center gap-2">
                 <Image
                   alt="Hero"
-                  className="min-w-[100px]"
+                  className="min-w-[70px]"
+                  radius="sm"
                   src={STEAM_IMAGE + hero.img}
-                  width={100}
+                  width={70}
                 />
                 <Link
                   as={NextLink}

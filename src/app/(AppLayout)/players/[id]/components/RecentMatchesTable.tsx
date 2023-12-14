@@ -13,7 +13,7 @@ import { formatDistanceToNow } from "date-fns";
 import NextLink from "next/link";
 
 import { STEAM_IMAGE } from "@/lib/constants";
-import { cn, getRankName, secondsToTime } from "@/lib/utils";
+import { cn, getHeroById, getRankName, secondsToTime } from "@/lib/utils";
 import { IHero, IMatch } from "@/types/types";
 
 type Props = {
@@ -21,16 +21,14 @@ type Props = {
   heroes: IHero[];
 };
 
-function getHeroById(heroes: IHero[], id: number) {
-  return heroes.find((hero) => hero.id === id);
-}
-
 export default function RecentMatchesTable({ data, heroes }: Props) {
   return (
     <Table
       aria-label="RecentMatchesTable"
-      classNames={{ base: "border p-1 rounded-xl border-content2" }}
-      removeWrapper
+      classNames={{
+        base: "border p-1 rounded-xl border-content2",
+        wrapper: "bg-transparent shadow-none",
+      }}
     >
       <TableHeader>
         <TableColumn>HERO</TableColumn>
@@ -55,7 +53,7 @@ export default function RecentMatchesTable({ data, heroes }: Props) {
                     radius="none"
                     removeWrapper
                     src={STEAM_IMAGE + hero?.img}
-                    width={50}
+                    width={60}
                   />
                   <div className="flex flex-col">
                     <Link
@@ -64,10 +62,12 @@ export default function RecentMatchesTable({ data, heroes }: Props) {
                     >
                       {hero?.localized_name}
                     </Link>
-                    <span className="text-gray-400">
-                      {getRankName(match.average_rank.toString()[0])}{" "}
-                      {match.average_rank.toString()[1]}
-                    </span>
+                    {match.average_rank && (
+                      <span className="text-gray-400">
+                        {getRankName(match.average_rank.toString()[0])}{" "}
+                        {match.average_rank.toString()[1]}
+                      </span>
+                    )}
                   </div>
                 </div>
               </TableCell>

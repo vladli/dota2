@@ -1,8 +1,8 @@
 import { getServerSession } from "next-auth";
 
 import Header from "@/components/Layout/Header";
+import { getAuthOptions } from "@/lib/authOptions";
 
-import { getAuthOptions } from "../api/auth/[...nextauth]/route";
 import Providers from "../providers";
 
 export default async function RootLayout({

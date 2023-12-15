@@ -8,6 +8,8 @@ import PlayedWith from "./PlayedWith";
 import PlayerCard from "./PlayerCard";
 import RecentMatches from "./RecentMatches";
 
+export const revalidate = 1800;
+
 export async function generateMetadata({ params }: Props) {
   const data = await getPlayer(params.id);
   return {

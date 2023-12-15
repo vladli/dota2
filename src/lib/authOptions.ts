@@ -2,8 +2,7 @@ import { NextApiRequest } from "next/types";
 import { AuthOptions } from "next-auth";
 import SteamProvider from "next-auth-steam";
 
-import { steamID64ToSteamID3 } from "./utils";
-
+import { steamID64ToSteamID3 } from "@/lib/utils";
 export function getAuthOptions(req?: NextApiRequest): AuthOptions {
   return {
     callbacks: {

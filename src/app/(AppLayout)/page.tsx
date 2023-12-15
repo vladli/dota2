@@ -4,8 +4,6 @@ import { cn } from "@/lib/utils";
 
 import { hypatia_font } from "../fonts";
 
-export const dynamic = "force-static";
-
 export default function page() {
   return (
     <div className="">

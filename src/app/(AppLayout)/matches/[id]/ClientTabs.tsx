@@ -1,7 +1,7 @@
 "use client";
 import { AiOutlineFundView } from "react-icons/ai";
 import { GrTrophy } from "react-icons/gr";
-import { Card, Tab, Tabs, Tooltip } from "@nextui-org/react";
+import { Card, Tab, Tabs } from "@nextui-org/react";
 
 import { cn } from "@/lib/utils";
 import { IHero, IItems, IItemsId, IMatchDetails } from "@/types/types";
@@ -59,21 +59,16 @@ const Header = ({ text, win }: { text: string; win: boolean }) => {
   const open = (text === "Radiant" && win) || (text === "Dire" && !win);
 
   return (
-    <Tooltip
-      color="primary"
-      content={<GrTrophy />}
-      isOpen={open}
-      placement="right"
-      showArrow
-    >
-      <h1
-        className={cn("w-fit text-xl uppercase font-semibold", {
+    <h1
+      className={cn(
+        "w-fit text-xl uppercase font-semibold flex gap-2 items-center",
+        {
           "text-emerald-500": text === "Radiant",
           "text-red-500": text === "Dire",
-        })}
-      >
-        {text}
-      </h1>
-    </Tooltip>
+        }
+      )}
+    >
+      {text} {open ? <GrTrophy /> : null}
+    </h1>
   );
 };

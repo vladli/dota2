@@ -1,7 +1,7 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
-import { IHero } from "@/types/types";
+import { IHero, IItemsId } from "@/types/types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -75,4 +75,8 @@ export function secondsToTime(seconds: number): string {
 
 export function getHeroById(heroes: IHero[], id: number) {
   return heroes.find((hero) => hero.id === id);
+}
+
+export function getItemsById(items: IItemsId, id: number | string) {
+  return items[id.toString()];
 }

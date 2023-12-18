@@ -44,7 +44,10 @@ export default function PlayedWithTable({ data }: Props) {
                   width={40}
                 />
                 <div className="flex flex-col">
-                  <Link href={`/players/${peer.account_id}`}>
+                  <Link
+                    className="w-fit"
+                    href={`/players/${peer.account_id}`}
+                  >
                     {peer.personaname}
                   </Link>
                   <span className="text-gray-400">

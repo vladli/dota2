@@ -6,7 +6,10 @@ import {
   IHeroAbilities,
   IHeroAbility,
   IHeroAghanim,
+  IItems,
+  IItemsId,
   IMatch,
+  IMatchDetails,
   IPeer,
   IPlayer,
 } from "@/types/types";
@@ -72,6 +75,18 @@ export async function getAganimDescription(
   );
 }
 
+export async function getItemsId(): Promise<IItemsId> {
+  const url = `/constants/item_ids`;
+  const data = await fetchData(url);
+  return data;
+}
+
+export async function getItems(): Promise<IItems> {
+  const url = `/constants/items`;
+  const data = await fetchData(url);
+  return data;
+}
+
 export async function getPlayer(steamId: string): Promise<IPlayer> {
   const url = `/players/${steamId}`;
   const data = await fetchData(url);
@@ -104,6 +119,12 @@ export async function getPlayerFavoriteHeroes(
   steamId: string
 ): Promise<IFavoriteHeroes[]> {
   const url = `/players/${steamId}/heroes`;
+  const data = await fetchData(url);
+  return data;
+}
+
+export async function getMatch(matchId: string): Promise<IMatchDetails> {
+  const url = `/matches/${matchId}`;
   const data = await fetchData(url);
   return data;
 }

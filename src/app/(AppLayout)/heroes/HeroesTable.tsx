@@ -2,7 +2,6 @@
 import {
   Image,
   Link,
-  Progress,
   Table,
   TableBody,
   TableCell,
@@ -13,6 +12,7 @@ import {
 import NextLink from "next/link";
 
 import { STEAM_IMAGE } from "@/lib/constants";
+import { cn } from "@/lib/utils";
 import { IHero } from "@/types/types";
 
 type HeroStatsProps = {
@@ -27,27 +27,27 @@ const HeroStats = ({ pick, win, totalPicks }: HeroStatsProps) => {
     <div className="flex justify-evenly gap-1">
       <div className="flex flex-col items-center">
         <span>{pick}</span>
-        <span>{pickRate}%</span>
-        <Progress
-          aria-label="Loading..."
-          color={
-            pickRate <= 12 ? "danger" : pickRate <= 15 ? "warning" : "success"
-          }
-          size="sm"
-          value={pickRate}
-        />
+        <span
+          className={cn({
+            "text-danger-300": pickRate < 10,
+            "text-warning-300": pickRate >= 10 && pickRate <= 15,
+            "text-success-300": pickRate > 15,
+          })}
+        >
+          {pickRate}%
+        </span>
       </div>
       <div className="flex flex-col items-center justify-center">
         <span>{win}</span>
-        <span>{winRate}%</span>
-        <Progress
-          aria-label="Loading..."
-          color={
-            winRate <= 45 ? "danger" : winRate <= 50 ? "warning" : "success"
-          }
-          size="sm"
-          value={winRate}
-        />
+        <span
+          className={cn({
+            "text-danger-300": winRate <= 45,
+            "text-warning-300": winRate > 45 && winRate <= 49,
+            "text-success-300": winRate >= 50,
+          })}
+        >
+          {winRate}%
+        </span>
       </div>
     </div>
   );

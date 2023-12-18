@@ -58,6 +58,7 @@ export default function RecentMatchesTable({ data, heroes }: Props) {
                   <div className="flex flex-col">
                     <Link
                       as={NextLink}
+                      className="w-fit"
                       href={`/heroes/${hero?.id}`}
                     >
                       {hero?.localized_name}
@@ -73,14 +74,16 @@ export default function RecentMatchesTable({ data, heroes }: Props) {
               </TableCell>
               <TableCell>
                 <div className="flex flex-col">
-                  <span
-                    className={cn({
+                  <Link
+                    as={NextLink}
+                    className={cn("w-fit", {
                       "text-green-500": team === win,
                       "text-red-500": team !== win,
                     })}
+                    href={`/matches/${match.match_id}`}
                   >
                     {team === win ? "Won Match" : "Lost Match"}
-                  </span>
+                  </Link>
                   <span className="text-gray-400">
                     {formatDistanceToNow(matchPlayed, {
                       addSuffix: true,

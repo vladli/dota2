@@ -48,7 +48,10 @@ export default function FavoriteHeroesTable({ data, heroes }: Props) {
                     width={60}
                   />
                   <div className="flex flex-col">
-                    <Link href={`/heroes/${hero.hero_id}`}>
+                    <Link
+                      className="w-fit"
+                      href={`/heroes/${hero.hero_id}`}
+                    >
                       {getHero?.localized_name}
                     </Link>
                     <span className="text-gray-400">

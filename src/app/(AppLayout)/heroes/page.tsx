@@ -25,14 +25,14 @@ export default async function page({ searchParams }: Props) {
     query: GetHeroesStatsDocument,
     variables: { take: 5 },
   });
-  const sortedHeroes = heroes.constants?.heroes?.toSorted((a, b) => {
+  const sortedHeroes = heroes?.constants?.heroes?.toSorted((a, b) => {
     if (a?.displayName && b?.displayName) {
       return a.displayName.localeCompare(b.displayName);
     }
     return 0;
   });
   const heroStats = (heroId: number) => {
-    const hero = data.heroStats!.winDay!.filter((h) => h?.heroId === heroId);
+    const hero = data?.heroStats!.winDay!.filter((h) => h?.heroId === heroId);
     return hero.sort((a, b) => a?.day - b?.day);
   };
   const updatedHeroes = sortedHeroes?.map((hero) => {

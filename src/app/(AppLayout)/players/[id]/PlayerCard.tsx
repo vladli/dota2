@@ -1,33 +1,31 @@
 import { FaSteam } from "react-icons/fa";
 import { Avatar, Button, Image, Link, Tooltip } from "@nextui-org/react";
 
-import { getPlayerWinRate } from "@/actions/actions";
 import { roboto_mono } from "@/app/fonts";
-import { cn, getRankName } from "@/lib/utils";
-import { IPlayer } from "@/types/types";
+import { GetPlayerBySteamIdQuery } from "@/graphql/player";
+import { cn, getAvatarLink, getRankName } from "@/lib/utils";
 
 type Props = {
-  steamId: string;
-  player: IPlayer;
+  data: GetPlayerBySteamIdQuery;
 };
-export default async function PlayerCard({ steamId, player }: Props) {
-  const data = await getPlayerWinRate(steamId);
-  const winRate = ((data.win / (data.win + data.lose)) * 100).toFixed(1);
+export default async function PlayerCard({ data }: Props) {
+  const player = data.player;
+  const winRate = ((player?.winCount! / player?.matchCount!) * 100).toFixed(1);
 
   return (
     <section className="mb-4 flex flex-col items-center gap-4 md:flex-row">
       <div className="select-none">
         <Avatar
           className="h-36 w-36"
-          src={player.profile.avatarfull}
+          src={getAvatarLink(player?.steamAccount?.avatar) || ""}
         />
       </div>
       <div className="flex w-full flex-col items-center md:items-start">
         <div className="flex items-center justify-center gap-2 text-4xl md:justify-start">
-          {player.profile.personaname}
+          {player?.steamAccount?.name}
           <Button
             as={Link}
-            href={player.profile.profileurl}
+            href={player?.steamAccount?.profileUri!}
             isExternal
             isIconOnly
           >
@@ -36,10 +34,13 @@ export default async function PlayerCard({ steamId, player }: Props) {
         </div>
         <div className="flex gap-4 text-lg uppercase">
           <div className="flex flex-col items-center font-medium">
-            Wins <span className="text-green-500">{data.win}</span>
+            Wins <span className="text-green-500">{player?.winCount}</span>
           </div>
           <div className="flex flex-col items-center">
-            Losses <span className="text-red-500">{data.lose}</span>
+            Losses{" "}
+            <span className="text-red-500">
+              {player?.matchCount! - player?.winCount!}
+            </span>
           </div>
           <div className="flex flex-col items-center">
             WinRate <span>{winRate}%</span>
@@ -52,7 +53,7 @@ export default async function PlayerCard({ steamId, player }: Props) {
           "flex w-full flex-col items-center md:flex-row gap-4 md:place-content-end"
         )}
       >
-        {player.profile.plus && (
+        {player?.steamAccount?.isDotaPlusSubscriber && (
           <div className="flex select-none flex-col items-center">
             <Image
               alt=""
@@ -66,10 +67,10 @@ export default async function PlayerCard({ steamId, player }: Props) {
         <Tooltip
           color="primary"
           content={
-            player.rank_tier ? (
+            player?.steamAccount?.seasonRank ? (
               <>
-                {getRankName(player.rank_tier.toString()[0])}{" "}
-                {player.rank_tier.toString()[1]}
+                {getRankName(player?.steamAccount?.seasonRank.toString()[0])}{" "}
+                {player?.steamAccount?.seasonRank.toString()[1]}
               </>
             ) : (
               "Unknown"
@@ -80,19 +81,21 @@ export default async function PlayerCard({ steamId, player }: Props) {
           showArrow
         >
           <div className="cursor-help">
-            {player.rank_tier ? (
+            {player?.steamAccount?.seasonRank ? (
               <>
                 <Image
                   alt="rankStar"
                   className="absolute -top-2"
                   src={`/img/ranks/rank_star_${
-                    player.rank_tier.toString()[1]
+                    player?.steamAccount?.seasonRank.toString()[1]
                   }.png`}
                   width={100}
                 />
                 <Image
                   alt="rank"
-                  src={`/img/ranks/${player.rank_tier.toString()[0]}.png`}
+                  src={`/img/ranks/${
+                    player?.steamAccount?.seasonRank.toString()[0]
+                  }.png`}
                   width={100}
                 />
               </>

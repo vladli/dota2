@@ -1,64 +1,58 @@
 import { Image, Tooltip } from "@nextui-org/react";
 
-import { HERO_STATS } from "@/lib/constants";
-import { getHeroPrimaryAttribute } from "@/lib/utils";
-import { IHero } from "@/types/types";
+import { GetHeroByIdQuery } from "@/graphql/constants";
 
 type Props = {
-  hero: IHero;
+  data: GetHeroByIdQuery;
 };
 
-export default function HeroStats({ hero }: Props) {
-  const baseAttack = getHeroPrimaryAttribute(hero);
+export default function HeroStats({ data }: Props) {
+  const hero = data.constants?.hero;
 
   const Attack = [
     {
       name: "Damage",
       value: (
         <>
-          {hero.base_attack_min + baseAttack} -{" "}
-          {hero.base_attack_max + baseAttack}
+          {hero?.stats?.startingDamageMin} - {hero?.stats?.startingDamageMax}
         </>
       ),
       img: "/img/hero_stats/icon_damage.png",
     },
     {
       name: "Attack Time",
-      value: hero.attack_rate,
+      value: hero?.stats?.attackRate?.toFixed(1),
       img: "/img/hero_stats/icon_attack_time.png",
     },
     {
       name: "Attack Range",
-      value: hero.attack_range,
+      value: hero?.stats?.attackRange,
       img: "/img/hero_stats/icon_attack_range.png",
     },
   ];
   const Defense = [
     {
       name: "Armor",
-      value: (
-        hero.base_armor +
-        HERO_STATS.agilityArmor * hero.base_agi
-      ).toFixed(1),
+      value: hero?.stats?.startingArmor!.toFixed(1),
       img: "/img/hero_stats/icon_armor.png",
     },
     {
       name: "Magic Resist",
-      value: hero.base_mr + "%",
+      value: hero?.stats?.startingMagicArmor + "%",
       img: "/img/hero_stats/icon_magic_resist.png",
     },
   ];
   const Mobility = [
     {
       name: "Move Speed",
-      value: hero.move_speed,
+      value: hero?.stats?.moveSpeed,
       img: "/img/hero_stats/icon_movement_speed.png",
     },
     {
       name: "Vision",
       value: (
         <>
-          {hero.day_vision}/{hero.night_vision}
+          {hero?.stats?.visionDaytimeRange}/{hero?.stats?.visionNighttimeRange}
         </>
       ),
       img: "/img/hero_stats/icon_vision.png",

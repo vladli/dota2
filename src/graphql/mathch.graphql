@@ -1,0 +1,87 @@
+query GetMatchById($id: Long!) {
+  match(id: $id) {
+    id
+    didRadiantWin
+    durationSeconds
+    startDateTime
+    endDateTime
+    towerStatusRadiant
+    towerStatusDire
+    barracksStatusRadiant
+    barracksStatusDire
+    lobbyType
+    gameMode
+    isStats
+    gameVersionId
+    regionId
+    parsedDateTime
+    rank
+    bracket
+    bottomLaneOutcome
+    midLaneOutcome
+    topLaneOutcome
+    radiantKills
+    direKills
+    pickBans {
+      isPick
+      heroId
+      bannedHeroId
+      isRadiant
+      playerIndex
+      wasBannedSuccessfully
+    }
+    players {
+      matchId
+      playerSlot
+      steamAccountId
+      steamAccount {
+        name
+        seasonRank
+      }
+      isRadiant
+      isVictory
+      heroId
+      hero {
+        shortName
+        displayName
+      }
+      gameVersionId
+      kills
+      deaths
+      assists
+      leaverStatus
+      numLastHits
+      numDenies
+      goldPerMinute
+      networth
+      experiencePerMinute
+      level
+      gold
+      goldSpent
+      heroDamage
+      towerDamage
+      heroHealing
+      partyId
+      isRandom
+      lane
+      position
+      streakPrediction
+      intentionalFeeding
+      role
+      roleBasic
+      item0Id
+      item1Id
+      item2Id
+      item3Id
+      item4Id
+      item5Id
+      backpack0Id
+      backpack1Id
+      backpack2Id
+      neutral0Id
+      behavior
+      invisibleSeconds
+      dotaPlusHeroXp
+    }
+  }
+}

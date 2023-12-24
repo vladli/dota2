@@ -1,9 +1,9 @@
 import { Card, Divider } from "@nextui-org/react";
 import { notFound } from "next/navigation";
 
-import { getHero } from "@/actions/actions";
+import { GetHeroByIdDocument } from "@/graphql/constants";
+import { getClient } from "@/lib/client";
 import { HERO_VIDEO } from "@/lib/constants";
-import { getHeroName } from "@/lib/utils";
 
 import HeroAbilities from "./HeroAbilities";
 import HeroAttributes from "./HeroAttributes";
@@ -12,9 +12,12 @@ import HeroStats from "./HeroStats";
 import HeroTalents from "./HeroTalents";
 
 export async function generateMetadata({ params }: Props) {
-  const data = await getHero(Number(params.id));
+  const { data } = await getClient().query({
+    query: GetHeroByIdDocument,
+    variables: { id: Number(params.id) },
+  });
   return {
-    title: data?.localized_name || "UNKNOWN",
+    title: data?.constants?.hero?.displayName || "UNKNOWN",
   };
 }
 
@@ -25,14 +28,17 @@ type Props = {
 };
 
 export default async function page({ params }: Props) {
-  const data = await getHero(Number(params.id));
+  const { data } = await getClient().query({
+    query: GetHeroByIdDocument,
+    variables: { id: Number(params.id) },
+  });
   if (!data) return notFound();
   return (
     <main className="p-4">
       <Card>
         <section className="relative flex h-[15rem] justify-around">
           <div className="relative flex h-full w-full items-center justify-center md:justify-start">
-            <HeroCard hero={data} />
+            <HeroCard data={data} />
           </div>
           <div className="hidden w-[20rem] md:flex">
             <video
@@ -40,7 +46,7 @@ export default async function page({ params }: Props) {
               loop
             >
               <source
-                src={HERO_VIDEO + getHeroName(data.img) + ".webm"}
+                src={HERO_VIDEO + data.constants?.hero?.shortName + ".webm"}
                 type="video/webm"
               />
             </video>
@@ -48,19 +54,19 @@ export default async function page({ params }: Props) {
         </section>
         <Divider />
         <section className="flex justify-evenly">
-          <HeroAttributes hero={data} />
+          <HeroAttributes data={data} />
           <div>
             <Divider orientation="vertical" />
           </div>
-          <HeroStats hero={data} />
+          <HeroStats data={data} />
         </section>
         <Divider />
         <section className="flex justify-center">
-          <HeroTalents hero={data} />
+          <HeroTalents data={data} />
         </section>
         <Divider />
         <section className="flex flex-col items-center justify-around">
-          <HeroAbilities hero={data} />
+          <HeroAbilities data={data} />
         </section>
       </Card>
     </main>

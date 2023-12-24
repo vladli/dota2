@@ -1,32 +1,20 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
-import { IHero, IItemsId } from "@/types/types";
+import { REGION_NAME, STEAM_AVATAR } from "./constants";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function getHeroName(link: string) {
-  const parts = link.split("/");
-  return parts[parts.length - 1].split(".")[0];
-}
-
-export function getHeroPrimaryAttribute(hero: IHero) {
-  if (hero.primary_attr === "all") return hero.base_agi;
-  if (hero.primary_attr === "agi") return hero.base_agi;
-  if (hero.primary_attr === "int") return hero.base_int;
-  if (hero.primary_attr === "str") return hero.base_str;
-  return 0;
-}
-
-export function findAbilityByDname(abilities: any, dname: string | undefined) {
-  for (const key in abilities) {
-    if (abilities[key].dname === dname) {
-      return abilities[key];
-    }
+export function getAvatarLink(string: string | undefined | null) {
+  if (!string) return;
+  if (string.startsWith("https://")) {
+    return string;
   }
-  return null; // Ability not found
+  const modifiedAvatar = string.replace(/^[a-z0-9]+\//i, "");
+
+  return STEAM_AVATAR + modifiedAvatar; // Concatenate base URL with the relative path
 }
 
 export function steamID64ToSteamID3(steamID64: string) {
@@ -73,10 +61,6 @@ export function secondsToTime(seconds: number): string {
   return formattedMinutes + ":" + formattedSeconds;
 }
 
-export function getHeroById(heroes: IHero[], id: number) {
-  return heroes.find((hero) => hero.id === id);
-}
-
-export function getItemsById(items: IItemsId, id: number | string) {
-  return items[id.toString()];
+export function getRegionName(id: number) {
+  return REGION_NAME.find((region) => region.id === id)?.clientName;
 }

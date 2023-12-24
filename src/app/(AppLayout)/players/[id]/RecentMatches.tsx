@@ -1,22 +1,20 @@
-import { getHeroStats, getPlayerRecentMatches } from "@/actions/actions";
+import { GetRecentMatchesDocument } from "@/graphql/player";
+import { getClient } from "@/lib/client";
 
 import RecentMatchesTable from "./components/RecentMatchesTable";
-import TableTitle from "./components/TableTitle";
 
 type Props = {
   steamId: string;
 };
 
 export default async function RecentMatches({ steamId }: Props) {
-  const data = await getPlayerRecentMatches(steamId);
-  const heroes = await getHeroStats();
+  const { data } = await getClient().query({
+    query: GetRecentMatchesDocument,
+    variables: { steamAccountId: Number(steamId), take: 20 },
+  });
   return (
     <section className="mt-4 grow">
-      <TableTitle>Recent Matches</TableTitle>
-      <RecentMatchesTable
-        data={data}
-        heroes={heroes}
-      />
+      <RecentMatchesTable data={data} />
     </section>
   );
 }

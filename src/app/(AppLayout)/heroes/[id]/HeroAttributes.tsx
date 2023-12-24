@@ -1,28 +1,29 @@
 import { Image } from "@nextui-org/react";
 
-import { HERO_STATS, STEAM_IMAGE } from "@/lib/constants";
-import { IHero } from "@/types/types";
+import { GetHeroByIdQuery } from "@/graphql/constants";
+import { HERO_STATS, IMAGE } from "@/lib/constants";
 
 type Props = {
-  hero: IHero;
+  data: GetHeroByIdQuery;
 };
 
-export default function HeroAttributes({ hero }: Props) {
+export default function HeroAttributes({ data }: Props) {
+  const hero = data.constants?.hero;
   const HeroAttr = [
     {
-      attr: hero.base_str,
+      attr: hero?.stats?.strengthBase,
       img: "/img/hero_type/hero_strength.png",
-      gainPerLevel: hero.str_gain,
+      gainPerLevel: hero?.stats?.strengthGain,
     },
     {
-      attr: hero.base_agi,
+      attr: hero?.stats?.agilityBase,
       img: "/img/hero_type/hero_agility.png",
-      gainPerLevel: hero.agi_gain,
+      gainPerLevel: hero?.stats?.agilityGain,
     },
     {
-      attr: hero.base_int,
+      attr: hero?.stats?.intelligenceBase,
       img: "/img/hero_type/hero_intelligence.png",
-      gainPerLevel: hero.int_gain,
+      gainPerLevel: hero?.stats?.intelligenceGain,
     },
   ];
   return (
@@ -34,22 +35,29 @@ export default function HeroAttributes({ hero }: Props) {
             alt="hero"
             className="max-w-[200px]"
             radius="none"
-            src={STEAM_IMAGE + hero.img}
+            src={IMAGE.url + hero?.shortName + IMAGE.horizontal}
           />
           <div className="relative flex items-center justify-center bg-green-600">
-            {hero.base_health + HERO_STATS.strengthHp * hero.base_str}
+            {HERO_STATS.baseHp +
+              HERO_STATS.strengthHp * hero?.stats?.strengthBase!}
             <span className="absolute right-1">
               +
-              {hero.base_health_regen +
-                +(hero.base_str * HERO_STATS.strengthHpRegen).toFixed(1)}
+              {hero?.stats?.hpRegen! +
+                +(
+                  hero?.stats?.strengthBase! * HERO_STATS.strengthHpRegen
+                ).toFixed(1)}
             </span>
           </div>
           <div className="relative flex items-center justify-center bg-blue-600">
-            {hero.base_mana + HERO_STATS.intelligenceMana * hero.base_int}
+            {HERO_STATS.baseMana +
+              HERO_STATS.intelligenceMana * hero?.stats?.intelligenceBase!}
             <span className="absolute right-1">
               +
-              {hero.base_mana_regen +
-                +(hero.base_int * HERO_STATS.intelligenceManaRegen).toFixed(1)}
+              {hero?.stats?.mpRegen! +
+                +(
+                  hero?.stats?.intelligenceBase! *
+                  HERO_STATS.intelligenceManaRegen
+                ).toFixed(1)}
             </span>
           </div>
         </div>
@@ -67,7 +75,7 @@ export default function HeroAttributes({ hero }: Props) {
               />
               <span className="text-xl font-bold">{attr}</span>
               <span className="text-lg font-semibold text-foreground-500">
-                +{gainPerLevel}
+                +{gainPerLevel?.toFixed(1)}
               </span>
             </div>
           ))}

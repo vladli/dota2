@@ -12,23 +12,31 @@ import {
 import { formatDistanceToNow } from "date-fns";
 import NextLink from "next/link";
 
-import { STEAM_IMAGE } from "@/lib/constants";
-import { cn, getHeroById, getRankName, secondsToTime } from "@/lib/utils";
-import { IHero, IMatch } from "@/types/types";
+import { GetRecentMatchesQuery } from "@/graphql/player";
+import { IMAGE } from "@/lib/constants";
+import { cn, getRankName, secondsToTime } from "@/lib/utils";
+
+import TableTitle from "./TableTitle";
 
 type Props = {
-  data: IMatch[];
-  heroes: IHero[];
+  data: GetRecentMatchesQuery;
 };
 
-export default function RecentMatchesTable({ data, heroes }: Props) {
+function processString(inputString: string) {
+  const withoutSpaces = inputString.replace(/[ _]/g, " ");
+
+  // Convert to lowercase
+  const lowercaseString = withoutSpaces.toLowerCase();
+
+  return lowercaseString;
+}
+
+export default function RecentMatchesTable({ data }: Props) {
+  const matches = data.player?.matches;
   return (
     <Table
       aria-label="RecentMatchesTable"
-      classNames={{
-        base: "border p-1 rounded-xl border-content2",
-        wrapper: "bg-transparent shadow-none",
-      }}
+      topContent={<TableTitle>Recent Matches</TableTitle>}
     >
       <TableHeader>
         <TableColumn>HERO</TableColumn>
@@ -38,13 +46,10 @@ export default function RecentMatchesTable({ data, heroes }: Props) {
         <TableColumn>K/D/A</TableColumn>
       </TableHeader>
       <TableBody>
-        {data.map((match) => {
-          const hero = getHeroById(heroes, match.hero_id);
-          const team = match.player_slot < 5 ? "Radiant" : "Dire";
-          const win = match.radiant_win ? "Radiant" : "Dire";
-          const matchPlayed = new Date(match.start_time * 1000);
+        {matches!.map((match) => {
+          const player = match?.players![0];
           return (
-            <TableRow key={match.match_id}>
+            <TableRow key={match?.id}>
               <TableCell>
                 <div className="flex items-center gap-2">
                   <Image
@@ -52,21 +57,21 @@ export default function RecentMatchesTable({ data, heroes }: Props) {
                     className="min-w-[60px]"
                     radius="none"
                     removeWrapper
-                    src={STEAM_IMAGE + hero?.img}
+                    src={IMAGE.url + player?.hero?.shortName + IMAGE.horizontal}
                     width={60}
                   />
                   <div className="flex flex-col">
                     <Link
                       as={NextLink}
                       className="w-fit"
-                      href={`/heroes/${hero?.id}`}
+                      href={`/heroes/${player?.hero?.id}`}
                     >
-                      {hero?.localized_name}
+                      {player?.hero?.displayName}
                     </Link>
-                    {match.average_rank && (
+                    {match?.actualRank && (
                       <span className="text-gray-400">
-                        {getRankName(match.average_rank.toString()[0])}{" "}
-                        {match.average_rank.toString()[1]}
+                        {getRankName(match.actualRank.toString()[0])}{" "}
+                        {match.actualRank.toString()[1]}
                       </span>
                     )}
                   </div>
@@ -77,28 +82,33 @@ export default function RecentMatchesTable({ data, heroes }: Props) {
                   <Link
                     as={NextLink}
                     className={cn("w-fit", {
-                      "text-green-500": team === win,
-                      "text-red-500": team !== win,
+                      "text-green-500": match?.players![0]?.isVictory,
+                      "text-red-500": !match?.players![0]?.isVictory,
                     })}
-                    href={`/matches/${match.match_id}`}
+                    href={`/matches/${match?.id}`}
                   >
-                    {team === win ? "Won Match" : "Lost Match"}
+                    {match?.players![0]?.isVictory ? "Won Match" : "Lost Match"}
                   </Link>
                   <span className="text-gray-400">
-                    {formatDistanceToNow(matchPlayed, {
+                    {formatDistanceToNow(match?.endDateTime * 1000, {
                       addSuffix: true,
                     })}
                   </span>
                 </div>
               </TableCell>
-              <TableCell>-</TableCell>
+              <TableCell>
+                <span className="capitalize">
+                  {processString(match?.gameMode!)}
+                </span>
+              </TableCell>
               <TableCell>
                 <div className="flex flex-col">
-                  <span>{secondsToTime(match.duration)}</span>
+                  <span>{secondsToTime(match?.durationSeconds!)}</span>
                 </div>
               </TableCell>
               <TableCell>
-                {match.kills}/{match.deaths}/{match.assists}
+                {match?.players![0]?.kills}/{match?.players![0]?.deaths}/
+                {match?.players![0]?.assists}
               </TableCell>
             </TableRow>
           );

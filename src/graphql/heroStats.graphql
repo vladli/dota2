@@ -1,0 +1,22 @@
+query GetHeroesStats(
+  $heroIds: [Short]
+  $bracketIds: [RankBracket]
+  $positionIds: [MatchPlayerPositionType]
+  $gameModeIds: [GameModeEnumType]
+  $take: Int
+) {
+  heroStats {
+    winDay(
+      heroIds: $heroIds
+      bracketIds: $bracketIds
+      positionIds: $positionIds
+      gameModeIds: $gameModeIds
+      take: $take
+    ) {
+      day
+      heroId
+      winCount
+      matchCount
+    }
+  }
+}

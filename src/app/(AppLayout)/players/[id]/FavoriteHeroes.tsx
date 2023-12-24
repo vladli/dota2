@@ -1,21 +1,23 @@
-import { getHeroStats, getPlayerFavoriteHeroes } from "@/actions/actions";
+import { GetMostPlayedHeroesDocument } from "@/graphql/player";
+import { getClient } from "@/lib/client";
 
 import FavoriteHeroesTable from "./components/FavoriteHeroesTable";
-import TableTitle from "./components/TableTitle";
 
 type Props = {
   steamId: string;
 };
 export default async function FavoriteHeroes({ steamId }: Props) {
-  const data = await getPlayerFavoriteHeroes(steamId);
-  const heroes = await getHeroStats();
+  const { data } = await getClient().query({
+    query: GetMostPlayedHeroesDocument,
+    variables: {
+      steamAccountId: Number(steamId),
+      gameVersionId: 169,
+      take: 50000,
+    },
+  });
   return (
     <section className="mt-4">
-      <TableTitle>Favorite Heroes</TableTitle>
-      <FavoriteHeroesTable
-        data={data}
-        heroes={heroes}
-      />
+      <FavoriteHeroesTable data={data} />
     </section>
   );
 }

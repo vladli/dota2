@@ -12,7 +12,7 @@ const config: Config = {
       themes: {
         dark: {
           colors: {
-            background: "#27272a",
+            // background: "#27272a",
           },
         },
       },

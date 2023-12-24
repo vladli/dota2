@@ -1,0 +1,73 @@
+query GetPlayerBySteamId($steamAccountId: Long!) {
+  player(steamAccountId: $steamAccountId) {
+    steamAccountId
+    steamAccount {
+      profileUri
+      timeCreated
+      name
+      avatar
+      isDotaPlusSubscriber
+      seasonRank
+    }
+    matchCount
+    winCount
+  }
+}
+query GetRecentMatches($steamAccountId: Long!, $take: Int!) {
+  player(steamAccountId: $steamAccountId) {
+    matches(request: { take: $take }) {
+      id
+      didRadiantWin
+      durationSeconds
+      endDateTime
+      towerStatusRadiant
+      towerStatusDire
+      barracksStatusRadiant
+      barracksStatusDire
+      lobbyType
+      gameMode
+      actualRank
+      players(steamAccountId: $steamAccountId) {
+        hero {
+          id
+          shortName
+          displayName
+        }
+        isVictory
+        kills
+        deaths
+        assists
+        lane
+        role
+      }
+    }
+  }
+}
+
+query GetMostPlayedHeroes(
+  $steamAccountId: Long!
+  $take: Int!
+  $gameVersionId: Short!
+) {
+  player(steamAccountId: $steamAccountId) {
+    steamAccountId
+    matchCount
+    heroesGroupBy: matchesGroupBy(
+      request: { playerList: SINGLE, groupBy: HERO, take: $take }
+    ) {
+      ... on MatchGroupByHeroType {
+        heroId
+        hero(gameVersionId: $gameVersionId) {
+          displayName
+          shortName
+        }
+        winCount
+        matchCount
+        avgKills
+        avgDeaths
+        avgAssists
+        lastMatchDateTime
+      }
+    }
+  }
+}

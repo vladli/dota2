@@ -1,12 +1,12 @@
-import {
-  getHeroStats,
-  getItems,
-  getItemsId,
-  getMatch,
-} from "@/actions/actions";
+import { GetAllItemsDocument } from "@/graphql/constants";
+import { GetMatchByIdDocument } from "@/graphql/mathch";
+import { getClient } from "@/lib/client";
 
 import ClientTabs from "./ClientTabs";
 import MatchCard from "./MatchCard";
+import ParseCard from "./ParseCard";
+
+export const revalidate = 30;
 
 export async function generateMetadata({ params }: Props) {
   return {
@@ -21,18 +21,23 @@ type Props = {
 };
 
 export default async function page({ params }: Props) {
-  const data = await getMatch(params.id);
-  const heroes = await getHeroStats();
-  const itemsId = await getItemsId();
-  const items = await getItems();
+  const { data } = await getClient().query({
+    query: GetMatchByIdDocument,
+    variables: { id: Number(params.id) },
+  });
+  const { data: items } = await getClient().query({
+    query: GetAllItemsDocument,
+  });
+
   return (
     <main className="p-4">
       <MatchCard data={data} />
+      {data.match?.parsedDateTime === null && (
+        <ParseCard matchId={data.match?.id} />
+      )}
       <ClientTabs
         data={data}
-        heroes={heroes}
         items={items}
-        itemsId={itemsId}
       />
     </main>
   );

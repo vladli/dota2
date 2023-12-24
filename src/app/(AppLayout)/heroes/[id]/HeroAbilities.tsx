@@ -1,26 +1,22 @@
-import {
-  getAbilities,
-  getAganimDescription,
-  getHeroAbilities,
-} from "@/actions/actions";
-import { IHero } from "@/types/types";
+import { GetAbilitiesDocument, GetHeroByIdQuery } from "@/graphql/constants";
+import { getClient } from "@/lib/client";
 
 import AbilityCard from "./components/AbilityCard";
+
 type Props = {
-  hero: IHero;
+  data: GetHeroByIdQuery;
 };
 
-export default async function HeroAbilities({ hero }: Props) {
-  const abilities = await getAbilities();
-  const data = await getHeroAbilities(hero.name);
-  const heroAghanim = await getAganimDescription(hero.name);
+export default async function HeroAbilities({ data }: Props) {
+  const { data: abilities } = await getClient().query({
+    query: GetAbilitiesDocument,
+  });
 
   return (
     <section className="flex flex-col items-center gap-2 p-4">
       <h1 className="text-xl font-semibold uppercase">Ability Details</h1>
       <AbilityCard
         abilities={abilities}
-        aghanim={heroAghanim}
         data={data}
       />
     </section>

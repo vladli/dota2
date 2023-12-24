@@ -1,16 +1,31 @@
-import { getPlayerPlayedWith } from "@/actions/actions";
+import { GetPlayerPeersDocument } from "@/graphql/stratz";
+import { getClient } from "@/lib/client";
+import {
+  FilterMatchGroupOrderByEnum,
+  FilterPlayerTeammateEnum,
+} from "@/types/types.generated";
 
 import PlayedWithTable from "./components/PlayedWithTable";
-import TableTitle from "./components/TableTitle";
 
 type Props = {
   steamId: string;
 };
 export default async function PlayedWith({ steamId }: Props) {
-  const data = await getPlayerPlayedWith(steamId);
+  const { data } = await getClient().query({
+    query: GetPlayerPeersDocument,
+    variables: {
+      steamId: Number(steamId),
+      take: 8,
+      skip: 1,
+      teammatesPeersRequest: {
+        matchGroupOrderBy: FilterMatchGroupOrderByEnum.MatchCount,
+        playerTeammateSort: FilterPlayerTeammateEnum.With,
+        take: 5000,
+      },
+    },
+  });
   return (
     <section className="mt-4">
-      <TableTitle>Played With</TableTitle>
       <PlayedWithTable data={data} />
     </section>
   );

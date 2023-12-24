@@ -27,7 +27,9 @@ export default function Header() {
   return (
     <header className="relative z-50 select-none">
       <Navbar
-        classNames={{ base: pathname !== "/" ? "bg-content1" : "" }}
+        classNames={{
+          base: pathname !== "/" ? "border-b border-content2" : "",
+        }}
         onMenuOpenChange={setIsMenuOpen}
         position="static"
       >

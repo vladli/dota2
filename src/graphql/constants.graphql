@@ -1,0 +1,111 @@
+query GetHeroById($id: Short!) {
+  constants {
+    hero(id: $id) {
+      id
+      name
+      shortName
+      displayName
+      roles {
+        roleId
+        level
+      }
+      abilities {
+        slot
+        ability {
+          id
+          name
+          language {
+            displayName
+            description
+            attributes
+            lore
+            aghanimDescription
+            shardDescription
+          }
+          stat {
+            unitDamageType
+            spellImmunity
+            isGrantedByScepter
+            hasScepterUpgrade
+            castRange
+            castPoint
+            channelTime
+            cooldown
+            damage
+            manaCost
+            duration
+            charges
+            hasShardUpgrade
+            isGrantedByShard
+            dispellable
+          }
+          isTalent
+        }
+      }
+      language {
+        lore
+      }
+      talents {
+        abilityId
+        slot
+      }
+      stats {
+        enabled
+        attackType
+        startingArmor
+        startingMagicArmor
+        startingDamageMin
+        startingDamageMax
+        attackRate
+        attackRange
+        primaryAttribute
+        strengthBase
+        strengthGain
+        intelligenceBase
+        intelligenceGain
+        agilityBase
+        agilityGain
+        hpRegen
+        mpRegen
+        moveSpeed
+        moveTurnRate
+        hpBarOffset
+        visionDaytimeRange
+        visionNighttimeRange
+        complexity
+      }
+    }
+  }
+}
+
+query GetAbilities {
+  constants {
+    abilities {
+      id
+      language {
+        displayName
+      }
+    }
+  }
+}
+
+query GetAllHeroes {
+  constants {
+    heroes {
+      id
+      name
+      displayName
+      shortName
+    }
+  }
+}
+
+query GetAllItems {
+  constants {
+    items {
+      id
+      displayName
+      shortName
+    }
+  }
+}

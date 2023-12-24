@@ -12,19 +12,21 @@ import {
 } from "@nextui-org/react";
 import { formatDistanceToNow } from "date-fns";
 
-import { IPeer } from "@/types/types";
+import { GetPlayerPeersQuery } from "@/graphql/stratz";
+import { getAvatarLink } from "@/lib/utils";
+
+import TableTitle from "./TableTitle";
 
 type Props = {
-  data: IPeer[];
+  data: GetPlayerPeersQuery;
 };
+
 export default function PlayedWithTable({ data }: Props) {
+  const peers = data.stratz?.page?.player?.peers;
   return (
     <Table
       aria-label="PlayedWithTable"
-      classNames={{
-        base: "border p-1 rounded-xl border-content2",
-        wrapper: "bg-transparent shadow-none",
-      }}
+      topContent={<TableTitle>Played With</TableTitle>}
     >
       <TableHeader>
         <TableColumn>PLAYER</TableColumn>
@@ -32,35 +34,38 @@ export default function PlayedWithTable({ data }: Props) {
         <TableColumn>WIN RATE</TableColumn>
       </TableHeader>
       <TableBody>
-        {data.slice(0, 6).map((peer) => (
-          <TableRow key={peer.account_id}>
+        {peers!.map((peer) => (
+          <TableRow key={peer?.steamAccountId}>
             <TableCell>
               <div className="flex items-center gap-2">
                 <Image
                   alt=""
                   className="min-w-[40px]"
                   radius="sm"
-                  src={peer.avatarfull}
+                  src={getAvatarLink(peer?.steamAccount?.avatar) || ""}
                   width={40}
                 />
                 <div className="flex flex-col">
                   <Link
                     className="w-fit"
-                    href={`/players/${peer.account_id}`}
+                    href={`/players/${peer?.steamAccount?.id}`}
                   >
-                    {peer.personaname}
+                    {peer?.steamAccount?.name}
                   </Link>
                   <span className="text-gray-400">
-                    {formatDistanceToNow(new Date(peer.last_played * 1000), {
-                      addSuffix: true,
-                    })}
+                    {formatDistanceToNow(
+                      new Date(peer?.lastMatchDateTime * 1000),
+                      {
+                        addSuffix: true,
+                      }
+                    )}
                   </span>
                 </div>
               </div>
             </TableCell>
-            <TableCell>{peer.with_games}</TableCell>
+            <TableCell>{peer?.matchCount}</TableCell>
             <TableCell>
-              {((peer.with_win / peer.with_games) * 100).toFixed(1)}%
+              {((peer?.winCount! / peer?.matchCount!) * 100).toFixed(1)}%
             </TableCell>
           </TableRow>
         ))}

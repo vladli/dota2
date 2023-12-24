@@ -1,14 +1,19 @@
 import { formatDistanceToNow } from "date-fns";
 
-import { REGION } from "@/lib/constants";
-import { cn, secondsToTime } from "@/lib/utils";
-import { IMatchDetails } from "@/types/types";
+import { GetMatchByIdQuery } from "@/graphql/mathch";
+import { cn, getRegionName, secondsToTime } from "@/lib/utils";
 
 type Props = {
-  data: IMatchDetails;
+  data: GetMatchByIdQuery;
 };
 export default function MatchCard({ data }: Props) {
-  const victory = data.radiant_win ? "Radiant" : "Dire";
+  const match = data.match;
+  const victory = match?.didRadiantWin ? "Radiant" : "Dire";
+  const radiantScore = match?.radiantKills?.reduce(
+    (acc, curr) => acc! + curr!,
+    0
+  );
+  const direScore = match?.direKills?.reduce((acc, curr) => acc! + curr!, 0);
   return (
     <section className="mt-10 flex flex-col items-center justify-around gap-4 lg:flex-row">
       <div
@@ -26,23 +31,21 @@ export default function MatchCard({ data }: Props) {
         </div>
       </div>
       <div className="flex items-center justify-center gap-10 text-2xl font-semibold lg:w-1/3">
-        <div className="text-emerald-500">{data.radiant_score}</div>
+        <div className="text-emerald-500">{radiantScore}</div>
         <div className="flex flex-col items-center">
-          <span>{secondsToTime(data.duration)}</span>
+          <span>{secondsToTime(match?.durationSeconds!)}</span>
           <span className="text-base font-medium text-gray-400">
-            {formatDistanceToNow(data.start_time * 1000, {
+            {formatDistanceToNow(match?.endDateTime * 1000, {
               addSuffix: true,
             })}
           </span>
         </div>
-        <div className="text-red-500">{data.dire_score}</div>
+        <div className="text-red-500">{direScore}</div>
       </div>
       <div className="flex flex-col items-center font-medium lg:w-1/3">
         <div>
-          <div>Match ID: {data.match_id}</div>
-          <div>
-            Region: {REGION[data.region.toString() as keyof typeof REGION]}
-          </div>
+          <div>Match ID: {match?.id}</div>
+          <div>Region: {getRegionName(match?.regionId)}</div>
         </div>
       </div>
     </section>

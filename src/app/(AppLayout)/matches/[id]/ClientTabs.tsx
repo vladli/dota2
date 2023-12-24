@@ -1,29 +1,54 @@
 "use client";
 import { AiOutlineFundView } from "react-icons/ai";
 import { GrTrophy } from "react-icons/gr";
-import { Card, Tab, Tabs } from "@nextui-org/react";
+import { Tab, Tabs } from "@nextui-org/react";
 
+import { GetAllItemsQuery } from "@/graphql/constants";
+import { GetMatchByIdQuery } from "@/graphql/mathch";
 import { cn } from "@/lib/utils";
-import { IHero, IItems, IItemsId, IMatchDetails } from "@/types/types";
 
 import TabOverview from "./tabs/TabOverview";
 
 type Props = {
-  data: IMatchDetails;
-  heroes: IHero[];
-  items: IItems;
-  itemsId: IItemsId;
+  data: GetMatchByIdQuery;
+  items: GetAllItemsQuery;
 };
-export default function ClientTabs({ data, heroes, items, itemsId }: Props) {
+export default function ClientTabs({ data, items }: Props) {
   return (
-    <Tabs className="mt-10">
+    <Tabs
+      className="mt-10"
+      defaultSelectedKey="ability"
+    >
       <Tab
-        key="photos"
+        key="overview"
         title={
-          <div className="flex items-center space-x-2">
-            <AiOutlineFundView />
-            <span>Overview</span>
-          </div>
+          <TabHeader
+            icon={AiOutlineFundView}
+            text="Overview"
+          />
+        }
+      >
+        <div className="flex flex-col gap-4">
+          <TabOverview
+            data={data}
+            items={items}
+            team="Radiant"
+          />
+
+          <TabOverview
+            data={data}
+            items={items}
+            team="Dire"
+          />
+        </div>
+      </Tab>
+      {/* <Tab
+        key="ability"
+        title={
+          <TabHeader
+            icon={GrVulnerability}
+            text="Ability"
+          />
         }
       >
         <Card className="gap-4 p-4">
@@ -31,7 +56,7 @@ export default function ClientTabs({ data, heroes, items, itemsId }: Props) {
             text="Radiant"
             win={data.radiant_win}
           />
-          <TabOverview
+          <TabAbility
             data={data}
             heroes={heroes}
             items={items}
@@ -42,7 +67,7 @@ export default function ClientTabs({ data, heroes, items, itemsId }: Props) {
             text="Dire"
             win={data.radiant_win}
           />
-          <TabOverview
+          <TabAbility
             data={data}
             heroes={heroes}
             items={items}
@@ -50,12 +75,29 @@ export default function ClientTabs({ data, heroes, items, itemsId }: Props) {
             team="Dire"
           />
         </Card>
-      </Tab>
+      </Tab> */}
     </Tabs>
   );
 }
 
-const Header = ({ text, win }: { text: string; win: boolean }) => {
+const TabHeader = ({ text, icon: Icon }: { text: string; icon: any }) => {
+  return (
+    <div className="flex items-center space-x-2">
+      <Icon />
+      <span>{text}</span>
+    </div>
+  );
+};
+
+export const Header = ({
+  text,
+  win,
+  showWin = false,
+}: {
+  text: string;
+  win: boolean;
+  showWin?: boolean;
+}) => {
   const open = (text === "Radiant" && win) || (text === "Dire" && !win);
 
   return (
@@ -68,7 +110,7 @@ const Header = ({ text, win }: { text: string; win: boolean }) => {
         }
       )}
     >
-      {text} {open ? <GrTrophy /> : null}
+      {text} {open && showWin ? <GrTrophy /> : null}
     </h1>
   );
 };

@@ -1,37 +1,42 @@
-import { getAbilities, getHeroAbilities } from "@/actions/actions";
-import { IHero } from "@/types/types";
+import { GetAbilitiesDocument, GetHeroByIdQuery } from "@/graphql/constants";
+import { getClient } from "@/lib/client";
 
 type Props = {
-  hero: IHero;
+  data: GetHeroByIdQuery;
 };
-export default async function HeroTalents({ hero }: Props) {
-  const abilities = await getAbilities();
-  const data = await getHeroAbilities(hero.name);
-
+export default async function HeroTalents({ data }: Props) {
+  const { data: abilities } = await getClient().query({
+    query: GetAbilitiesDocument,
+  });
+  const getAbility = (id: number) =>
+    abilities.constants?.abilities?.find((ability) => ability?.id === id);
+  const heroAbilities = (slot: number) =>
+    getAbility(data.constants?.hero?.talents?.[slot]?.abilityId)?.language
+      ?.displayName;
   return (
     <section className="m-4 flex flex-col items-center gap-4">
       <h1 className="text-xl font-semibold uppercase">Talents</h1>
-      {abilities && data && (
+      {data && (
         <section className="grid grid-rows-4">
           <Talent
-            left={abilities[data.talents[7].name].dname}
+            left={heroAbilities(7)!}
             level={25}
-            right={abilities[data.talents[6].name].dname}
+            right={heroAbilities(6)!}
           />
           <Talent
-            left={abilities[data.talents[5].name].dname}
+            left={heroAbilities(5)!}
             level={20}
-            right={abilities[data.talents[4].name].dname}
+            right={heroAbilities(4)!}
           />
           <Talent
-            left={abilities[data.talents[3].name].dname}
+            left={heroAbilities(3)!}
             level={15}
-            right={abilities[data.talents[2].name].dname}
+            right={heroAbilities(2)!}
           />
           <Talent
-            left={abilities[data.talents[1].name].dname}
+            left={heroAbilities(1)!}
             level={10}
-            right={abilities[data.talents[0].name].dname}
+            right={heroAbilities(0)!}
           />
         </section>
       )}

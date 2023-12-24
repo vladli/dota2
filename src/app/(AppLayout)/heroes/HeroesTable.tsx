@@ -1,7 +1,9 @@
 "use client";
+import { useCallback, useEffect, useState } from "react";
 import {
   Image,
   Link,
+  SortDescriptor,
   Table,
   TableBody,
   TableCell,
@@ -10,19 +12,20 @@ import {
   TableRow,
 } from "@nextui-org/react";
 import NextLink from "next/link";
+import { useSearchParams } from "next/navigation";
 
-import { STEAM_IMAGE } from "@/lib/constants";
+import { GetAllHeroesQuery } from "@/graphql/constants";
+import { GetHeroesStatsQuery } from "@/graphql/heroStats";
+import { IMAGE } from "@/lib/constants";
 import { cn } from "@/lib/utils";
-import { IHero } from "@/types/types";
 
 type HeroStatsProps = {
   pick: number;
   win: number;
-  totalPicks: number;
 };
-const HeroStats = ({ pick, win, totalPicks }: HeroStatsProps) => {
+const HeroStats = ({ pick, win }: HeroStatsProps) => {
   const winRate = Math.floor((win / pick) * 100);
-  const pickRate = Number(((pick / totalPicks) * 100).toFixed(1));
+  const pickRate = Number(((pick / pick) * 100).toFixed(1));
   return (
     <div className="flex justify-evenly gap-1">
       <div className="flex flex-col items-center">
@@ -54,213 +57,183 @@ const HeroStats = ({ pick, win, totalPicks }: HeroStatsProps) => {
 };
 
 type Props = {
-  data: IHero[];
+  data: GetHeroesStatsQuery;
+  heroes: GetAllHeroesQuery;
 };
 
-function calculateAllHeroesPicks(heroes: IHero[]): number {
-  return heroes.reduce((total, hero) => total + getTotalPicks(hero), 0);
-}
+const columns = [
+  { name: "Hero", key: "displayName" },
+  { name: "Start", key: "winCount" },
+  { name: "Current", key: "current" },
+  { name: "+/-", key: "difference" },
+];
 
-function calculateRankPicks(heroes: IHero[], rank: number): number {
-  //@ts-expect-error
-  return heroes.reduce((total, hero) => total + hero[`${rank}_pick`], 0);
-}
+export default function HeroesTable({ data, heroes }: Props) {
+  const searchParams = useSearchParams();
+  const [loadedHeroes, setLoadedHeroes] = useState(heroes.constants!.heroes!);
+  const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
+    column: "current",
+    direction: "descending",
+  });
+  const [sortedItems, setSortedItems] = useState(loadedHeroes);
 
-function getTotalPicks(hero: IHero): number {
-  return (
-    hero["1_pick"] +
-    hero["2_pick"] +
-    hero["3_pick"] +
-    hero["4_pick"] +
-    hero["5_pick"] +
-    hero["6_pick"] +
-    hero["7_pick"] +
-    hero["8_pick"]
-  );
-}
+  useEffect(() => {
+    setSortedItems(sortFunction(loadedHeroes, sortDescriptor));
+  }, [sortDescriptor]);
 
-function getTotalWins(hero: IHero): number {
-  return (
-    hero["1_win"] +
-    hero["2_win"] +
-    hero["3_win"] +
-    hero["4_win"] +
-    hero["5_win"] +
-    hero["6_win"] +
-    hero["7_win"] +
-    hero["8_win"]
-  );
-}
+  useEffect(() => {
+    if (searchParams.get("heroId")) {
+      const heroIds =
+        searchParams
+          .get("heroId")
+          ?.split(",")
+          .map((id) => parseInt(id.trim(), 10)) || [];
 
-export default function HeroesTable({ data }: Props) {
-  const totalPicks = Math.round(calculateAllHeroesPicks(data) / 10);
-  const ranksPicks_1 =
-    (calculateRankPicks(data, 1) +
-      calculateRankPicks(data, 2) +
-      calculateRankPicks(data, 3)) /
-    10;
-  const ranksPicks_2 = calculateRankPicks(data, 4) / 10;
-  const ranksPicks_3 = calculateRankPicks(data, 5) / 10;
-  const ranksPicks_4 = calculateRankPicks(data, 6) / 10;
-  const ranksPicks_5 =
-    (calculateRankPicks(data, 7) + calculateRankPicks(data, 8)) / 10;
+      const filteredHeroes =
+        heroes.constants?.heroes?.filter((hero) =>
+          heroIds.includes(hero?.id)
+        ) || [];
+      setSortedItems(filteredHeroes);
+    } else setSortedItems(sortFunction(loadedHeroes, sortDescriptor));
+  }, [searchParams]);
+
+  const renderCell = useCallback((data: any, columnKey: React.Key) => {
+    const cellValue = columnKey
+      .toString()
+      .split(".")
+      .reduce((obj, key) => obj?.[key], data);
+
+    const length = data?.stats.length - 1;
+
+    const winRate =
+      (data?.stats?.[length]?.winCount! / data?.stats?.[length]?.matchCount!) *
+      100;
+    const winRateEnd =
+      (data?.stats?.[0]?.winCount! / data?.stats?.[0]?.matchCount!) * 100;
+    const difference = winRateEnd - winRate;
+    switch (columnKey) {
+      case "displayName":
+        return (
+          <div className="flex items-center gap-2">
+            <Image
+              alt="Hero"
+              className="min-w-[70px]"
+              radius="sm"
+              src={IMAGE.url + data?.shortName + IMAGE.horizontal}
+              width={70}
+            />
+            <Link
+              as={NextLink}
+              href={`/heroes/${data?.id}`}
+            >
+              {data?.displayName}
+            </Link>
+          </div>
+        );
+      case "winCount": {
+        return (
+          <div className="flex flex-col">
+            <p className="text-sm font-semibold capitalize text-default-400">
+              {winRate.toFixed(1)}%
+            </p>
+          </div>
+        );
+      }
+      case "current": {
+        return (
+          <div className="flex flex-col">
+            <p className="text-sm font-semibold capitalize text-default-400">
+              {winRateEnd.toFixed(1)}%
+            </p>
+          </div>
+        );
+      }
+      case "difference": {
+        return (
+          <div className="flex flex-col">
+            <p
+              className={cn(
+                "text-sm font-semibold capitalize text-default-400",
+                {
+                  "text-green-400": difference > 0,
+                  "text-red-400": difference < 0,
+                }
+              )}
+            >
+              {difference.toFixed(1)}%
+            </p>
+          </div>
+        );
+      }
+      default:
+        return cellValue;
+    }
+  }, []);
+
+  const sortFunction = (items: any, sortDescriptor: SortDescriptor) => {
+    const { column, direction } = sortDescriptor;
+    const getColumnValue = (item: any) => {
+      return column
+        ?.toString()
+        .split(".")
+        .reduce((obj: any, key: string) => obj?.[key], item);
+    };
+    return [...items]?.sort((a, b) => {
+      const valueA = getColumnValue(a);
+      const valueB = getColumnValue(b);
+      const length = a.stats.length - 1;
+
+      if (column === "winCount") {
+        const propertyToSort = "winCount";
+        const subValueA =
+          a.stats[length]?.[propertyToSort] / a.stats[length]?.matchCount;
+        const subValueB =
+          b.stats[length]?.[propertyToSort] / b.stats[length]?.matchCount;
+        return (direction === "ascending" ? 1 : -1) * (subValueA - subValueB);
+      }
+      if (column === "current") {
+        const propertyToSort = "winCount";
+        const subValueA = a.stats[0]?.[propertyToSort] / a.stats[0]?.matchCount;
+        const subValueB = b.stats[0]?.[propertyToSort] / b.stats[0]?.matchCount;
+        return (direction === "ascending" ? 1 : -1) * (subValueA - subValueB);
+      }
+      if (typeof valueA === "number" && typeof valueB === "number") {
+        return (direction === "ascending" ? 1 : -1) * (valueA - valueB);
+      } else if (typeof valueA === "string" && typeof valueB === "string") {
+        return direction === "ascending"
+          ? valueA.localeCompare(valueB)
+          : valueB.localeCompare(valueA);
+      }
+      return 0;
+    });
+  };
 
   return (
     <>
-      <div>{totalPicks} matches</div>
-      <Table aria-label="HeroesTable">
-        <TableHeader>
-          <TableColumn>Hero</TableColumn>
-          <TableColumn>
-            <div className="flex justify-center">Overall</div>
-            <div className="flex justify-evenly">
-              <span>Pick</span>
-              <span>Win</span>
-            </div>
-          </TableColumn>
-          <TableColumn>
-            <div className="flex justify-center gap-1">
-              <Image
-                alt=""
-                src="/img/ranks/1.png"
-                width={40}
-              />
-              <Image
-                alt=""
-                src="/img/ranks/2.png"
-                width={40}
-              />
-              <Image
-                alt=""
-                src="/img/ranks/3.png"
-                width={40}
-              />
-            </div>
-            <div className="flex justify-evenly">
-              <span>Pick</span>
-              <span>Win</span>
-            </div>
-          </TableColumn>
-          <TableColumn>
-            <div className="flex justify-center">
-              <Image
-                alt=""
-                src="/img/ranks/4.png"
-                width={40}
-              />
-            </div>
-            <div className="flex justify-evenly">
-              <span>Pick</span>
-              <span>Win</span>
-            </div>
-          </TableColumn>
-          <TableColumn>
-            <div className="flex justify-center">
-              <Image
-                alt=""
-                src="/img/ranks/5.png"
-                width={40}
-              />
-            </div>
-            <div className="flex justify-evenly">
-              <span>Pick</span>
-              <span>Win</span>
-            </div>
-          </TableColumn>
-          <TableColumn>
-            <div className="flex justify-center">
-              <Image
-                alt=""
-                src="/img/ranks/6.png"
-                width={40}
-              />
-            </div>
-            <div className="flex justify-evenly">
-              <span>Pick</span>
-              <span>Win</span>
-            </div>
-          </TableColumn>
-          <TableColumn>
-            <div className="flex justify-center gap-1">
-              <Image
-                alt=""
-                src="/img/ranks/7.png"
-                width={40}
-              />
-              <Image
-                alt=""
-                src="/img/ranks/8.png"
-                width={40}
-              />
-            </div>
-            <div className="flex justify-evenly">
-              <span>Pick</span>
-              <span>Win</span>
-            </div>
-          </TableColumn>
+      <Table
+        aria-label="HeroesTable"
+        isHeaderSticky={true}
+        onSortChange={setSortDescriptor}
+        sortDescriptor={sortDescriptor}
+      >
+        <TableHeader columns={columns}>
+          {(column) => (
+            <TableColumn
+              allowsSorting={column.key !== "difference"}
+              key={column.key}
+            >
+              {column.name}
+            </TableColumn>
+          )}
         </TableHeader>
-        <TableBody>
-          {data.map((hero) => (
-            <TableRow key={hero.id}>
-              <TableCell className="flex items-center gap-2">
-                <Image
-                  alt="Hero"
-                  className="min-w-[70px]"
-                  radius="sm"
-                  src={STEAM_IMAGE + hero.img}
-                  width={70}
-                />
-                <Link
-                  as={NextLink}
-                  href={`/heroes/${hero.id}`}
-                >
-                  {hero.localized_name}
-                </Link>
-              </TableCell>
-              <TableCell>
-                <HeroStats
-                  pick={getTotalPicks(hero)}
-                  totalPicks={totalPicks}
-                  win={getTotalWins(hero)}
-                />
-              </TableCell>
-              <TableCell>
-                <HeroStats
-                  pick={hero["1_pick"] + hero["2_pick"] + hero["3_pick"]}
-                  totalPicks={ranksPicks_1}
-                  win={hero["1_win"] + hero["2_win"] + hero["3_win"]}
-                />
-              </TableCell>
-              <TableCell>
-                <HeroStats
-                  pick={hero["4_pick"]}
-                  totalPicks={ranksPicks_2}
-                  win={hero["4_win"]}
-                />
-              </TableCell>
-              <TableCell>
-                <HeroStats
-                  pick={hero["5_pick"]}
-                  totalPicks={ranksPicks_3}
-                  win={hero["5_win"]}
-                />
-              </TableCell>
-              <TableCell>
-                <HeroStats
-                  pick={hero["6_pick"]}
-                  totalPicks={ranksPicks_4}
-                  win={hero["6_win"]}
-                />
-              </TableCell>
-              <TableCell>
-                <HeroStats
-                  pick={hero["7_pick"] + hero["8_pick"]}
-                  totalPicks={ranksPicks_5}
-                  win={hero["7_win"] + hero["8_win"]}
-                />
-              </TableCell>
+        <TableBody items={sortedItems}>
+          {(item) => (
+            <TableRow key={item?.id}>
+              {(columnKey) => (
+                <TableCell>{renderCell(item, columnKey)}</TableCell>
+              )}
             </TableRow>
-          ))}
+          )}
         </TableBody>
       </Table>
     </>

@@ -11,22 +11,24 @@ import {
 } from "@nextui-org/react";
 import { formatDistanceToNow } from "date-fns";
 
-import { STEAM_IMAGE } from "@/lib/constants";
-import { getHeroById } from "@/lib/utils";
-import { IFavoriteHeroes, IHero } from "@/types/types";
+import { GetMostPlayedHeroesQuery } from "@/graphql/player";
+import { IMAGE } from "@/lib/constants";
+
+import TableTitle from "./TableTitle";
 
 type Props = {
-  data: IFavoriteHeroes[];
-  heroes: IHero[];
+  data: GetMostPlayedHeroesQuery;
 };
-export default function FavoriteHeroesTable({ data, heroes }: Props) {
+
+export default function FavoriteHeroesTable({ data }: Props) {
+  const player = data.player;
+  const heroes = player?.heroesGroupBy?.sort(
+    (a: any, b: any) => b.matchCount - a.matchCount
+  );
   return (
     <Table
       aria-label="PlayedWithTable"
-      classNames={{
-        base: "border p-1 rounded-xl border-content2",
-        wrapper: "bg-transparent shadow-none",
-      }}
+      topContent={<TableTitle>Favorite Heroes</TableTitle>}
     >
       <TableHeader>
         <TableColumn>HERO</TableColumn>
@@ -34,37 +36,45 @@ export default function FavoriteHeroesTable({ data, heroes }: Props) {
         <TableColumn>WIN RATE</TableColumn>
       </TableHeader>
       <TableBody>
-        {data.slice(0, 10).map((hero) => {
-          const getHero = getHeroById(heroes, hero.hero_id);
+        {heroes!.slice(0, 8).map((hero) => {
+          if (hero?.__typename !== "MatchGroupByHeroType")
+            return (
+              <TableRow>
+                <TableCell>UNKNOWN</TableCell>
+              </TableRow>
+            );
           return (
-            <TableRow key={hero.hero_id}>
+            <TableRow key={hero.heroId}>
               <TableCell>
                 <div className="flex items-center gap-2">
                   <Image
                     alt=""
                     className="min-w-[60px]"
                     radius="none"
-                    src={STEAM_IMAGE + getHero?.img}
+                    src={IMAGE.url + hero.hero?.shortName + IMAGE.horizontal}
                     width={60}
                   />
                   <div className="flex flex-col">
                     <Link
                       className="w-fit"
-                      href={`/heroes/${hero.hero_id}`}
+                      href={`/heroes/${hero.heroId}`}
                     >
-                      {getHero?.localized_name}
+                      {hero.hero?.displayName}
                     </Link>
                     <span className="text-gray-400">
-                      {formatDistanceToNow(new Date(hero.last_played * 1000), {
-                        addSuffix: true,
-                      })}
+                      {formatDistanceToNow(
+                        new Date(hero.lastMatchDateTime! * 1000),
+                        {
+                          addSuffix: true,
+                        }
+                      )}
                     </span>
                   </div>
                 </div>
               </TableCell>
-              <TableCell>{hero.games}</TableCell>
+              <TableCell>{hero?.matchCount}</TableCell>
               <TableCell>
-                {((hero.win / hero.games) * 100).toFixed(1)}%
+                {((hero.winCount! / hero.matchCount!) * 100).toFixed(1)}%
               </TableCell>
             </TableRow>
           );

@@ -10,191 +10,117 @@ import {
   Image,
 } from "@nextui-org/react";
 
-import { STEAM_IMAGE } from "@/lib/constants";
-import { findAbilityByDname } from "@/lib/utils";
-import { IHeroAbilities, IHeroAbility, IHeroAghanim } from "@/types/types";
+import { GetAbilitiesQuery, GetHeroByIdQuery } from "@/graphql/constants";
+import { IMAGE, UNIT_DAMAGE_TYPE } from "@/lib/constants";
+import { AbilityType } from "@/types/types.generated";
 
 type Props = {
-  abilities: IHeroAbility;
-  aghanim: IHeroAghanim;
-  data: IHeroAbilities;
+  abilities: GetAbilitiesQuery;
+  data: GetHeroByIdQuery;
 };
-export default function AbilityCard({ abilities, aghanim, data }: Props) {
-  const [selectedAbility, setSelectedAbility] = useState<string | undefined>(
-    data?.abilities?.[0]
-  );
-  const heroShard = findAbilityByDname(abilities, aghanim.shard_skill_name);
-  const heroAghs = findAbilityByDname(abilities, aghanim.scepter_skill_name);
+
+export default function AbilityCard({ abilities, data }: Props) {
+  const hero = data.constants?.hero;
+  const [selectedAbility, setSelectedAbility] = useState<
+    AbilityType | null | undefined
+  >(hero?.abilities?.[0]?.ability);
+
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-center justify-center gap-2">
-        {abilities &&
-          data?.abilities?.map(
-            (ability, index) =>
-              ability !== "generic_hidden" && (
-                <div
-                  key={index}
-                  onClick={() => setSelectedAbility(ability)}
-                >
-                  <Image
-                    alt=""
-                    className={cn("hover:scale-105 cursor-pointer", {
-                      grayscale: selectedAbility !== ability,
-                    })}
-                    src={STEAM_IMAGE + abilities[ability]?.img}
-                  />
-                </div>
-              )
-          )}
-        {heroAghs && (
-          <div
-            className="relative"
-            onClick={() => setSelectedAbility("aghs")}
-          >
-            <Image
-              alt=""
-              className="absolute bottom-1 right-0 z-50"
-              removeWrapper
-              src="/img/hero_stats/scepter_0.png"
-              width={40}
-            />
-            <Image
-              alt=""
-              className={cn("hover:scale-105 cursor-pointer", {
-                grayscale: selectedAbility !== "aghs",
-              })}
-              src={STEAM_IMAGE + heroAghs.img}
-            />
-          </div>
-        )}
-        {heroShard && (
-          <div
-            className="relative"
-            onClick={() => setSelectedAbility("shard")}
-          >
-            <Image
-              alt=""
-              className="absolute bottom-1 right-0 z-50"
-              removeWrapper
-              src="/img/hero_stats/shard_0.png"
-              width={40}
-            />
-            <Image
-              alt=""
-              className={cn("hover:scale-105 cursor-pointer", {
-                grayscale: selectedAbility !== "shard",
-              })}
-              src={STEAM_IMAGE + heroShard.img}
-            />
-          </div>
+        {hero?.abilities?.map(
+          (ability, index) =>
+            ability?.ability?.name !== "generic_hidden" && (
+              <div
+                key={index}
+                onClick={() => setSelectedAbility(ability?.ability)}
+              >
+                <Image
+                  alt=""
+                  className={cn("hover:scale-105 cursor-pointer", {
+                    grayscale: selectedAbility?.id !== ability?.ability?.id,
+                  })}
+                  src={IMAGE.urlAbility + ability?.ability?.name + ".png"}
+                  width={120}
+                />
+              </div>
+            )
         )}
       </div>
-      {abilities && selectedAbility === "aghs" ? (
-        <AghanimDescription
-          img={heroAghs?.img}
-          newSkill={aghanim?.scepter_new_skill}
-          text={aghanim?.scepter_desc}
-          title={aghanim?.scepter_skill_name}
-        />
-      ) : selectedAbility === "shard" ? (
-        <AghanimDescription
-          img={heroShard?.img}
-          newSkill={aghanim?.shard_new_skill}
-          text={aghanim?.shard_desc}
-          title={aghanim?.shard_skill_name}
-        />
-      ) : (
-        abilities &&
-        selectedAbility && (
-          <AbilityDescription
-            abilities={abilities}
-            selectedAbility={selectedAbility}
-          />
-        )
-      )}
+      {abilities && selectedAbility ? (
+        <AbilityDescription ability={selectedAbility} />
+      ) : null}
     </div>
   );
 }
 
-const Ability = ({
-  title,
-  text,
-}: {
-  title: string;
-  text: string | string[];
-}) => {
-  return (
-    <div className="flex gap-1">
-      <span className="font-semibold uppercase text-foreground-300">
-        {title}
-      </span>
-      {Array.isArray(text) ? (
-        text.map((item, index) => (
-          <span
-            className="font-medium"
-            key={index}
-          >
-            {item}
-            {index !== text.length - 1 && " /"}
-          </span>
-        ))
-      ) : (
-        <span className="font-medium">{text}</span>
-      )}
-    </div>
-  );
-};
-
-const AbilityDescription = ({
-  abilities,
-  selectedAbility,
-}: {
-  abilities: IHeroAbility;
-  selectedAbility: string;
-}) => {
-  const ability = abilities[selectedAbility];
+const AbilityDescription = ({ ability }: { ability: AbilityType }) => {
   return (
     <section className="flex justify-center">
-      <Card className="border-1 border-neutral-800 bg-transparent shadow-none">
+      <Card className="max-w-[60rem] border-1 border-neutral-800 bg-transparent shadow-none">
         <CardHeader className="gap-2">
           <Image
             alt=""
             className="min-w-[120px]"
-            src={STEAM_IMAGE + ability?.img}
+            src={IMAGE.urlAbility + ability?.name + ".png"}
           />
           <div className="flex flex-col">
-            <h1 className="text-xl font-bold uppercase">{ability.dname}</h1>
-            <p className="font-medium">{ability.desc}</p>
+            <h1 className="text-xl font-bold uppercase">
+              {ability.language?.displayName}
+            </h1>
+            {ability.language?.description ? (
+              <p
+                className="font-medium"
+                dangerouslySetInnerHTML={{
+                  __html: ability.language?.description!,
+                }}
+              />
+            ) : null}
           </div>
         </CardHeader>
         <CardBody className="bg-black">
-          <Ability
-            text={ability.behavior}
+          {/* <Ability
+            text={ability.stat}
             title="Ability:"
-          />
-          {ability.bkbpierce && (
+          /> */}
+          {ability.stat?.spellImmunity !== 0 && (
             <Ability
-              text={ability.bkbpierce}
+              text={ability.stat?.spellImmunity === 3 ? "Yes" : "No"}
               title="PIERCES SPELL IMMUNITY:"
             />
           )}
-          {ability.dmg_type && (
+          {ability.stat?.unitDamageType !== 0 && (
             <Ability
-              text={ability.dmg_type}
+              text={UNIT_DAMAGE_TYPE[ability.stat?.unitDamageType!]}
               title="DAMAGE TYPE:"
             />
           )}
-        </CardBody>
-        <CardBody className="flex-col items-start bg-black">
-          {ability.attrib.map(({ key, header, value }) => (
-            <Ability
-              key={key}
-              text={value}
-              title={header}
+          {(ability.stat?.hasScepterUpgrade ||
+            ability.stat?.isGrantedByScepter) && (
+            <AghanimDescription
+              text={ability.language?.aghanimDescription!}
+              type="Aghanim"
             />
-          ))}
-          <div className="relative flex w-full">
-            {ability.cd && (
+          )}
+          {(ability.stat?.hasShardUpgrade ||
+            ability.stat?.isGrantedByShard) && (
+            <AghanimDescription
+              text={ability.language?.shardDescription!}
+              type="Shard"
+            />
+          )}
+          <section className="mt-2">
+            {ability.language?.attributes
+              ?.filter((attribute) => !attribute?.includes(":%"))
+              .map((attribute) => (
+                <Ability
+                  key={attribute}
+                  text={attribute}
+                />
+              ))}
+          </section>
+          <section className="relative mt-4 flex w-full">
+            {ability.stat?.cooldown && (
               <div className="flex items-center gap-2 place-self-start">
                 <Image
                   alt=""
@@ -202,59 +128,85 @@ const AbilityDescription = ({
                   radius="none"
                   src="/img/hero_stats/cooldown.png"
                 />
-                <HealthMana text={ability.cd} />
+                <HealthMana text={ability.stat?.cooldown} />
               </div>
             )}
-            {ability.mc && (
-              <div className="absolute right-0 flex items-center gap-2">
+            {ability.stat?.manaCost && (
+              <div className="ml-auto flex place-content-end items-center gap-2">
                 <div className="h-4 w-4 bg-gradient-to-b from-[#00A4DB] to-[#007196]" />
-                <HealthMana text={ability.mc} />
+                <HealthMana text={ability.stat.manaCost} />{" "}
               </div>
             )}
-          </div>
+          </section>
         </CardBody>
-        {ability.lore && (
-          <CardFooter className="italic">{ability.lore}</CardFooter>
+        {ability.language?.lore && (
+          <CardFooter className="items-end italic">
+            {ability.language?.lore}
+          </CardFooter>
         )}
       </Card>
     </section>
   );
 };
 
-const AghanimDescription = ({
-  img,
-  newSkill,
-  text,
+const Ability = ({
   title,
+  text,
 }: {
-  img: string | undefined;
-  newSkill: boolean | undefined;
-  text: string | undefined;
-  title: string | undefined;
+  title?: string;
+  text: string | string[] | null;
 }) => {
   return (
-    <section className="flex justify-center">
-      <Card>
-        <CardHeader className="gap-2">
-          <Image
-            alt=""
-            className="min-w-[120px]"
-            src={STEAM_IMAGE + img}
-          />
-          <div className="flex flex-col">
-            <h1 className="text-xl font-bold uppercase">{title}</h1>
-            <p className="w-fit rounded-md bg-blue-800/50 p-1">
-              {newSkill ? "GRANTS NEW ABILITY" : "ABILITY UPGRADE"}
-            </p>
-            <p className="font-medium">{text}</p>
-          </div>
-        </CardHeader>
-      </Card>
+    <div className="flex gap-1">
+      {title ? (
+        <span className="font-semibold uppercase text-foreground-300">
+          {title}
+        </span>
+      ) : null}
+      {Array.isArray(text) ? (
+        text.map((item, index) => (
+          <span
+            className="font-medium"
+            key={index}
+          >
+            <span
+              dangerouslySetInnerHTML={{
+                __html: item!,
+              }}
+            />
+            {index !== text.length - 1 && " /"}
+          </span>
+        ))
+      ) : (
+        <span
+          className="font-medium"
+          dangerouslySetInnerHTML={{
+            __html: text!,
+          }}
+        />
+      )}
+    </div>
+  );
+};
+
+const AghanimDescription = ({
+  type,
+  text,
+}: {
+  type: "Aghanim" | "Shard";
+  text: string;
+}) => {
+  return (
+    <section className="my-4 flex flex-col gap-1 rounded-medium bg-gradient-to-r from-blue-500/30 to-blue-500/50 p-2">
+      <h1 className="font-semibold uppercase">
+        {type === "Aghanim" ? "Scepter Upgrade" : "Shard Upgrade"}
+      </h1>
+      <span className="font-medium text-gray-300">{text}</span>
     </section>
   );
 };
 
-const HealthMana = ({ text }: { img?: string; text: string | string[] }) => {
+const HealthMana = ({ text }: { img?: string; text: (number | null)[] }) => {
   return (
     <div className="flex gap-1">
       {Array.isArray(text) ? (

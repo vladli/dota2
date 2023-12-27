@@ -109,10 +109,9 @@ const columns: ColumnDef<any>[] = [
   },
 ];
 export default function HeroesTable({ heroes }: Props) {
-  const [data] = useState(heroes.constants?.heroes!);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const table = useReactTable({
-    data,
+    data: heroes.constants?.heroes!,
     columns,
     state: {
       columnFilters,

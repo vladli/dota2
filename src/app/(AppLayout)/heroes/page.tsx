@@ -6,7 +6,7 @@ import { getClient } from "@/lib/client";
 
 import HeroesTable from "./HeroesTable";
 
-export const revalidate = 60;
+export const revalidate = 0;
 
 export const metadata: Metadata = {
   title: "Heroes",
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 
 type Props = {
   searchParams: {
-    heroId?: string;
+    days?: string;
   };
 };
 
@@ -24,7 +24,7 @@ export default async function page({ searchParams }: Props) {
   });
   const { data } = await getClient().query({
     query: GetHeroesStatsDocument,
-    variables: { take: 5 },
+    variables: { take: !searchParams.days ? 7 : parseInt(searchParams.days) },
   });
   const sortedHeroes = heroes?.constants?.heroes?.toSorted((a, b) => {
     if (a?.displayName && b?.displayName) {
@@ -44,6 +44,7 @@ export default async function page({ searchParams }: Props) {
     ...heroes,
     constants: { ...heroes.constants, heroes: updatedHeroes },
   };
+
   return (
     <main className="p-4">
       <HeroesTable heroes={result} />

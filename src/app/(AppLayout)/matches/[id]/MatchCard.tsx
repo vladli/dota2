@@ -23,15 +23,15 @@ export default function MatchCard({ data }: Props) {
       >
         <div
           className={cn("border uppercase font-bold p-3 text-xl", {
-            "border-emerald-500 text-emerald-500": victory === "Radiant",
-            "border-red-500 text-red-500": victory === "Dire",
+            "border-success-400 text-success-400": victory === "Radiant",
+            "border-danger-500 text-danger-500": victory === "Dire",
           })}
         >
           {victory} victory
         </div>
       </div>
       <div className="flex items-center justify-center gap-10 text-2xl font-semibold lg:w-1/3">
-        <div className="text-emerald-500">{radiantScore}</div>
+        <div className="text-success-400">{radiantScore}</div>
         <div className="flex flex-col items-center">
           <span>{secondsToTime(match?.durationSeconds!)}</span>
           <span className="text-base font-medium text-gray-400">
@@ -40,7 +40,7 @@ export default function MatchCard({ data }: Props) {
             })}
           </span>
         </div>
-        <div className="text-red-500">{direScore}</div>
+        <div className="text-danger-500">{direScore}</div>
       </div>
       <div className="flex flex-col items-center font-medium lg:w-1/3">
         <div>

@@ -52,7 +52,7 @@ export default function PlayedWithTable({ data }: Props) {
                   >
                     {peer?.steamAccount?.name}
                   </Link>
-                  <span className="text-gray-400">
+                  <span className="text-foreground-500">
                     {formatDistanceToNow(
                       new Date(peer?.lastMatchDateTime * 1000),
                       {

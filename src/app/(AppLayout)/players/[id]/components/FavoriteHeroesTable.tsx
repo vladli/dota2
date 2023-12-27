@@ -61,7 +61,7 @@ export default function FavoriteHeroesTable({ data }: Props) {
                     >
                       {hero.hero?.displayName}
                     </Link>
-                    <span className="text-gray-400">
+                    <span className="text-foreground-500">
                       {formatDistanceToNow(
                         new Date(hero.lastMatchDateTime! * 1000),
                         {

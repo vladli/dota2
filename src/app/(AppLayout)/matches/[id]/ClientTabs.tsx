@@ -105,8 +105,8 @@ export const Header = ({
       className={cn(
         "w-fit text-xl uppercase font-semibold flex gap-2 items-center",
         {
-          "text-emerald-500": text === "Radiant",
-          "text-red-500": text === "Dire",
+          "text-success-400": text === "Radiant",
+          "text-danger-500": text === "Dire",
         }
       )}
     >

@@ -9,6 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@nextui-org/react";
+import NextLink from "next/link";
 
 import { GetAllItemsQuery } from "@/graphql/constants";
 import { GetMatchByIdQuery } from "@/graphql/mathch";
@@ -193,7 +194,10 @@ export default function TabOverview({ data, team, items }: Props) {
               <TableRow key={i}>
                 <TableCell>
                   <div className="flex items-center gap-2">
-                    <Link href={`/heroes/${player?.heroId}`}>
+                    <Link
+                      as={NextLink}
+                      href={`/heroes/${player?.heroId}`}
+                    >
                       <Image
                         alt="HeroImage"
                         className="min-w-[70px]"
@@ -205,7 +209,12 @@ export default function TabOverview({ data, team, items }: Props) {
                       />
                     </Link>
                     <div className="flex flex-col">
-                      <Link href={`/players/${player?.steamAccountId}`}>
+                      <Link
+                        as={NextLink}
+                        color="foreground"
+                        href={`/players/${player?.steamAccountId}`}
+                        underline="hover"
+                      >
                         {player?.steamAccount?.name}
                       </Link>
                       <span className="text-gray-400">

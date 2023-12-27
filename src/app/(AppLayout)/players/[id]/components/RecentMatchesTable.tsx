@@ -64,12 +64,14 @@ export default function RecentMatchesTable({ data }: Props) {
                     <Link
                       as={NextLink}
                       className="w-fit"
+                      color="foreground"
                       href={`/heroes/${player?.hero?.id}`}
+                      underline="hover"
                     >
                       {player?.hero?.displayName}
                     </Link>
                     {match?.actualRank && (
-                      <span className="text-gray-400">
+                      <span className="text-foreground-500">
                         {getRankName(match.actualRank.toString()[0])}{" "}
                         {match.actualRank.toString()[1]}
                       </span>
@@ -82,14 +84,15 @@ export default function RecentMatchesTable({ data }: Props) {
                   <Link
                     as={NextLink}
                     className={cn("w-fit", {
-                      "text-green-500": match?.players![0]?.isVictory,
-                      "text-red-500": !match?.players![0]?.isVictory,
+                      "text-success-400": match?.players![0]?.isVictory,
+                      "text-danger-500": !match?.players![0]?.isVictory,
                     })}
                     href={`/matches/${match?.id}`}
+                    underline="hover"
                   >
                     {match?.players![0]?.isVictory ? "Won Match" : "Lost Match"}
                   </Link>
-                  <span className="text-gray-400">
+                  <span className="text-foreground-500">
                     {formatDistanceToNow(match?.endDateTime * 1000, {
                       addSuffix: true,
                     })}

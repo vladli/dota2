@@ -34,11 +34,11 @@ export default async function PlayerCard({ data }: Props) {
         </div>
         <div className="flex gap-4 text-lg uppercase">
           <div className="flex flex-col items-center font-medium">
-            Wins <span className="text-green-500">{player?.winCount}</span>
+            Wins <span className="text-success-400">{player?.winCount}</span>
           </div>
           <div className="flex flex-col items-center">
             Losses{" "}
-            <span className="text-red-500">
+            <span className="text-danger-500">
               {player?.matchCount! - player?.winCount!}
             </span>
           </div>

@@ -4,8 +4,9 @@ import { GetAllHeroesDocument } from "@/graphql/constants";
 import { GetHeroesStatsDocument } from "@/graphql/heroStats";
 import { getClient } from "@/lib/client";
 
-import Filters from "./Filters";
 import HeroesTable from "./HeroesTable";
+
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "Heroes",
@@ -45,11 +46,7 @@ export default async function page({ searchParams }: Props) {
   };
   return (
     <main className="p-4">
-      <Filters heroes={result} />
-      <HeroesTable
-        data={data}
-        heroes={result}
-      />
+      <HeroesTable heroes={result} />
     </main>
   );
 }

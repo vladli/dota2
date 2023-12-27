@@ -10,7 +10,6 @@ module.exports = {
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
     "plugin:tailwindcss/recommended",
-    "plugin:@tanstack/eslint-plugin-query/recommended",
     "next/core-web-vitals",
   ],
   parserOptions: {
@@ -20,7 +19,7 @@ module.exports = {
     ecmaVersion: 12,
     sourceType: "module",
   },
-  plugins: ["react", "simple-import-sort", "@tanstack/query", "unused-imports"],
+  plugins: ["react", "simple-import-sort", "unused-imports"],
   rules: {
     // Possible errors
     "no-console": "off",

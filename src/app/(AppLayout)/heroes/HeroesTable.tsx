@@ -127,9 +127,25 @@ export default function HeroesTable({ heroes }: Props) {
       sorting: [{ id: "end", desc: true }],
     },
   });
+  const stats = (heroes.constants?.heroes?.[0] as { stats: any })?.stats;
+
+  const startDate = new Date(stats[0].day * 1000);
+  const endDate = new Date(stats[stats.length - 1].day * 1000);
+  const formatDate = (date: Date | null) => {
+    return date
+      ? date.toLocaleDateString("en-GB", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+        })
+      : null;
+  };
   return (
     <div>
       <Filters headerGroups={table.getHeaderGroups()} />
+      <h1 className="mb-4 text-lg font-semibold">
+        Stats for: {formatDate(startDate)} - {formatDate(endDate)}
+      </h1>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table className="w-full text-left">
           <thead className="whitespace-nowrap bg-default-100 text-tiny uppercase text-foreground-500">

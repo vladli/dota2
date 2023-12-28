@@ -3,6 +3,7 @@ import { HeaderGroup } from "@tanstack/react-table";
 
 import DaysFilter from "./filters/DaysFilter";
 import HeroesFilter from "./filters/HeroesFilter";
+import RankFilter from "./filters/RankFilter";
 
 type Props = {
   headerGroups: HeaderGroup<any>[];
@@ -22,6 +23,7 @@ export default function Filters({ headerGroups }: Props) {
         </Fragment>
       ))}
       <DaysFilter />
+      <RankFilter />
     </section>
   );
 }

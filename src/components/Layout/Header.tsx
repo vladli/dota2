@@ -30,6 +30,7 @@ export default function Header() {
         classNames={{
           base: pathname !== "/" ? "border-b border-content2" : "",
         }}
+        isMenuOpen={isMenuOpen}
         onMenuOpenChange={setIsMenuOpen}
         position="static"
       >

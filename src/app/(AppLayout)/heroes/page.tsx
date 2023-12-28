@@ -3,6 +3,7 @@ import type { Metadata } from "next/types";
 import { GetAllHeroesDocument } from "@/graphql/constants";
 import { GetHeroesStatsDocument } from "@/graphql/heroStats";
 import { getClient } from "@/lib/client";
+import { InputMaybe, RankBracket } from "@/types/types.generated";
 
 import HeroesTable from "./HeroesTable";
 
@@ -15,16 +16,25 @@ export const metadata: Metadata = {
 type Props = {
   searchParams: {
     days?: string;
+    rank?: string;
   };
 };
 
 export default async function page({ searchParams }: Props) {
+  const isRankValid = Object.values(RankBracket).includes(
+    searchParams.rank?.toUpperCase() as RankBracket
+  );
   const { data: heroes } = await getClient().query({
     query: GetAllHeroesDocument,
   });
   const { data } = await getClient().query({
     query: GetHeroesStatsDocument,
-    variables: { take: !searchParams.days ? 7 : parseInt(searchParams.days) },
+    variables: {
+      bracketIds: isRankValid
+        ? [searchParams.rank?.toUpperCase() as InputMaybe<RankBracket>]
+        : undefined,
+      take: !searchParams.days ? 7 : parseInt(searchParams.days),
+    },
   });
   const sortedHeroes = heroes?.constants?.heroes?.toSorted((a, b) => {
     if (a?.displayName && b?.displayName) {

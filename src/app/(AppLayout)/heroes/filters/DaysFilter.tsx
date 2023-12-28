@@ -30,7 +30,7 @@ export default function DaysFilter() {
       Number(selectedValue) < 0 ||
       Number(selectedValue) > 30
     ) {
-      router.push(pathname + deleteQueryString("days", searchParams));
+      router.push(pathname + "?" + deleteQueryString("days", searchParams));
     }
   }, [value]);
 

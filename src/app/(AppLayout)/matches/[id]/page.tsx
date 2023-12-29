@@ -2,9 +2,9 @@ import { GetAllItemsDocument } from "@/graphql/constants";
 import { GetMatchByIdDocument } from "@/graphql/mathch";
 import { getClient } from "@/lib/client";
 
-import ClientTabs from "./ClientTabs";
-import MatchCard from "./MatchCard";
-import ParseCard from "./ParseCard";
+import ClientTabs from "./components/ClientTabs";
+import MatchCard from "./components/MatchCard";
+import ParseCard from "./components/ParseCard";
 
 export const revalidate = 30;
 

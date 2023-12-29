@@ -1,4 +1,3 @@
-import { BsBackpack2 } from "react-icons/bs";
 import {
   Image,
   Link,
@@ -9,6 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from "@nextui-org/react";
+import { Backpack } from "lucide-react";
 import NextLink from "next/link";
 
 import { GetAllItemsQuery } from "@/graphql/constants";
@@ -17,7 +17,7 @@ import { IMAGE } from "@/lib/constants";
 import { getRankName } from "@/lib/utils";
 import { MatchPlayerType } from "@/types/types.generated";
 
-import { Header } from "../ClientTabs";
+import { Header } from "../components/ClientTabs";
 
 const TABLE_HEADER = [
   "Player",
@@ -108,9 +108,9 @@ export default function TabOverview({ data, team, items }: Props) {
           )}
         </div>
         <div className="flex items-center gap-1">
-          <BsBackpack2
+          <Backpack
             className="text-neutral-500"
-            size="1.1rem"
+            size={20}
           />
           {playerBackpack.map((item, i) =>
             item ? (

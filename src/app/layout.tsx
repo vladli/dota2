@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import NextTopLoader from "nextjs-toploader";
 
 import "./globals.css";
 
@@ -22,7 +23,10 @@ export default async function RootLayout({
       className="dark"
       lang="en"
     >
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <NextTopLoader showSpinner={false} />
+        {children}
+      </body>
     </html>
   );
 }

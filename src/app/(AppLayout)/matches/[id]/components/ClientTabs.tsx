@@ -1,13 +1,14 @@
 "use client";
-import { AiOutlineFundView } from "react-icons/ai";
-import { GrTrophy } from "react-icons/gr";
 import { Tab, Tabs } from "@nextui-org/react";
+import { AreaChart, Trophy } from "lucide-react";
 
 import { GetAllItemsQuery } from "@/graphql/constants";
 import { GetMatchByIdQuery } from "@/graphql/mathch";
 import { cn } from "@/lib/utils";
 
-import TabOverview from "./tabs/TabOverview";
+import TabOverview from "../tabs/TabOverview";
+
+import PickBan from "./PickBan";
 
 type Props = {
   data: GetMatchByIdQuery;
@@ -23,7 +24,7 @@ export default function ClientTabs({ data, items }: Props) {
         key="overview"
         title={
           <TabHeader
-            icon={AiOutlineFundView}
+            icon={AreaChart}
             text="Overview"
           />
         }
@@ -41,6 +42,7 @@ export default function ClientTabs({ data, items }: Props) {
             team="Dire"
           />
         </div>
+        <PickBan data={data} />
       </Tab>
       {/* <Tab
         key="ability"
@@ -83,7 +85,7 @@ export default function ClientTabs({ data, items }: Props) {
 const TabHeader = ({ text, icon: Icon }: { text: string; icon: any }) => {
   return (
     <div className="flex items-center space-x-2">
-      <Icon />
+      <Icon size={18} />
       <span>{text}</span>
     </div>
   );
@@ -110,7 +112,7 @@ export const Header = ({
         }
       )}
     >
-      {text} {open && showWin ? <GrTrophy /> : null}
+      {text} {open && showWin ? <Trophy /> : null}
     </h1>
   );
 };

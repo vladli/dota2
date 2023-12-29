@@ -1,8 +1,8 @@
 "use client";
 import toast from "react-hot-toast";
-import { IoWarning } from "react-icons/io5";
 import { gql, useMutation } from "@apollo/client";
 import { Button } from "@nextui-org/react";
+import { AlertTriangle } from "lucide-react";
 
 type Props = {
   matchId: number;
@@ -25,9 +25,9 @@ export default function ParseCard({ matchId }: Props) {
   return (
     <section className="mt-4 flex items-center justify-between rounded-medium bg-content1 p-4">
       <div className="flex items-center gap-4">
-        <IoWarning
+        <AlertTriangle
           className="text-danger"
-          size="2.2rem"
+          size={38}
         />
         <div className="flex flex-col">
           <h1 className="text-xl font-bold">Not parsed</h1>

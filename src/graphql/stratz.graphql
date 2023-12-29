@@ -22,3 +22,18 @@ query GetPlayerPeers(
     }
   }
 }
+
+query GetSearch($request: FilterSearchRequestType) {
+  stratz {
+    search(request: $request) {
+      players {
+        id
+        avatar
+        name
+      }
+      matches {
+        id
+      }
+    }
+  }
+}

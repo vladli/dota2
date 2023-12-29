@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import { TiArrowSortedDown, TiArrowSortedUp } from "react-icons/ti";
 import { Image, Link } from "@nextui-org/react";
 import {
   ColumnDef,
@@ -11,6 +10,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import { ArrowDownWideNarrow, ArrowUpWideNarrow } from "lucide-react";
 import NextLink from "next/link";
 
 import { GetAllHeroesQuery } from "@/graphql/constants";
@@ -226,8 +226,8 @@ export default function HeroesTable({ heroes }: Props) {
                           header.getContext()
                         )}
                         {{
-                          asc: <TiArrowSortedUp />,
-                          desc: <TiArrowSortedDown />,
+                          asc: <ArrowUpWideNarrow size={16} />,
+                          desc: <ArrowDownWideNarrow size={16} />,
                         }[header.column.getIsSorted() as string] ?? null}
                       </div>
                     )}

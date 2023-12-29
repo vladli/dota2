@@ -23,7 +23,7 @@ query GetPlayerPeers(
   }
 }
 
-query GetSearch($request: FilterSearchRequestType) {
+query GetSearch($request: FilterSearchRequestType!) {
   stratz {
     search(request: $request) {
       players {

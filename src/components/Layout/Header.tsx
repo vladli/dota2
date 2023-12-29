@@ -18,6 +18,8 @@ import { albertus_font } from "@/app/fonts";
 import { menu } from "@/lib/data";
 import { cn } from "@/lib/utils";
 
+import SearchBar from "../SearchBar";
+
 import UserMenu from "./UserMenu";
 
 export default function Header() {
@@ -31,15 +33,16 @@ export default function Header() {
           base: pathname !== "/" ? "border-b border-content2" : "",
         }}
         isMenuOpen={isMenuOpen}
+        maxWidth="full"
         onMenuOpenChange={setIsMenuOpen}
         position="static"
       >
-        <NavbarContent>
+        <NavbarContent justify="start">
           <NavbarMenuToggle
             aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-            className="md:hidden"
+            className="lg:hidden"
           />
-          <NavbarBrand>
+          <NavbarBrand className="hidden lg:flex">
             <Link
               className="group flex items-center gap-2"
               href="/"
@@ -62,47 +65,71 @@ export default function Header() {
             </Link>
           </NavbarBrand>
         </NavbarContent>
-        <NavbarContent
-          className="hidden gap-4 font-medium md:flex"
-          justify="center"
-        >
-          {menu.map(({ name, url }) => (
-            <NavbarItem
-              isActive={pathname === url}
-              key={name}
+        <NavbarContent justify="center">
+          <NavbarBrand className="lg:hidden">
+            <Link
+              className="group flex items-center gap-2"
+              href="/"
             >
-              <Link
+              <Image
+                alt=""
+                className="cursor-pointer transition-all group-hover:scale-110"
+                height={32}
+                src="/img/dota2.png"
+                width={32}
+              />
+              <span
                 className={cn(
                   albertus_font.className,
-                  "relative text-lg uppercase"
+                  "text-xl font-semibold uppercase"
                 )}
-                href={url}
               >
-                {pathname === url && (
-                  <motion.span
-                    className="absolute -inset-1 border-b-2 border-red-500"
-                    layoutId="active"
-                    transition={{
-                      type: "spring",
-                      stiffness: 380,
-                      damping: 30,
-                    }}
-                  />
-                )}
-                {name}
-              </Link>
-            </NavbarItem>
-          ))}
+                Dota 2 Stats
+              </span>
+            </Link>
+          </NavbarBrand>
+          <div className="hidden items-center gap-2 lg:flex">
+            {menu.map(({ name, url }) => (
+              <NavbarItem
+                isActive={pathname === url}
+                key={name}
+              >
+                <Link
+                  className={cn(
+                    albertus_font.className,
+                    "relative text-lg uppercase"
+                  )}
+                  href={url}
+                >
+                  {pathname === url && (
+                    <motion.span
+                      className="absolute -inset-1 border-b-2 border-red-500"
+                      layoutId="active"
+                      transition={{
+                        type: "spring",
+                        stiffness: 380,
+                        damping: 30,
+                      }}
+                    />
+                  )}
+                  {name}
+                </Link>
+              </NavbarItem>
+            ))}
+          </div>
         </NavbarContent>
         <NavbarContent justify="end">
+          <SearchBar className="hidden max-w-[12rem] lg:flex" />
           <UserMenu />
         </NavbarContent>
         <NavbarMenu>
+          <SearchBar />
           {menu.map(({ name, url }, index) => (
             <NavbarMenuItem key={index}>
               <Link
                 className="relative w-full"
                 href={url}
+                onClick={() => setIsMenuOpen(false)}
               >
                 {pathname === url && (
                   <motion.span

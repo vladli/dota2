@@ -11,9 +11,10 @@ import { cn } from "@/lib/utils";
 
 type Props = {
   className?: string;
+  setIsMenuOpen: (isOpen: boolean) => void;
 };
 
-export default function SearchBar({ className }: Props) {
+export default function SearchBar({ className, setIsMenuOpen }: Props) {
   const [search, setSearch] = useState<string>("");
   const debounceSearch = useDebounce(search, 500);
 
@@ -31,6 +32,11 @@ export default function SearchBar({ className }: Props) {
     if (search) getSearch();
   }, [debounceSearch]);
 
+  const handleClick = () => {
+    setSearch("");
+    setIsMenuOpen(false);
+  };
+
   const matches = data?.stratz?.search?.matches || [];
   const players = data?.stratz?.search?.players || [];
 
@@ -45,12 +51,14 @@ export default function SearchBar({ className }: Props) {
         placeholder="Search"
         size="sm"
         value={search}
+        variant="bordered"
       />
-      {search && !loading && (
+      {search && data && !loading && (
         <div className="absolute top-10 w-full rounded-small bg-content1">
           <Listbox
             aria-label="Search results"
-            onAction={() => setSearch("")}
+            onAction={handleClick}
+            onClick={(e) => e.stopPropagation()}
           >
             <ListboxSection
               hidden={matches.length === 0}

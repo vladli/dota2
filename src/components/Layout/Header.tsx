@@ -119,11 +119,14 @@ export default function Header() {
           </div>
         </NavbarContent>
         <NavbarContent justify="end">
-          <SearchBar className="hidden max-w-[12rem] lg:flex" />
+          <SearchBar
+            className="hidden max-w-[12rem] lg:flex"
+            {...{ setIsMenuOpen }}
+          />
           <UserMenu />
         </NavbarContent>
         <NavbarMenu>
-          <SearchBar />
+          <SearchBar {...{ setIsMenuOpen }} />
           {menu.map(({ name, url }, index) => (
             <NavbarMenuItem key={index}>
               <Link

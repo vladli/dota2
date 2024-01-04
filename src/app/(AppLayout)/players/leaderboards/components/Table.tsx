@@ -30,8 +30,15 @@ export default function Table({ header, data }: Props) {
               {player?.rank}
             </span>
           </div>
-          {player?.steamAccount?.proSteamAccount?.name ||
-            player?.steamAccount?.name}
+          <div>
+            {player?.steamAccount?.proSteamAccount?.team && (
+              <span className="font-medium text-foreground-500">
+                {player?.steamAccount?.proSteamAccount?.team?.tag}.
+              </span>
+            )}
+            {player?.steamAccount?.proSteamAccount?.name ||
+              player?.steamAccount?.name}
+          </div>
         </div>
       ))}
     </div>

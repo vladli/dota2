@@ -18,7 +18,7 @@ type Props = {
 
 const MenuItemMobile = React.memo(
   ({ setIsMenuOpen, url, name, submenu }: Props) => {
-    const [toggled, setToggled] = useState<string | null>(null);
+    const [toggled, setToggled] = useState<string | null>("all");
     const pathname = usePathname();
     const handleToggle = () => {
       if (toggled === null) setToggled(name);
@@ -27,7 +27,7 @@ const MenuItemMobile = React.memo(
 
     const isActive = pathname === url;
     return (
-      <motion.div>
+      <motion.div className="font-medium">
         {!submenu!.length ? (
           <Link
             className="relative"

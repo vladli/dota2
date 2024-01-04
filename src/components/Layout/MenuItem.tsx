@@ -15,7 +15,7 @@ import { menu } from "@/lib/data";
 export default function MenuItem() {
   const pathname = usePathname();
   return (
-    <div className="hidden items-center gap-2 lg:flex">
+    <div className="hidden items-center gap-2 font-medium lg:flex">
       {menu.map(({ name, url, submenu }) =>
         !submenu.length ? (
           <NavbarItem
@@ -23,7 +23,7 @@ export default function MenuItem() {
             key={name}
           >
             <Link
-              className="relative text-lg"
+              className="relative"
               href={url}
             >
               {pathname === url && (
@@ -47,7 +47,7 @@ export default function MenuItem() {
           >
             <NavbarItem>
               <DropdownTrigger>
-                <div className="relative flex cursor-pointer items-center gap-1 text-lg">
+                <div className="relative flex cursor-pointer items-center gap-1">
                   {pathname.startsWith(url) && (
                     <motion.span
                       className="absolute -inset-1 border-b-2 border-red-500"

@@ -1,3 +1,4 @@
+import { Image } from "@nextui-org/react";
 import { Octagon } from "lucide-react";
 
 import { GetLeaderBoardsQuery } from "@/graphql/leaderboard";
@@ -12,7 +13,15 @@ export default function Table({ header, data }: Props) {
   const players = data.leaderboard?.season?.players;
   return (
     <div className="mt-4 rounded-large bg-content1">
-      <h1 className="w-fit p-4 text-xl font-bold uppercase">{header}</h1>
+      <div className="flex items-center gap-2 p-4">
+        <Image
+          alt="Rank Image"
+          height={40}
+          src={`/img/ranks/8_${isTop10 ? "10" : "100"}.png`}
+          width={40}
+        />
+        <h1 className="w-fit text-xl font-bold uppercase">{header}</h1>
+      </div>
       {players?.map((player, index) => (
         <div
           className={cn("flex items-center gap-2  p-2", {

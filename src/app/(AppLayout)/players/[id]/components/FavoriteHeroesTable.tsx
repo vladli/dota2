@@ -35,7 +35,7 @@ export default function FavoriteHeroesTable({ data }: Props) {
         <TableColumn>MATCHES</TableColumn>
         <TableColumn>WIN RATE</TableColumn>
       </TableHeader>
-      <TableBody>
+      <TableBody emptyContent="No information.">
         {heroes!.slice(0, 8).map((hero) => {
           if (hero?.__typename !== "MatchGroupByHeroType")
             return (

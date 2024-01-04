@@ -33,7 +33,7 @@ export default function PlayedWithTable({ data }: Props) {
         <TableColumn>MATCHES</TableColumn>
         <TableColumn>WIN RATE</TableColumn>
       </TableHeader>
-      <TableBody>
+      <TableBody emptyContent="No information.">
         {peers!.map((peer) => (
           <TableRow key={peer?.steamAccountId}>
             <TableCell>

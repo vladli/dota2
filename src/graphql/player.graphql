@@ -8,11 +8,23 @@ query GetPlayerBySteamId($steamAccountId: Long!) {
       avatar
       isDotaPlusSubscriber
       seasonRank
+      seasonLeaderboardRank
+      proSteamAccount {
+        id
+        name
+        realName
+        team {
+          id
+          name
+          tag
+        }
+      }
     }
     matchCount
     winCount
   }
 }
+
 query GetRecentMatches($steamAccountId: Long!, $take: Int!) {
   player(steamAccountId: $steamAccountId) {
     matches(request: { take: $take }) {

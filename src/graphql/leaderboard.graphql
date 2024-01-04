@@ -1,0 +1,27 @@
+query GetLeaderBoards(
+  $leaderboardRequestVariable: FilterSeasonLeaderboardRequestType
+  $skip: Long
+  $take: Long
+) {
+  leaderboard {
+    season(request: $leaderboardRequestVariable) {
+      playerCount
+      players(skip: $skip, take: $take) {
+        steamAccountId
+        position
+        rank
+        rankShift
+        steamAccount {
+          name
+          proSteamAccount {
+            name
+            team {
+              tag
+              name
+            }
+          }
+        }
+      }
+    }
+  }
+}

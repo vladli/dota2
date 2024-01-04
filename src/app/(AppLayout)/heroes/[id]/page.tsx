@@ -12,6 +12,7 @@ import HeroStats from "./HeroStats";
 import HeroTalents from "./HeroTalents";
 
 export async function generateMetadata({ params }: Props) {
+  if (isNaN(+params.id)) return;
   const { data } = await getClient().query({
     query: GetHeroByIdDocument,
     variables: { id: Number(params.id) },
@@ -28,11 +29,12 @@ type Props = {
 };
 
 export default async function page({ params }: Props) {
+  if (isNaN(+params.id)) return notFound();
   const { data } = await getClient().query({
     query: GetHeroByIdDocument,
     variables: { id: Number(params.id) },
   });
-  if (!data) return notFound();
+  if (!data.constants?.hero) return notFound();
   return (
     <main className="p-4">
       <Card>
@@ -53,7 +55,7 @@ export default async function page({ params }: Props) {
           </div>
         </section>
         <Divider />
-        <section className="flex justify-evenly">
+        <section className="flex w-full justify-evenly">
           <HeroAttributes data={data} />
           <div>
             <Divider orientation="vertical" />

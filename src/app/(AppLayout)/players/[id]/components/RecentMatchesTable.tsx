@@ -45,31 +45,36 @@ export default function RecentMatchesTable({ data }: Props) {
         <TableColumn>DURATION</TableColumn>
         <TableColumn>K/D/A</TableColumn>
       </TableHeader>
-      <TableBody>
+      <TableBody emptyContent="No information.">
         {matches!.map((match) => {
           const player = match?.players![0];
           return (
-            <TableRow key={match?.id}>
+            <TableRow
+              as={NextLink}
+              className="hover:cursor-pointer hover:bg-content2"
+              href={`/matches/${match?.id}`}
+              key={match?.id}
+            >
               <TableCell>
                 <div className="flex items-center gap-2">
-                  <Image
-                    alt="Hero"
-                    className="min-w-[60px]"
-                    radius="none"
-                    removeWrapper
-                    src={IMAGE.url + player?.hero?.shortName + IMAGE.horizontal}
-                    width={60}
-                  />
+                  <Link
+                    as={NextLink}
+                    href={`/heroes/${player?.hero?.id}`}
+                  >
+                    <Image
+                      alt="Hero"
+                      className="min-w-[60px]"
+                      radius="none"
+                      removeWrapper
+                      src={
+                        IMAGE.url + player?.hero?.shortName + IMAGE.horizontal
+                      }
+                      width={60}
+                    />
+                  </Link>
+
                   <div className="flex flex-col">
-                    <Link
-                      as={NextLink}
-                      className="w-fit"
-                      color="foreground"
-                      href={`/heroes/${player?.hero?.id}`}
-                      underline="hover"
-                    >
-                      {player?.hero?.displayName}
-                    </Link>
+                    {player?.hero?.displayName}
                     {match?.actualRank && (
                       <span className="text-foreground-500">
                         {getRankName(match.actualRank.toString()[0])}{" "}
@@ -81,17 +86,14 @@ export default function RecentMatchesTable({ data }: Props) {
               </TableCell>
               <TableCell>
                 <div className="flex flex-col">
-                  <Link
-                    as={NextLink}
+                  <span
                     className={cn("w-fit", {
                       "text-success-400": match?.players![0]?.isVictory,
                       "text-danger-500": !match?.players![0]?.isVictory,
                     })}
-                    href={`/matches/${match?.id}`}
-                    underline="hover"
                   >
                     {match?.players![0]?.isVictory ? "Won Match" : "Lost Match"}
-                  </Link>
+                  </span>
                   <span className="text-foreground-500">
                     {formatDistanceToNow(match?.endDateTime * 1000, {
                       addSuffix: true,

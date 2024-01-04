@@ -9,15 +9,16 @@ import PlayedWith from "./PlayedWith";
 import PlayerCard from "./PlayerCard";
 import RecentMatches from "./RecentMatches";
 
-export const revalidate = 60;
+export const revalidate = 0;
 
 export async function generateMetadata({ params }: Props) {
   const { data } = await getClient().query({
     query: GetPlayerBySteamIdDocument,
     variables: { steamAccountId: Number(params.id) },
   });
+  const proPlayer = data?.player?.steamAccount?.proSteamAccount;
   return {
-    title: data?.player?.steamAccount?.name || "Unknown",
+    title: proPlayer?.name || data?.player?.steamAccount?.name || "Unknown",
   };
 }
 

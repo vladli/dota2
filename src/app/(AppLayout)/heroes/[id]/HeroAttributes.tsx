@@ -30,12 +30,12 @@ export default function HeroAttributes({ data }: Props) {
     <section className="m-4 flex flex-col items-center gap-4">
       <h1 className="text-xl font-semibold uppercase">Attributes</h1>
       <section className="flex flex-col items-center gap-4 md:flex-row">
-        <div>
+        <div className="flex flex-col">
           <Image
             alt="hero"
-            className="max-w-[200px]"
             radius="none"
             src={IMAGE.url + hero?.shortName + IMAGE.horizontal}
+            width={200}
           />
           <div className="relative flex items-center justify-center bg-green-600">
             {HERO_STATS.baseHp +

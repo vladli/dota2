@@ -1,5 +1,6 @@
 import { FaSteam } from "react-icons/fa";
 import { Avatar, Button, Image, Link, Tooltip } from "@nextui-org/react";
+import { CheckCircle2 } from "lucide-react";
 
 import { roboto_mono } from "@/app/fonts";
 import { GetPlayerBySteamIdQuery } from "@/graphql/player";
@@ -9,9 +10,10 @@ type Props = {
   data: GetPlayerBySteamIdQuery;
 };
 export default async function PlayerCard({ data }: Props) {
+  const proPlayer = data.player?.steamAccount?.proSteamAccount;
   const player = data.player;
   const winRate = ((player?.winCount! / player?.matchCount!) * 100).toFixed(1);
-
+  const leaderRank = player?.steamAccount?.seasonLeaderboardRank;
   return (
     <section className="mb-4 flex flex-col items-center gap-4 md:flex-row">
       <div className="select-none">
@@ -21,16 +23,41 @@ export default async function PlayerCard({ data }: Props) {
         />
       </div>
       <div className="flex w-full flex-col items-center md:items-start">
-        <div className="flex items-center justify-center gap-2 text-4xl md:justify-start">
-          {player?.steamAccount?.name}
-          <Button
-            as={Link}
-            href={player?.steamAccount?.profileUri!}
-            isExternal
-            isIconOnly
-          >
-            <FaSteam />
-          </Button>
+        <div className="flex w-full flex-col items-center md:items-start">
+          <div className="flex items-center justify-center gap-2 md:justify-start">
+            {proPlayer && (
+              <Tooltip
+                content="Pro Player"
+                delay={100}
+                showArrow
+              >
+                <div className="flex items-center">
+                  <CheckCircle2 color="#0284c7" />
+                </div>
+              </Tooltip>
+            )}
+            <div className="text-4xl">
+              {proPlayer?.team?.tag ? (
+                <span className="text-foreground-500">
+                  {proPlayer.team.tag + "."}
+                </span>
+              ) : null}
+              {proPlayer?.name || player?.steamAccount?.name}
+            </div>
+            <Button
+              as={Link}
+              href={player?.steamAccount?.profileUri!}
+              isExternal
+              isIconOnly
+            >
+              <FaSteam />
+            </Button>
+          </div>
+          {proPlayer && (
+            <div className="text-foreground-500">
+              {player?.steamAccount?.name}
+            </div>
+          )}
         </div>
         <div className="flex gap-4 text-lg uppercase">
           <div className="flex flex-col items-center font-medium">
@@ -67,11 +94,13 @@ export default async function PlayerCard({ data }: Props) {
         <Tooltip
           color="primary"
           content={
-            player?.steamAccount?.seasonRank ? (
+            !leaderRank && player?.steamAccount?.seasonRank ? (
               <>
                 {getRankName(player?.steamAccount?.seasonRank.toString()[0])}{" "}
                 {player?.steamAccount?.seasonRank.toString()[1]}
               </>
+            ) : leaderRank ? (
+              <>Top {leaderRank}</>
             ) : (
               "Unknown"
             )
@@ -81,7 +110,33 @@ export default async function PlayerCard({ data }: Props) {
           showArrow
         >
           <div className="cursor-help">
-            {player?.steamAccount?.seasonRank ? (
+            {leaderRank <= 10 && leaderRank >= 1 && (
+              <div className="relative">
+                <Image
+                  alt="rankStar"
+                  removeWrapper
+                  src={`/img/ranks/8_10.png`}
+                  width={100}
+                />
+                <span className="absolute bottom-1 left-1/2 z-50 -translate-x-1/2 text-lg font-semibold">
+                  {leaderRank}
+                </span>
+              </div>
+            )}
+            {leaderRank <= 100 && leaderRank >= 11 && (
+              <div className="relative">
+                <Image
+                  alt="rankStar"
+                  removeWrapper
+                  src={`/img/ranks/8_100.png`}
+                  width={100}
+                />
+                <span className="absolute bottom-1 left-1/2 z-50 -translate-x-1/2 text-lg font-semibold">
+                  {leaderRank}
+                </span>
+              </div>
+            )}
+            {!leaderRank && player?.steamAccount?.seasonRank && (
               <>
                 <Image
                   alt="rankStar"
@@ -99,7 +154,8 @@ export default async function PlayerCard({ data }: Props) {
                   width={100}
                 />
               </>
-            ) : (
+            )}
+            {!player?.steamAccount?.seasonRank && (
               <Image
                 alt="rank"
                 src={`/img/ranks/0.png`}

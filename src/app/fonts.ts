@@ -1,4 +1,4 @@
-import { Roboto_Mono } from "next/font/google";
+import { Noto_Sans, Roboto_Mono } from "next/font/google";
 import localFont from "next/font/local";
 
 export const roboto_mono = Roboto_Mono({
@@ -25,4 +25,11 @@ export const hypatia_font = localFont({
 
 export const albertus_font = localFont({
   src: "./fonts/AlbertusMT.otf",
+});
+
+export const noto_sans = Noto_Sans({
+  subsets: ["latin"],
+  weight: "500",
+  style: ["normal", "italic"],
+  display: "swap",
 });

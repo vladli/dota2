@@ -1,15 +1,13 @@
 "use client";
 import { useState } from "react";
 import {
+  Divider,
   Navbar,
   NavbarBrand,
   NavbarContent,
-  NavbarItem,
   NavbarMenu,
-  NavbarMenuItem,
   NavbarMenuToggle,
 } from "@nextui-org/react";
-import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -20,6 +18,8 @@ import { cn } from "@/lib/utils";
 
 import SearchBar from "../SearchBar";
 
+import MenuItem from "./MenuItem";
+import MenuItemMobile from "./MenuItemMobile";
 import UserMenu from "./UserMenu";
 
 export default function Header() {
@@ -27,7 +27,7 @@ export default function Header() {
   const pathname = usePathname();
 
   return (
-    <header className="relative z-50 select-none">
+    <div className="relative z-50 select-none">
       <Navbar
         classNames={{
           base: pathname !== "/" ? "border-b border-content2" : "",
@@ -42,81 +42,61 @@ export default function Header() {
             aria-label={isMenuOpen ? "Close menu" : "Open menu"}
             className="lg:hidden"
           />
-          <NavbarBrand className="hidden lg:flex">
-            <Link
-              className="group flex items-center gap-2"
-              href="/"
-            >
-              <Image
-                alt=""
-                className="cursor-pointer transition-all group-hover:scale-110"
-                height={32}
-                src="/img/dota2.png"
-                width={32}
-              />
-              <span
-                className={cn(
-                  albertus_font.className,
-                  "text-xl font-semibold uppercase"
-                )}
+          <div className="flex gap-4">
+            <NavbarBrand className="hidden lg:flex">
+              <Link
+                className="group flex items-center gap-2"
+                href="/"
               >
-                Dota 2 Stats
-              </span>
-            </Link>
-          </NavbarBrand>
-        </NavbarContent>
-        <NavbarContent justify="center">
-          <NavbarBrand className="lg:hidden">
-            <Link
-              className="group flex items-center gap-2"
-              href="/"
-            >
-              <Image
-                alt=""
-                className="cursor-pointer transition-all group-hover:scale-110"
-                height={32}
-                src="/img/dota2.png"
-                width={32}
-              />
-              <span
-                className={cn(
-                  albertus_font.className,
-                  "text-xl font-semibold uppercase"
-                )}
-              >
-                Dota 2 Stats
-              </span>
-            </Link>
-          </NavbarBrand>
-          <div className="hidden items-center gap-2 lg:flex">
-            {menu.map(({ name, url }) => (
-              <NavbarItem
-                isActive={pathname === url}
-                key={name}
-              >
-                <Link
+                <Image
+                  alt=""
+                  className="cursor-pointer transition-all group-hover:scale-110"
+                  height={32}
+                  src="/img/dota2.png"
+                  width={32}
+                />
+                <span
                   className={cn(
                     albertus_font.className,
-                    "relative text-lg uppercase"
+                    "text-xl font-semibold uppercase"
                   )}
-                  href={url}
                 >
-                  {pathname === url && (
-                    <motion.span
-                      className="absolute -inset-1 border-b-2 border-red-500"
-                      layoutId="active"
-                      transition={{
-                        type: "spring",
-                        stiffness: 380,
-                        damping: 30,
-                      }}
-                    />
-                  )}
-                  {name}
-                </Link>
-              </NavbarItem>
-            ))}
+                  Dota 2 Stats
+                </span>
+              </Link>
+            </NavbarBrand>
+            <div>
+              <Divider orientation="vertical" />
+            </div>
+            <MenuItem />
           </div>
+        </NavbarContent>
+        <NavbarContent
+          className="lg:hidden"
+          justify="center"
+        >
+          <NavbarBrand>
+            <Link
+              className="group flex items-center gap-2"
+              href="/"
+            >
+              <Image
+                alt=""
+                className="cursor-pointer transition-all group-hover:scale-110"
+                height={32}
+                src="/img/dota2.png"
+                width={32}
+              />
+              <span
+                className={cn(
+                  albertus_font.className,
+                  "text-xl font-semibold uppercase"
+                )}
+              >
+                Dota 2 Stats
+              </span>
+            </Link>
+          </NavbarBrand>
         </NavbarContent>
         <NavbarContent justify="end">
           <SearchBar
@@ -125,32 +105,16 @@ export default function Header() {
           />
           <UserMenu />
         </NavbarContent>
-        <NavbarMenu>
+        <NavbarMenu className="select-none">
           <SearchBar {...{ setIsMenuOpen }} />
-          {menu.map(({ name, url }, index) => (
-            <NavbarMenuItem key={index}>
-              <Link
-                className="relative w-full"
-                href={url}
-                onClick={() => setIsMenuOpen(false)}
-              >
-                {pathname === url && (
-                  <motion.span
-                    className="absolute -inset-1 border-b-2 border-red-500"
-                    layoutId="active"
-                    transition={{
-                      type: "spring",
-                      stiffness: 380,
-                      damping: 30,
-                    }}
-                  />
-                )}
-                {name}
-              </Link>
-            </NavbarMenuItem>
+          {menu.map(({ url, name, submenu }, index) => (
+            <MenuItemMobile
+              key={`${name}-${index}`}
+              {...{ setIsMenuOpen, url, name, submenu }}
+            />
           ))}
         </NavbarMenu>
       </Navbar>
-    </header>
+    </div>
   );
 }

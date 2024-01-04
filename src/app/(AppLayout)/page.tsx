@@ -6,7 +6,7 @@ import { hypatia_font } from "../fonts";
 
 export default function page() {
   return (
-    <div className="">
+    <div>
       <div className="absolute top-0 z-20 flex h-[100dvh] w-full flex-col items-center justify-center opacity-80">
         <Image
           alt="Dota 2"

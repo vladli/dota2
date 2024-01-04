@@ -41,7 +41,10 @@ export default function MenuItem() {
             </Link>
           </NavbarItem>
         ) : (
-          <Dropdown key={name}>
+          <Dropdown
+            key={name}
+            placement="bottom-start"
+          >
             <NavbarItem>
               <DropdownTrigger>
                 <div className="relative flex cursor-pointer items-center gap-1 text-lg">

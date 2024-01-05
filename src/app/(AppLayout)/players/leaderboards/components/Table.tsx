@@ -1,7 +1,9 @@
-import { Image } from "@nextui-org/react";
+import { Image, Tooltip } from "@nextui-org/react";
 import { Octagon } from "lucide-react";
+import Link from "next/link";
 
 import { GetLeaderBoardsQuery } from "@/graphql/leaderboard";
+import { IMAGE } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
 type Props = {
@@ -41,12 +43,36 @@ export default function Table({ header, data }: Props) {
           </div>
           <div>
             {player?.steamAccount?.proSteamAccount?.team && (
-              <span className="font-medium text-foreground-500">
-                {player?.steamAccount?.proSteamAccount?.team?.tag}.
-              </span>
+              <Tooltip
+                content={
+                  <div className="flex items-center gap-2">
+                    <Image
+                      alt="Team Logo"
+                      height={40}
+                      src={
+                        IMAGE.urlTeam +
+                        player.steamAccount.proSteamAccount.team.id +
+                        ".png"
+                      }
+                      width={40}
+                    />
+                    <span className="text-large font-medium">
+                      {player.steamAccount.proSteamAccount.team.name}
+                    </span>
+                  </div>
+                }
+                delay={100}
+                showArrow
+              >
+                <span className="cursor-help font-medium text-foreground-500">
+                  {player?.steamAccount?.proSteamAccount?.team?.tag}.
+                </span>
+              </Tooltip>
             )}
-            {player?.steamAccount?.proSteamAccount?.name ||
-              player?.steamAccount?.name}
+            <Link href={`/players/${player?.steamAccountId}`}>
+              {player?.steamAccount?.proSteamAccount?.name ||
+                player?.steamAccount?.name}
+            </Link>
           </div>
         </div>
       ))}

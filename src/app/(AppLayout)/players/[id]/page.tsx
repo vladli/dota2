@@ -1,4 +1,4 @@
-import { Divider } from "@nextui-org/react";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 
 import { GetPlayerBySteamIdDocument } from "@/graphql/player";
@@ -34,18 +34,26 @@ export default async function page({ params }: Props) {
   });
   if (!data) return notFound();
   return (
-    <main className="p-2">
-      <div className="p-4">
+    <main className="">
+      <div className="relative">
+        <div className="absolute -z-10 h-full w-full">
+          <Image
+            alt="Background"
+            className="h-[calc(100%+368px)] w-[calc(100%+368px)] object-cover opacity-60 blur-[100px]"
+            fill
+            src={data.player?.steamAccount?.avatar || ""}
+            unoptimized
+          />
+        </div>
         <PlayerCard data={data} />
-        <Divider />
-        <section className="flex flex-col gap-4 xl:flex-row">
-          <RecentMatches steamId={params.id} />
-          <div className="flex flex-col gap-1">
-            <PlayedWith steamId={params.id} />
-            <FavoriteHeroes steamId={params.id} />
-          </div>
-        </section>
       </div>
+      <section className="flex flex-col gap-4 p-4 xl:flex-row">
+        <RecentMatches steamId={params.id} />
+        <div className="flex flex-col gap-1">
+          <PlayedWith steamId={params.id} />
+          <FavoriteHeroes steamId={params.id} />
+        </div>
+      </section>
     </main>
   );
 }

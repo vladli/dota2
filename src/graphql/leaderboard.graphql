@@ -9,6 +9,7 @@ query GetLeaderBoards(
       players(skip: $skip, take: $take) {
         steamAccountId
         position
+        positionValue
         rank
         rankShift
         steamAccount {
@@ -16,6 +17,7 @@ query GetLeaderBoards(
           proSteamAccount {
             name
             team {
+              id
               tag
               name
             }

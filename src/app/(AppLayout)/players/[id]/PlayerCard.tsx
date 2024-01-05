@@ -4,6 +4,7 @@ import { CheckCircle2 } from "lucide-react";
 
 import { roboto_mono } from "@/app/fonts";
 import { GetPlayerBySteamIdQuery } from "@/graphql/player";
+import { IMAGE } from "@/lib/constants";
 import { cn, getAvatarLink, getRankName } from "@/lib/utils";
 
 type Props = {
@@ -15,7 +16,7 @@ export default async function PlayerCard({ data }: Props) {
   const winRate = ((player?.winCount! / player?.matchCount!) * 100).toFixed(1);
   const leaderRank = player?.steamAccount?.seasonLeaderboardRank;
   return (
-    <section className="mb-4 flex flex-col items-center gap-4 md:flex-row">
+    <section className="flex flex-col items-center gap-4 p-4 md:flex-row">
       <div className="select-none">
         <Avatar
           className="h-36 w-36"
@@ -38,9 +39,27 @@ export default async function PlayerCard({ data }: Props) {
             )}
             <div className="text-4xl">
               {proPlayer?.team?.tag ? (
-                <span className="text-foreground-500">
-                  {proPlayer.team.tag + "."}
-                </span>
+                <Tooltip
+                  content={
+                    <div className="flex items-center gap-2">
+                      <Image
+                        alt="Team Logo"
+                        height={40}
+                        src={IMAGE.urlTeam + proPlayer.team.id + ".png"}
+                        width={40}
+                      />
+                      <span className="text-large font-medium">
+                        {proPlayer.team.name}
+                      </span>
+                    </div>
+                  }
+                  delay={100}
+                  showArrow
+                >
+                  <span className="cursor-help text-foreground-500">
+                    {proPlayer.team.tag + "."}
+                  </span>
+                </Tooltip>
               ) : null}
               {proPlayer?.name || player?.steamAccount?.name}
             </div>

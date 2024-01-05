@@ -13,7 +13,7 @@ export default async function RecentMatches({ steamId }: Props) {
     variables: { steamAccountId: Number(steamId), take: 20 },
   });
   return (
-    <section className="mt-4 grow">
+    <section>
       <RecentMatchesTable data={data} />
     </section>
   );

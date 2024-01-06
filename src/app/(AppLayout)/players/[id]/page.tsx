@@ -9,7 +9,7 @@ import PlayedWith from "./PlayedWith";
 import PlayerCard from "./PlayerCard";
 import RecentMatches from "./RecentMatches";
 
-export const revalidate = 0;
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }: Props) {
   const { data } = await getClient().query({
@@ -34,7 +34,7 @@ export default async function page({ params }: Props) {
   });
   if (!data) return notFound();
   return (
-    <main className="">
+    <main>
       <div className="relative">
         <div className="absolute -z-10 h-full w-full">
           <Image
@@ -47,7 +47,7 @@ export default async function page({ params }: Props) {
         </div>
         <PlayerCard data={data} />
       </div>
-      <section className="flex flex-col gap-4 p-4 xl:flex-row">
+      <section className="flex w-full flex-col gap-4 p-4 xl:flex-row">
         <RecentMatches steamId={params.id} />
         <div className="flex flex-col gap-1">
           <PlayedWith steamId={params.id} />

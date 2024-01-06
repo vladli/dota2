@@ -1,9 +1,16 @@
+import { Metadata } from "next";
+
 import { GetLeaderBoardsDocument } from "@/graphql/leaderboard";
 import { getClient } from "@/lib/client";
 import { InputMaybe, LeaderboardDivision } from "@/types/types.generated";
 
 import Table from "./components/Table";
 import CountryFilter from "./filters/CountryFilter";
+
+export const dynamic = "force-dynamic";
+export const metadata: Metadata = {
+  title: "Leaderboards",
+};
 
 type Props = {
   searchParams: {

@@ -25,7 +25,7 @@ export default async function PlayedWith({ steamId }: Props) {
     },
   });
   return (
-    <section className="mt-4">
+    <section>
       <PlayedWithTable data={data} />
     </section>
   );

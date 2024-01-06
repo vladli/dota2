@@ -16,7 +16,7 @@ export default async function FavoriteHeroes({ steamId }: Props) {
     },
   });
   return (
-    <section className="mt-4">
+    <section className="mt-2">
       <FavoriteHeroesTable data={data} />
     </section>
   );

@@ -39,7 +39,7 @@ export default function SearchBar({ className, setIsMenuOpen }: Props) {
 
   const matches = data?.stratz?.search?.matches || [];
   const players = data?.stratz?.search?.players || [];
-
+  const proPlayers = data?.stratz?.search?.proPlayers || [];
   return (
     <div className="relative z-50">
       <Input
@@ -79,6 +79,20 @@ export default function SearchBar({ className, setIsMenuOpen }: Props) {
               title="Players"
             >
               {players?.map((player) => (
+                <ListboxItem
+                  as={Link}
+                  href={`/players/${player?.id}`}
+                  key={player?.id}
+                >
+                  {player?.name}
+                </ListboxItem>
+              ))}
+            </ListboxSection>
+            <ListboxSection
+              hidden={proPlayers.length === 0}
+              title="Pro Players"
+            >
+              {proPlayers?.map((player) => (
                 <ListboxItem
                   as={Link}
                   href={`/players/${player?.id}`}

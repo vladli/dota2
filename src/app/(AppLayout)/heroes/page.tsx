@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: "All Heroes",
 };
 
-export const filterAndSortHeroes = (
+const filterAndSortHeroes = (
   heroes: any | undefined,
   primaryAttribute: string
 ) => {

@@ -1,5 +1,7 @@
 export const STEAM_IMAGE = "https://cdn.cloudflare.steamstatic.com";
 export const STEAM_AVATAR = "https://avatars.steamstatic.com/";
+export const STEAM_ABILITY_VIDEO =
+  "https://cdn.cloudflare.steamstatic.com/apps/dota2/videos/dota_react/abilities/";
 export const IMAGE = {
   url: "https://cdn.stratz.com/images/dota2/heroes/",
   urlAbility: "https://cdn.stratz.com/images/dota2/abilities/",
@@ -15,7 +17,7 @@ export const HERO_VIDEO =
   "https://cdn.cloudflare.steamstatic.com/apps/dota2/videos/dota_react/heroes/renders/";
 
 export const HERO_STATS = {
-  baseHp: 200,
+  baseHp: 120,
   baseMana: 75,
 
   strengthHp: 22, //+22 HP

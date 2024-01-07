@@ -43,7 +43,7 @@ export default async function page({ params }: Props) {
           <div className="absolute -z-10 h-full w-full">
             <Image
               alt="Background"
-              className="object-cover opacity-60 blur-[100px]"
+              className="object-fill opacity-80 blur-[120px]"
               fill
               src={
                 IMAGE.url + data.constants.hero.shortName + IMAGE.vertical || ""

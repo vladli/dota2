@@ -1,63 +1,59 @@
-import type { Metadata } from "next/types";
+import type { Metadata } from "next";
 
 import { GetAllHeroesDocument } from "@/graphql/constants";
-import { GetHeroesStatsDocument } from "@/graphql/heroStats";
 import { getClient } from "@/lib/client";
-import { InputMaybe, RankBracket } from "@/types/types.generated";
 
 import HeroesTable from "./HeroesTable";
 
-export const revalidate = 0;
-
 export const metadata: Metadata = {
-  title: "Heroes",
+  title: "All Heroes",
 };
 
-type Props = {
-  searchParams: {
-    days?: string;
-    rank?: string;
-  };
-};
-
-export default async function page({ searchParams }: Props) {
-  const isRankValid = Object.values(RankBracket).includes(
-    searchParams.rank?.toUpperCase() as RankBracket
+export const filterAndSortHeroes = (
+  heroes: any | undefined,
+  primaryAttribute: string
+) => {
+  if (!heroes) {
+    return undefined;
+  }
+  const filteredHeroes = heroes.filter(
+    (hero: any) => hero?.stats?.primaryAttribute === primaryAttribute
   );
-  const { data: heroes } = await getClient().query({
+  return filteredHeroes.sort((a: any, b: any) => {
+    const nameA = a?.displayName?.toLowerCase() || "";
+    const nameB = b?.displayName?.toLowerCase() || "";
+    return nameA.localeCompare(nameB);
+  });
+};
+
+export default async function page() {
+  const { data } = await getClient().query({
     query: GetAllHeroesDocument,
   });
-  const { data } = await getClient().query({
-    query: GetHeroesStatsDocument,
-    variables: {
-      bracketIds: isRankValid
-        ? [searchParams.rank?.toUpperCase() as InputMaybe<RankBracket>]
-        : undefined,
-      take: !searchParams.days ? 7 : parseInt(searchParams.days),
-    },
-  });
-  const sortedHeroes = heroes?.constants?.heroes?.toSorted((a, b) => {
-    if (a?.displayName && b?.displayName) {
-      return a.displayName.localeCompare(b.displayName);
-    }
-    return 0;
-  });
-  const heroStats = (heroId: number) => {
-    const hero = data?.heroStats!.winDay!.filter((h) => h?.heroId === heroId);
-    return hero.sort((a, b) => a?.day - b?.day);
-  };
-  const updatedHeroes = sortedHeroes?.map((hero) => {
-    const stats = heroStats(hero?.id);
-    return { ...hero, stats };
-  });
-  const result = {
-    ...heroes,
-    constants: { ...heroes.constants, heroes: updatedHeroes },
-  };
-
+  const all = filterAndSortHeroes(data.constants?.heroes, "all");
+  const agility = filterAndSortHeroes(data.constants?.heroes, "agi");
+  const intelligence = filterAndSortHeroes(data.constants?.heroes, "int");
+  const strength = filterAndSortHeroes(data.constants?.heroes, "str");
   return (
-    <main className="p-4">
-      <HeroesTable heroes={result} />
+    <main className="my-auto flex w-full justify-center p-4">
+      <section className="grid max-w-7xl grid-cols-1 gap-10 xl:grid-cols-2">
+        <HeroesTable
+          data={strength}
+          header="Strength"
+        />
+        <HeroesTable
+          data={agility}
+          header="Agility"
+        />
+        <HeroesTable
+          data={intelligence}
+          header="Intelligence"
+        />
+        <HeroesTable
+          data={all}
+          header="Universal"
+        />
+      </section>
     </main>
   );
 }

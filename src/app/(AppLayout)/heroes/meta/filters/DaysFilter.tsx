@@ -11,7 +11,7 @@ export default function DaysFilter() {
   const searchParams = useSearchParams();
   const searchDays = searchParams.get("days");
   const days =
-    searchDays && (+searchDays > 0 ? +searchDays <= 30 : false)
+    searchDays && (+searchDays > 1 ? +searchDays <= 30 : false)
       ? new Set([searchDays])
       : new Set(["7"]);
   const [value, setValue] = useState<Selection>(days);
@@ -27,7 +27,7 @@ export default function DaysFilter() {
     }
     if (
       selectedValue === "7" ||
-      Number(selectedValue) < 0 ||
+      Number(selectedValue) <= 1 ||
       Number(selectedValue) > 30
     ) {
       router.push(pathname + "?" + deleteQueryString("days", searchParams));
@@ -42,13 +42,13 @@ export default function DaysFilter() {
       selectedKeys={value}
       size="sm"
     >
-      {Array.from({ length: 30 }).map((_, index) => (
+      {Array.from({ length: 29 }).map((_, index) => (
         <SelectItem
-          key={index + 1}
-          textValue={(index + 1).toString()}
-          value={index + 1}
+          key={index + 2}
+          textValue={(index + 2).toString()}
+          value={index + 2}
         >
-          {index + 1}
+          {index + 2}
         </SelectItem>
       ))}
     </Select>

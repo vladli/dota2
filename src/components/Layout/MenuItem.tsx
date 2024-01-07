@@ -48,18 +48,20 @@ export default function MenuItem() {
             <NavbarItem>
               <DropdownTrigger>
                 <div className="relative flex cursor-pointer items-center gap-1">
-                  {pathname.startsWith(url) && (
-                    <motion.span
-                      className="absolute -inset-1 border-b-2 border-red-500"
-                      layoutId="active"
-                      transition={{
-                        type: "spring",
-                        stiffness: 380,
-                        damping: 30,
-                      }}
-                    />
-                  )}
-                  {name}
+                  <div className="relative">
+                    <span>{name}</span>
+                    {pathname.startsWith(url) && (
+                      <motion.span
+                        className="absolute inset-x-0 bottom-0 border-b-2 border-red-500"
+                        layoutId="active"
+                        transition={{
+                          type: "spring",
+                          stiffness: 380,
+                          damping: 30,
+                        }}
+                      />
+                    )}
+                  </div>
                   <ChevronDown size={16} />
                 </div>
               </DropdownTrigger>

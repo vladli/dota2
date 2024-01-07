@@ -34,13 +34,24 @@ export default function Table({ header, data }: Props) {
           <div className="relative">
             <Octagon
               absoluteStrokeWidth
-              color={isTop10 ? "#2563eb" : "#ca8a04"}
+              color={isTop10 ? "#4338ca" : "#ca8a04"}
               size={40}
             />
             <span className="absolute top-0 flex h-full w-full items-center justify-center">
               {player?.rank}
             </span>
           </div>
+
+          <Image
+            alt="Possition"
+            height={15}
+            radius="none"
+            src={
+              player?.position ? `/img/position/${player?.position}.svg` : ""
+            }
+            width={15}
+          />
+
           <div>
             {player?.steamAccount?.proSteamAccount?.team && (
               <Tooltip

@@ -1,260 +1,64 @@
-"use client";
-import { useState } from "react";
-import { Image, Link } from "@nextui-org/react";
-import {
-  ColumnDef,
-  ColumnFiltersState,
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
-import { ArrowDownWideNarrow, ArrowUpWideNarrow } from "lucide-react";
-import NextLink from "next/link";
+import { Image } from "@nextui-org/react";
+import Link from "next/link";
 
-import { GetAllHeroesQuery } from "@/graphql/constants";
 import { IMAGE } from "@/lib/constants";
-import { cn } from "@/lib/utils";
 
-import Filters from "./Filters";
-
+type THero = {
+  __typename?: "HeroType";
+  id?: any | null;
+  name?: string | null;
+  displayName?: string | null;
+  shortName?: string | null;
+  stats?: {
+    __typename?: "HeroStatType";
+    primaryAttribute?: string | null;
+  } | null;
+} | null;
 type Props = {
-  heroes: GetAllHeroesQuery;
+  header: string;
+  data?: THero[] | null;
 };
 
-const columns: ColumnDef<any>[] = [
-  {
-    id: "hero",
-    header: "Hero",
-    accessorFn: (row) => ({
-      id: row.id,
-      displayName: row.displayName,
-      shortName: row.shortName,
-    }),
-    cell: (info: any) => (
-      <div className="flex items-center gap-2">
-        <Image
-          alt="Hero"
-          className="min-w-[70px]"
-          radius="sm"
-          src={IMAGE.url + info.getValue().shortName + IMAGE.horizontal}
-          width={70}
-        />
-        <Link
-          as={NextLink}
-          color="foreground"
-          href={`/heroes/${info.getValue().id}`}
-          underline="hover"
-        >
-          {info.getValue().displayName}
-        </Link>
-      </div>
-    ),
-    enableColumnFilter: true,
-    filterFn: (row, id, filterValue) => {
-      const value = row.getValue(id);
-      return (value as { displayName: string }).displayName
-        .toLowerCase()
-        .includes(filterValue);
-    },
-  },
-  {
-    header: "Winrate",
-    columns: [
-      {
-        id: "winStart",
-        header: "Start",
+const ATTR_IMAGE: { [key: string]: string } = {
+  Strength: "hero_strength",
+  Agility: "hero_agility",
+  Intelligence: "hero_intelligence",
+  Universal: "hero_universal",
+};
 
-        accessorFn: (row) => {
-          const length = row?.stats.length - 1;
-          const winRate =
-            (row?.stats?.[length]?.winCount! /
-              row?.stats?.[length]?.matchCount!) *
-            100;
-          return winRate;
-        },
-        cell: (info: any) => <span>{info.getValue().toFixed(1)}</span>,
-      },
-      {
-        id: "winEnd",
-        header: "End",
-
-        accessorFn: (row) => {
-          const winRate =
-            (row?.stats?.[0]?.winCount! / row?.stats?.[0]?.matchCount!) * 100;
-          return winRate;
-        },
-        cell: (info: any) => <span>{info.getValue().toFixed(1)}</span>,
-      },
-      {
-        id: "windDifference",
-        header: "+/-",
-
-        accessorFn: (row) => {
-          const length = row?.stats.length - 1;
-          const winRate =
-            (row?.stats?.[length]?.winCount! /
-              row?.stats?.[length]?.matchCount!) *
-            100;
-          const winRateEnd =
-            (row?.stats?.[0]?.winCount! / row?.stats?.[0]?.matchCount!) * 100;
-          const difference = winRateEnd - winRate;
-          return difference;
-        },
-        cell: (info: any) => (
-          <span
-            className={cn({
-              "text-red-400": info.getValue() < 0,
-              "text-green-400": info.getValue() > 0,
-            })}
-          >
-            {info.getValue().toFixed(1)}
-          </span>
-        ),
-      },
-    ],
-  },
-
-  {
-    header: "Matches",
-    columns: [
-      {
-        id: "pickStart",
-        header: "Start",
-
-        accessorFn: (row) => {
-          const length = row?.stats.length - 1;
-          const pickRate = row?.stats?.[length]?.matchCount!;
-          return pickRate;
-        },
-        cell: (info: any) => <span>{info.getValue()}</span>,
-      },
-      {
-        id: "pickEnd",
-        header: "End",
-
-        accessorFn: (row) => {
-          const winRate = row?.stats?.[0]?.matchCount!;
-          return winRate;
-        },
-        cell: (info: any) => <span>{info.getValue()}</span>,
-      },
-      {
-        id: "pickDifference",
-        header: "+/-",
-
-        accessorFn: (row) => {
-          const length = row?.stats.length - 1;
-          const winRate = row?.stats?.[length]?.matchCount!;
-          const winRateEnd = row?.stats?.[0]?.matchCount!;
-          const difference = winRateEnd - winRate;
-          return difference;
-        },
-        cell: (info: any) => (
-          <span
-            className={cn({
-              "text-red-400": info.getValue() < 0,
-              "text-green-400": info.getValue() > 0,
-            })}
-          >
-            {info.getValue()}
-          </span>
-        ),
-      },
-    ],
-  },
-];
-export default function HeroesTable({ heroes }: Props) {
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const table = useReactTable({
-    data: heroes.constants?.heroes!,
-    columns,
-    state: {
-      columnFilters,
-    },
-    onColumnFiltersChange: setColumnFilters,
-    getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-
-    initialState: {
-      sorting: [{ id: "winEnd", desc: true }],
-    },
-  });
-  const stats = (heroes.constants?.heroes?.[0] as { stats: any })?.stats;
-
-  const startDate = new Date(stats[0].day * 1000);
-  const endDate = new Date(stats[stats.length - 1].day * 1000);
-  const formatDate = (date: Date | null) => {
-    return date
-      ? date.toLocaleDateString("en-GB", {
-          day: "2-digit",
-          month: "2-digit",
-          year: "numeric",
-        })
-      : null;
-  };
+export default function HeroesTable({ header, data }: Props) {
   return (
-    <div>
-      <Filters headerGroups={table.getHeaderGroups()} />
-      <h1 className="mb-4 text-lg font-semibold">
-        Stats for: {formatDate(startDate)} - {formatDate(endDate)}
-      </h1>
-      <div className="relative overflow-x-auto rounded-large shadow-md">
-        <table className="w-full text-left">
-          <thead className="whitespace-nowrap bg-default-100 text-tiny uppercase text-foreground-500">
-            {table.getHeaderGroups().map((headerGroup) => (
-              <tr key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <th
-                    className="px-4 py-3 text-center"
-                    colSpan={header.colSpan}
-                    key={header.id}
-                  >
-                    {header.isPlaceholder ? null : (
-                      <div
-                        {...{
-                          className: header.column.getCanSort()
-                            ? "cursor-pointer select-none flex gap-1 items-center"
-                            : "",
-                          onClick: header.column.getToggleSortingHandler(),
-                        }}
-                      >
-                        {flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                        {{
-                          asc: <ArrowUpWideNarrow size={16} />,
-                          desc: <ArrowDownWideNarrow size={16} />,
-                        }[header.column.getIsSorted() as string] ?? null}
-                      </div>
-                    )}
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody>
-            {table.getRowModel().rows.map((row) => (
-              <tr
-                className="border-b border-content2"
-                key={row.id}
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <td
-                    className="px-4 py-2"
-                    key={cell.id}
-                  >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
+    <section>
+      <div className="mb-2 flex items-center gap-1">
+        <Image
+          alt="Attribute"
+          height={24}
+          src={`/img/hero_type/${ATTR_IMAGE[header]}.png`}
+          width={24}
+        />
+        <h1 className="font-medium text-foreground-600">{header}</h1>
       </div>
-    </div>
+      <div className="flex flex-wrap gap-2">
+        {data?.map((hero) => (
+          <Link
+            className="group relative cursor-pointer"
+            href={`/heroes/${hero?.id}`}
+            key={hero?.id}
+          >
+            {/* <div className="absolute -bottom-5 left-1/2 z-[100] hidden -translate-x-1/2 group-hover:block">
+              {hero?.displayName}
+            </div> */}
+            <Image
+              alt="Hero"
+              className="grayscale-[0.2] group-hover:z-50 group-hover:scale-150"
+              height={60}
+              removeWrapper
+              src={IMAGE.url + hero?.shortName + IMAGE.vertical}
+              width={60}
+            />
+          </Link>
+        ))}
+      </div>
+    </section>
   );
 }

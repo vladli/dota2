@@ -7,7 +7,10 @@ export const menu = [
   {
     name: "Heroes",
     url: "/heroes",
-    submenu: [{ name: "Meta", url: "/heroes" }],
+    submenu: [
+      { name: "All Heroes", url: "/heroes" },
+      { name: "Meta", url: "/heroes/meta" },
+    ],
   },
   {
     name: "Players",

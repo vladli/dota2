@@ -1,9 +1,10 @@
-import { Card, Divider } from "@nextui-org/react";
+import { Divider } from "@nextui-org/react";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 
 import { GetHeroByIdDocument } from "@/graphql/constants";
 import { getClient } from "@/lib/client";
-import { HERO_VIDEO } from "@/lib/constants";
+import { HERO_VIDEO, IMAGE } from "@/lib/constants";
 
 import HeroAbilities from "./HeroAbilities";
 import HeroAttributes from "./HeroAttributes";
@@ -37,8 +38,19 @@ export default async function page({ params }: Props) {
   if (!data.constants?.hero) return notFound();
   return (
     <main className="p-4">
-      <Card>
-        <section className="relative flex h-[15rem] justify-around">
+      <div>
+        <section className="relative flex h-[15rem] justify-around ">
+          <div className="absolute -z-10 h-full w-full">
+            <Image
+              alt="Background"
+              className="object-cover opacity-60 blur-[100px]"
+              fill
+              src={
+                IMAGE.url + data.constants.hero.shortName + IMAGE.vertical || ""
+              }
+              unoptimized
+            />
+          </div>
           <div className="relative flex h-full w-full items-center justify-center md:justify-start">
             <HeroCard data={data} />
           </div>
@@ -56,7 +68,9 @@ export default async function page({ params }: Props) {
         </section>
         <Divider />
         <section className="flex w-full justify-evenly">
-          <HeroAttributes data={data} />
+          <div className="flex ">
+            <HeroAttributes data={data} />
+          </div>
           <div>
             <Divider orientation="vertical" />
           </div>
@@ -70,7 +84,7 @@ export default async function page({ params }: Props) {
         <section className="flex flex-col items-center justify-around">
           <HeroAbilities data={data} />
         </section>
-      </Card>
+      </div>
     </main>
   );
 }

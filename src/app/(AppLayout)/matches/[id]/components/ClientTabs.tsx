@@ -16,10 +16,7 @@ type Props = {
 };
 export default function ClientTabs({ data, items }: Props) {
   return (
-    <Tabs
-      className="mt-10"
-      defaultSelectedKey="ability"
-    >
+    <Tabs defaultSelectedKey="ability">
       <Tab
         key="overview"
         title={

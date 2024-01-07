@@ -1,6 +1,7 @@
 import { GetAllItemsDocument } from "@/graphql/constants";
 import { GetMatchByIdDocument } from "@/graphql/mathch";
 import { getClient } from "@/lib/client";
+import { cn } from "@/lib/utils";
 
 import ClientTabs from "./components/ClientTabs";
 import MatchCard from "./components/MatchCard";
@@ -31,7 +32,18 @@ export default async function page({ params }: Props) {
 
   return (
     <main className="p-4">
-      <MatchCard data={data} />
+      <div className="relative h-full">
+        <div
+          className={cn(
+            "absolute top-0 left-0 h-full w-full opacity-20 blur-[150px] lg:blur-[100px] -z-10",
+            {
+              "bg-success-400": data.match?.didRadiantWin,
+              "bg-danger-500": !data.match?.didRadiantWin,
+            }
+          )}
+        />
+        <MatchCard data={data} />
+      </div>
       {data.match?.parsedDateTime === null && (
         <ParseCard matchId={data.match?.id} />
       )}

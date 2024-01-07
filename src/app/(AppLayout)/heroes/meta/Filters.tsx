@@ -10,7 +10,7 @@ type Props = {
 };
 export default function Filters({ headerGroups }: Props) {
   return (
-    <section className="mb-4 flex items-center gap-2">
+    <section className="mb-4 flex flex-wrap items-center gap-2">
       {headerGroups.map((headerGroup) => (
         <Fragment key={headerGroup.id}>
           {headerGroup.headers[0].isPlaceholder ? null : (

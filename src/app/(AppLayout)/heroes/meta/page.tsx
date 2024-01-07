@@ -17,6 +17,7 @@ type Props = {
   searchParams: {
     days?: string;
     rank?: string;
+    position?: string;
   };
 };
 
@@ -27,6 +28,7 @@ export default async function page({ searchParams }: Props) {
   const isValidDays =
     !searchParams.days ||
     (parseInt(searchParams.days) > 1 && parseInt(searchParams.days) <= 30);
+
   const { data: heroes } = await getClient().query({
     query: GetAllHeroesDocument,
   });

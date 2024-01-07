@@ -15,7 +15,7 @@ export default function MatchCard({ data }: Props) {
   );
   const direScore = match?.direKills?.reduce((acc, curr) => acc! + curr!, 0);
   return (
-    <section className="mt-10 flex flex-col items-center justify-around gap-4 lg:flex-row">
+    <section className="flex flex-col items-center justify-around gap-4 py-10 lg:flex-row">
       <div
         className={cn(
           "flex flex-wrap lg:w-1/3 justify-center items-center w-full"

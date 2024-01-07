@@ -38,7 +38,7 @@ export default function HeroesTable({ header, data }: Props) {
         />
         <h1 className="font-medium text-foreground-600">{header}</h1>
       </div>
-      <div className="flex flex-wrap gap-2">
+      <div className="flex w-full flex-wrap gap-2">
         {data?.map((hero) => (
           <Link
             className="group relative cursor-pointer"

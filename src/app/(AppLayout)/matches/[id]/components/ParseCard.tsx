@@ -23,7 +23,7 @@ export default function ParseCard({ matchId }: Props) {
     parseMatch({ variables: { id: matchId } });
   };
   return (
-    <section className="mt-4 flex items-center justify-between rounded-medium bg-content1 p-4">
+    <section className="my-4 flex items-center justify-between rounded-medium bg-content1 p-4">
       <div className="flex items-center gap-4">
         <AlertTriangle
           className="text-danger"

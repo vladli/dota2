@@ -35,8 +35,8 @@ export default async function page() {
   const intelligence = filterAndSortHeroes(data.constants?.heroes, "int");
   const strength = filterAndSortHeroes(data.constants?.heroes, "str");
   return (
-    <main className="my-auto flex w-full justify-center p-4">
-      <section className="grid max-w-7xl grid-cols-1 gap-10 xl:grid-cols-2">
+    <main className="flex w-full justify-center p-4">
+      <section className="grid max-w-7xl grid-cols-1 justify-center gap-10 xl:grid-cols-2">
         <HeroesTable
           data={strength}
           header="Strength"

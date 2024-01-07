@@ -78,7 +78,7 @@ const AbilityDescription = ({ ability }: { ability: AbilityType }) => {
             ) : null}
           </div>
         </CardHeader>
-        <CardBody className="bg-black">
+        <CardBody className="bg-content1">
           {/* <Ability
             text={ability.stat}
             title="Ability:"

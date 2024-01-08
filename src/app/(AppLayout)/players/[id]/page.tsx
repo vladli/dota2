@@ -4,10 +4,10 @@ import { notFound } from "next/navigation";
 import { GetPlayerBySteamIdDocument } from "@/graphql/player";
 import { getClient } from "@/lib/client";
 
-import FavoriteHeroes from "./FavoriteHeroes";
-import PlayedWith from "./PlayedWith";
-import PlayerCard from "./PlayerCard";
-import RecentMatches from "./RecentMatches";
+import FavoriteHeroes from "./components/FavoriteHeroes";
+import PlayedWith from "./components/PlayedWith";
+import PlayerCard from "./components/PlayerCard";
+import RecentMatches from "./components/RecentMatches";
 
 export const dynamic = "force-dynamic";
 

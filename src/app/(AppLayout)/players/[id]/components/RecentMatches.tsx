@@ -1,7 +1,7 @@
-import { GetRecentMatchesDocument } from "@/graphql/player";
+import { GetPlayerMatchesDocument } from "@/graphql/player";
 import { getClient } from "@/lib/client";
 
-import RecentMatchesTable from "./components/RecentMatchesTable";
+import RecentMatchesTable from "./table/RecentMatchesTable";
 
 type Props = {
   steamId: string;
@@ -9,7 +9,7 @@ type Props = {
 
 export default async function RecentMatches({ steamId }: Props) {
   const { data } = await getClient().query({
-    query: GetRecentMatchesDocument,
+    query: GetPlayerMatchesDocument,
     variables: { steamAccountId: Number(steamId), take: 20 },
   });
   return (

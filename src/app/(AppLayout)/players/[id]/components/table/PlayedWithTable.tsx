@@ -15,7 +15,7 @@ import { formatDistanceToNow } from "date-fns";
 import { GetPlayerPeersQuery } from "@/graphql/stratz";
 import { getAvatarLink } from "@/lib/utils";
 
-import TableTitle from "./TableTitle";
+import TableTitle from "../TableTitle";
 
 type Props = {
   data: GetPlayerPeersQuery;

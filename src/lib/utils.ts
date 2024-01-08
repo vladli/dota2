@@ -64,3 +64,28 @@ export function secondsToTime(seconds: number): string {
 export function getRegionName(id: number) {
   return REGION_NAME.find((region) => region.id === id)?.clientName;
 }
+
+export function getRoleImage(
+  role: string | null | undefined,
+  lane: string | null | undefined
+) {
+  if (!role || !lane) return null;
+  const rolePositionMap = {
+    CORE: {
+      SAFE_LANE: "/img/position/POSITION_1.svg",
+      MID_LANE: "/img/position/POSITION_2.svg",
+      OFF_LANE: "/img/position/POSITION_3.svg",
+    },
+    LIGHT_SUPPORT: "/img/position/POSITION_4.svg",
+    HARD_SUPPORT: "/img/position/POSITION_5.svg",
+  };
+  if (role === "LIGHT_SUPPORT" || role === "HARD_SUPPORT") {
+    return rolePositionMap[role] as string;
+  }
+  const laneMap = rolePositionMap[role as keyof typeof rolePositionMap];
+  if (laneMap && laneMap[lane as keyof typeof laneMap]) {
+    return laneMap[lane as keyof typeof laneMap];
+  }
+
+  return null;
+}

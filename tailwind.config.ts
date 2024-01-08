@@ -20,6 +20,7 @@ const config: Config = {
         dark: {
           colors: {
             // background: "#27272a",
+            content1: "#0f0f0f",
             danger: {
               400: "#f87171",
               500: "#ef4444",

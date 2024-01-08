@@ -5,7 +5,7 @@ import {
   FilterPlayerTeammateEnum,
 } from "@/types/types.generated";
 
-import PlayedWithTable from "./components/PlayedWithTable";
+import PlayedWithTable from "./table/PlayedWithTable";
 
 type Props = {
   steamId: string;

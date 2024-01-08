@@ -3,7 +3,7 @@ import { format } from "date-fns";
 import { icons } from "lucide-react";
 
 import { GetMatchByIdQuery } from "@/graphql/mathch";
-import { getRankName, getRegionName } from "@/lib/utils";
+import { cn, getRankName, getRegionName } from "@/lib/utils";
 
 type Props = {
   data: GetMatchByIdQuery;
@@ -18,6 +18,7 @@ export default function MatchInfo({ data }: Props) {
           text={getRegionName(match?.regionId)}
         />
         <Item
+          className="hidden lg:flex"
           icon="Files"
           text={match?.id}
         />
@@ -55,15 +56,22 @@ export default function MatchInfo({ data }: Props) {
 }
 
 function Item({
+  className,
   text,
   icon,
 }: {
+  className?: string;
   text: string | null | undefined | any;
   icon?: string;
 }) {
   const LucideIcon = icon ? icons[icon as keyof typeof icons] : null;
   return (
-    <span className="flex items-center gap-1 font-medium text-foreground-600">
+    <span
+      className={cn(
+        "flex items-center gap-1 font-medium text-foreground-600",
+        className
+      )}
+    >
       {LucideIcon && (
         <LucideIcon
           name={icon}

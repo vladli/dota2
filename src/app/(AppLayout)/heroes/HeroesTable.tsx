@@ -28,7 +28,7 @@ const ATTR_IMAGE: { [key: string]: string } = {
 
 export default function HeroesTable({ header, data }: Props) {
   return (
-    <section>
+    <section className="flex-1">
       <div className="mb-2 flex items-center gap-1">
         <Image
           alt="Attribute"
@@ -38,23 +38,23 @@ export default function HeroesTable({ header, data }: Props) {
         />
         <h1 className="font-medium text-foreground-600">{header}</h1>
       </div>
-      <div className="flex w-full flex-wrap gap-2">
+      <div className="grid grid-cols-auto-fill gap-1 xl:flex xl:flex-wrap">
         {data?.map((hero) => (
           <Link
-            className="group relative cursor-pointer"
+            className="group relative cursor-pointer "
             href={`/heroes/${hero?.id}`}
             key={hero?.id}
           >
-            {/* <div className="absolute -bottom-5 left-1/2 z-[100] hidden -translate-x-1/2 group-hover:block">
+            <span className="absolute -bottom-6 left-[-17.5px] z-[100] w-[105px] rounded-b-large bg-gradient-to-r from-black to-black/30 px-[1px] opacity-0 transition-opacity group-hover:opacity-100">
               {hero?.displayName}
-            </div> */}
+            </span>
             <Image
               alt="Hero"
               className="grayscale-[0.2] group-hover:z-50 group-hover:scale-150"
-              height={60}
+              height={70}
               removeWrapper
               src={IMAGE.url + hero?.shortName + IMAGE.vertical}
-              width={60}
+              width={70}
             />
           </Link>
         ))}

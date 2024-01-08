@@ -17,7 +17,7 @@ export default async function HeroTalents({ data }: Props) {
     <section className="m-4 flex flex-col items-center gap-4">
       <h1 className="text-xl font-semibold uppercase">Talents</h1>
       {data && (
-        <section className="grid grid-rows-4">
+        <section className="grid grid-rows-4 gap-y-[0.15rem]">
           <Talent
             left={heroAbilities(7)!}
             level={25}
@@ -55,13 +55,13 @@ const Talent = ({
 }) => {
   return (
     <div className="grid grid-cols-11">
-      <div className="col-span-5 flex items-center justify-center border p-2">
+      <div className="col-span-5 flex items-center justify-center border border-neutral-700 p-2">
         {left}
       </div>
-      <div className="col-span-1 flex items-center justify-center border p-2 font-bold text-yellow-500">
+      <div className="col-span-1 flex items-center justify-center border-y border-neutral-700 p-2 font-bold text-yellow-500">
         {level}
       </div>
-      <div className="col-span-5 flex items-center  justify-center border p-2">
+      <div className="col-span-5 flex items-center justify-center border border-neutral-700 p-2">
         {right}
       </div>
     </div>

@@ -6,7 +6,13 @@ const config: Config = {
     "./src/**/*.{js,ts,jsx,tsx,mdx}",
     "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
-
+  theme: {
+    extend: {
+      gridTemplateColumns: {
+        "auto-fill": "repeat(auto-fill,minmax(70px,1fr))",
+      },
+    },
+  },
   plugins: [
     nextui({
       layout: {

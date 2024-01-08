@@ -25,20 +25,19 @@ query GetPlayerBySteamId($steamAccountId: Long!) {
   }
 }
 
-query GetRecentMatches($steamAccountId: Long!, $take: Int!) {
+query GetPlayerMatches($steamAccountId: Long!, $take: Int!) {
   player(steamAccountId: $steamAccountId) {
     matches(request: { take: $take }) {
       id
       didRadiantWin
       durationSeconds
       endDateTime
-      towerStatusRadiant
-      towerStatusDire
-      barracksStatusRadiant
-      barracksStatusDire
       lobbyType
       gameMode
       actualRank
+      bottomLaneOutcome
+      midLaneOutcome
+      topLaneOutcome
       players(steamAccountId: $steamAccountId) {
         hero {
           id
@@ -51,6 +50,8 @@ query GetRecentMatches($steamAccountId: Long!, $take: Int!) {
         assists
         lane
         role
+        partyId
+        level
       }
     }
   }

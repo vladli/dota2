@@ -12,14 +12,14 @@ import {
 import { formatDistanceToNow } from "date-fns";
 import NextLink from "next/link";
 
-import { GetRecentMatchesQuery } from "@/graphql/player";
+import { GetPlayerMatchesQuery } from "@/graphql/player";
 import { IMAGE } from "@/lib/constants";
 import { cn, getRankName, secondsToTime } from "@/lib/utils";
 
-import TableTitle from "./TableTitle";
+import TableTitle from "../TableTitle";
 
 type Props = {
-  data: GetRecentMatchesQuery;
+  data: GetPlayerMatchesQuery;
 };
 
 function processString(inputString: string) {
@@ -57,6 +57,13 @@ export default function RecentMatchesTable({ data }: Props) {
             >
               <TableCell>
                 <div className="flex items-center gap-2">
+                  <Image
+                    alt=""
+                    height={14}
+                    radius="none"
+                    src={"/img/position/POSITION_1.svg"}
+                    width={14}
+                  />
                   <Link
                     as={NextLink}
                     href={`/heroes/${player?.hero?.id}`}

@@ -1,7 +1,7 @@
 import { GetMostPlayedHeroesDocument } from "@/graphql/player";
 import { getClient } from "@/lib/client";
 
-import FavoriteHeroesTable from "./components/FavoriteHeroesTable";
+import FavoriteHeroesTable from "./table/FavoriteHeroesTable";
 
 type Props = {
   steamId: string;

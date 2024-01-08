@@ -14,7 +14,7 @@ import { formatDistanceToNow } from "date-fns";
 import { GetMostPlayedHeroesQuery } from "@/graphql/player";
 import { IMAGE } from "@/lib/constants";
 
-import TableTitle from "./TableTitle";
+import TableTitle from "../TableTitle";
 
 type Props = {
   data: GetMostPlayedHeroesQuery;

@@ -1,7 +1,7 @@
 import { formatDistanceToNow } from "date-fns";
 
 import { GetMatchByIdQuery } from "@/graphql/mathch";
-import { cn, getRegionName, secondsToTime } from "@/lib/utils";
+import { cn, secondsToTime } from "@/lib/utils";
 
 type Props = {
   data: GetMatchByIdQuery;
@@ -42,12 +42,7 @@ export default function MatchCard({ data }: Props) {
         </div>
         <div className="text-danger-500">{direScore}</div>
       </div>
-      <div className="flex flex-col items-center font-medium lg:w-1/3">
-        <div>
-          <div>Match ID: {match?.id}</div>
-          <div>Region: {getRegionName(match?.regionId)}</div>
-        </div>
-      </div>
+      <div className="flex flex-col items-center font-medium lg:w-1/3"></div>
     </section>
   );
 }

@@ -32,9 +32,9 @@ export default function Tooltip({
       {...rest}
     >
       <div
-        onKeyDown={() => setIsOpen(!open)}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
+        onTouchStart={() => setIsOpen(!open)}
       >
         {children}
       </div>

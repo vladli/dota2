@@ -1,7 +1,8 @@
-import { Image, Tooltip } from "@nextui-org/react";
+import { Image } from "@nextui-org/react";
 import { Octagon } from "lucide-react";
 import Link from "next/link";
 
+import Tooltip from "@/components/Tooltip";
 import { GetLeaderBoardsQuery } from "@/graphql/leaderboard";
 import { IMAGE } from "@/lib/constants";
 import { cn } from "@/lib/utils";
@@ -52,8 +53,8 @@ export default function Table({ header, data }: Props) {
             width={15}
           />
 
-          <div>
-            {player?.steamAccount?.proSteamAccount?.team && (
+          <div className="flex">
+            {player?.steamAccount?.proSteamAccount?.team?.tag && (
               <Tooltip
                 content={
                   <div className="flex items-center gap-2">
@@ -72,7 +73,6 @@ export default function Table({ header, data }: Props) {
                     </span>
                   </div>
                 }
-                delay={100}
                 showArrow
               >
                 <span className="cursor-help font-medium text-foreground-500">

@@ -1,8 +1,9 @@
 import { FaSteam } from "react-icons/fa";
-import { Avatar, Button, Image, Link, Tooltip } from "@nextui-org/react";
+import { Avatar, Button, Image, Link } from "@nextui-org/react";
 import { CheckCircle2 } from "lucide-react";
 
 import { roboto_mono } from "@/app/fonts";
+import Tooltip from "@/components/Tooltip";
 import { GetPlayerBySteamIdQuery } from "@/graphql/player";
 import { IMAGE } from "@/lib/constants";
 import { cn, getAvatarLink, getRankName } from "@/lib/utils";
@@ -29,7 +30,6 @@ export default async function PlayerCard({ data }: Props) {
             {proPlayer && (
               <Tooltip
                 content="Pro Player"
-                delay={100}
                 showArrow
               >
                 <div className="flex items-center">
@@ -37,7 +37,7 @@ export default async function PlayerCard({ data }: Props) {
                 </div>
               </Tooltip>
             )}
-            <div className="text-4xl">
+            <div className="flex text-4xl">
               {proPlayer?.team?.tag ? (
                 <Tooltip
                   content={
@@ -53,7 +53,6 @@ export default async function PlayerCard({ data }: Props) {
                       </span>
                     </div>
                   }
-                  delay={100}
                   showArrow
                 >
                   <span className="cursor-help text-foreground-500">
@@ -124,7 +123,6 @@ export default async function PlayerCard({ data }: Props) {
               "Unknown"
             )
           }
-          delay={100}
           offset={13}
           showArrow
         >

@@ -1,5 +1,6 @@
-import { Image, Tooltip } from "@nextui-org/react";
+import { Image } from "@nextui-org/react";
 
+import Tooltip from "@/components/Tooltip";
 import { GetHeroByIdQuery } from "@/graphql/constants";
 
 type Props = {

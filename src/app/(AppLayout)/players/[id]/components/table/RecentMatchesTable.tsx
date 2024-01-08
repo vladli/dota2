@@ -21,7 +21,7 @@ export default function RecentMatchesTable({ data }: Props) {
           const player = match?.players![0];
           return (
             <NextLink
-              className="flex h-14 items-center justify-stretch gap-4 px-4 py-2 hover:bg-content2"
+              className="flex h-14 min-w-max items-center justify-stretch gap-4 px-4 py-2 hover:bg-content2"
               href={`/matches/${match?.id}`}
               key={match?.id}
             >

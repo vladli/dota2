@@ -1,10 +1,11 @@
-import { GetAllItemsDocument } from "@/graphql/constants";
+import { GetAllHeroesDocument, GetAllItemsDocument } from "@/graphql/constants";
 import { GetMatchByIdDocument } from "@/graphql/mathch";
 import { getClient } from "@/lib/client";
 import { cn } from "@/lib/utils";
 
 import ClientTabs from "./components/ClientTabs";
 import MatchCard from "./components/MatchCard";
+import MatchInfo from "./components/MatchInfo";
 import ParseCard from "./components/ParseCard";
 
 export const revalidate = 30;
@@ -29,10 +30,12 @@ export default async function page({ params }: Props) {
   const { data: items } = await getClient().query({
     query: GetAllItemsDocument,
   });
-
+  const { data: heroes } = await getClient().query({
+    query: GetAllHeroesDocument,
+  });
   return (
-    <main className="p-4">
-      <div className="relative h-full">
+    <main>
+      <div className="relative h-full p-4">
         <div
           className={cn(
             "absolute top-0 left-0 h-full w-full opacity-20 blur-[150px] lg:blur-[100px] -z-10",
@@ -44,13 +47,17 @@ export default async function page({ params }: Props) {
         />
         <MatchCard data={data} />
       </div>
-      {data.match?.parsedDateTime === null && (
-        <ParseCard matchId={data.match?.id} />
-      )}
-      <ClientTabs
-        data={data}
-        items={items}
-      />
+      <MatchInfo data={data} />
+      <div className="p-4">
+        {data.match?.parsedDateTime === null && (
+          <ParseCard matchId={data.match?.id} />
+        )}
+        <ClientTabs
+          data={data}
+          heroes={heroes}
+          items={items}
+        />
+      </div>
     </main>
   );
 }

@@ -14,7 +14,7 @@ import NextLink from "next/link";
 import { GetAllItemsQuery } from "@/graphql/constants";
 import { GetMatchByIdQuery } from "@/graphql/mathch";
 import { IMAGE } from "@/lib/constants";
-import { getRankName } from "@/lib/utils";
+import { getRankName, getRoleImage } from "@/lib/utils";
 import { MatchPlayerType } from "@/types/types.generated";
 
 import { Header } from "../components/ClientTabs";
@@ -40,6 +40,25 @@ type Props = {
   team: "Dire" | "Radiant";
   items: GetAllItemsQuery;
 };
+
+function compareLaneAndRole(a: any, b: any) {
+  const positionOrder: any = {
+    POSITION_1: 1,
+    POSITION_2: 2,
+    POSITION_3: 3,
+    POSITION_4: 4,
+    POSITION_5: 5,
+  };
+  const positionA = positionOrder[a.position];
+  const positionB = positionOrder[b.position];
+
+  if (positionA === undefined || positionB === undefined) {
+    return 0;
+  }
+
+  return positionA - positionB;
+}
+
 export default function TabOverview({ data, team, items }: Props) {
   const match = data.match;
   const players =
@@ -174,7 +193,7 @@ export default function TabOverview({ data, team, items }: Props) {
 
       <TableBody>
         {
-          players!.map((player, i) => {
+          players!.sort(compareLaneAndRole).map((player, i) => {
             totalKills += player?.kills;
             totalDeaths += player?.deaths;
             totalAssists += player?.assists;
@@ -194,6 +213,17 @@ export default function TabOverview({ data, team, items }: Props) {
               <TableRow key={i}>
                 <TableCell>
                   <div className="flex items-center gap-2">
+                    {player?.role && (
+                      <div className="shrink-0">
+                        <Image
+                          alt=""
+                          height={14}
+                          radius="none"
+                          src={getRoleImage(player?.role, player?.lane) || ""}
+                          width={14}
+                        />
+                      </div>
+                    )}
                     <Link
                       as={NextLink}
                       href={`/heroes/${player?.heroId}`}

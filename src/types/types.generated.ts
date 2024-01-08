@@ -6519,8 +6519,12 @@ export type PlayerMatchesRequestType = {
   matchIds?: InputMaybe<Array<InputMaybe<Scalars['Long']['input']>>>;
   /** Requests matches where the match is lower than this input.  See GameVersion API call for a list of patch ids. Default is null and there is no maximum. */
   maxGameVersionId?: InputMaybe<Scalars['Int']['input']>;
+  /** Player must have less than this IMP for the Match to show. */
+  maxImp?: InputMaybe<Scalars['Int']['input']>;
   /** Requests matches where the match is at least than this input.  See GameVersion API call for a list of patch ids. Default is null and there is no minimum. */
   minGameVersionId?: InputMaybe<Scalars['Int']['input']>;
+  /** Player must have at least this IMP for the Match to show. */
+  minImp?: InputMaybe<Scalars['Int']['input']>;
   /** In what order the returned data will come in. */
   orderBy?: InputMaybe<FindMatchPlayerOrderBy>;
   /** Determines if you want a single player returned, only the player by SteamAccountId, or if you want all 10 players in the match. */

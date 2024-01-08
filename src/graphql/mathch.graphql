@@ -45,6 +45,16 @@ query GetMatchById($id: Long!) {
         shortName
         displayName
       }
+      stats {
+        itemPurchases {
+          time
+          itemId
+        }
+        killEvents {
+          time
+          target
+        }
+      }
       gameVersionId
       kills
       deaths

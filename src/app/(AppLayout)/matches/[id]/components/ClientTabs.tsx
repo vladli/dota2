@@ -2,7 +2,7 @@
 import { Tab, Tabs } from "@nextui-org/react";
 import { AreaChart, Trophy } from "lucide-react";
 
-import { GetAllItemsQuery } from "@/graphql/constants";
+import { GetAllHeroesQuery, GetAllItemsQuery } from "@/graphql/constants";
 import { GetMatchByIdQuery } from "@/graphql/mathch";
 import { cn } from "@/lib/utils";
 
@@ -13,8 +13,9 @@ import PickBan from "./PickBan";
 type Props = {
   data: GetMatchByIdQuery;
   items: GetAllItemsQuery;
+  heroes: GetAllHeroesQuery;
 };
-export default function ClientTabs({ data, items }: Props) {
+export default function ClientTabs({ data, items, heroes }: Props) {
   return (
     <Tabs defaultSelectedKey="ability">
       <Tab
@@ -39,7 +40,12 @@ export default function ClientTabs({ data, items }: Props) {
             team="Dire"
           />
         </div>
-        <PickBan data={data} />
+        {data.match?.pickBans && (
+          <PickBan
+            data={data}
+            heroes={heroes}
+          />
+        )}
       </Tab>
       {/* <Tab
         key="ability"

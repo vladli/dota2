@@ -20,7 +20,7 @@ export default async function RootLayout({
 }) {
   return (
     <html
-      className="dark"
+      className="subpixel-antialiased dark"
       lang="en"
     >
       <body className={inter.className}>

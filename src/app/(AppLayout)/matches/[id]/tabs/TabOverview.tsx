@@ -213,7 +213,7 @@ export default function TabOverview({ data, team, items }: Props) {
               <TableRow key={i}>
                 <TableCell>
                   <div className="flex items-center gap-2">
-                    {player?.role && (
+                    {player?.position && (
                       <div className="shrink-0">
                         <Image
                           alt=""

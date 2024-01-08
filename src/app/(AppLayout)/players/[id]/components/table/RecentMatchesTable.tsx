@@ -58,18 +58,20 @@ export default function RecentMatchesTable({ data }: Props) {
               </div>
               <Divider orientation="vertical" />
               <div className="w-32 flex-none shrink-0">
-                {player?.kills} / {player?.kills} / {player?.kills}
+                {player?.kills} / {player?.deaths} / {player?.assists}
               </div>
               <div className="flex shrink-0 grow justify-end gap-2">
                 <div className="relative my-auto">
-                  <Image
-                    alt="rankStar"
-                    className="absolute -top-1"
-                    src={`/img/ranks/rank_star_${
-                      match?.actualRank?.toString()[1]
-                    }.png`}
-                    width={40}
-                  />
+                  {match?.actualRank?.toString()[1] !== "0" && (
+                    <Image
+                      alt="rankStar"
+                      className="absolute -top-1"
+                      src={`/img/ranks/rank_star_${
+                        match?.actualRank?.toString()[1]
+                      }.png`}
+                      width={40}
+                    />
+                  )}
                   <Image
                     alt="rank"
                     src={`/img/ranks/${match?.actualRank?.toString()[0]}.png`}

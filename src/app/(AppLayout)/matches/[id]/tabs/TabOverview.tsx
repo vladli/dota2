@@ -1,7 +1,7 @@
 import { GetAllHeroesQuery, GetAllItemsQuery } from "@/graphql/constants";
 import { GetMatchByIdQuery } from "@/graphql/mathch";
 
-import MatchGraph from "../components/TabOverview/MatchGraph";
+import MatchStats from "../components/TabOverview/MatchStats";
 import PickBan from "../components/TabOverview/PickBan";
 import PlayersTable from "../components/TabOverview/PlayersTable";
 
@@ -34,7 +34,7 @@ export default function TabOverview({ data, heroes, items }: Props) {
         />
       )}
       {data.match?.radiantExperienceLeads && (
-        <MatchGraph
+        <MatchStats
           data={data}
           heroes={heroes}
         />

@@ -1,4 +1,6 @@
-import { Image } from "@nextui-org/react";
+"use client";
+import toast from "react-hot-toast";
+import { Button, Image } from "@nextui-org/react";
 import { format } from "date-fns";
 import { icons } from "lucide-react";
 
@@ -17,11 +19,22 @@ export default function MatchInfo({ data }: Props) {
           icon="Globe2"
           text={getRegionName(match?.regionId)}
         />
-        <Item
-          className="hidden lg:flex"
-          icon="Files"
-          text={match?.id}
-        />
+        <Button
+          className="cursor-copy"
+          onClick={() => {
+            toast.success("Copied to clipboard");
+            navigator.clipboard.writeText(match?.id);
+          }}
+          size="sm"
+          variant="light"
+        >
+          <Item
+            className="hidden lg:flex"
+            icon="Files"
+            text={match?.id}
+          />
+        </Button>
+
         <Item
           text={
             <div className="flex items-center gap-1">
@@ -68,7 +81,7 @@ function Item({
   return (
     <span
       className={cn(
-        "flex items-center gap-1 font-medium text-foreground-600",
+        "flex items-center gap-1 font-medium text-foreground-600 select-none",
         className
       )}
     >

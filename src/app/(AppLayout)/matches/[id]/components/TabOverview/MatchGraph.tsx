@@ -58,71 +58,66 @@ export default function MatchGraph({ data, heroes }: Props) {
   };
   const off = gradientOffset();
   return (
-    <section className="mt-4 rounded-large bg-content1 p-4">
-      <h1 className="text-xl font-semibold uppercase">Graph</h1>
-      <div className="mt-4 flex justify-center">
-        <ResponsiveContainer
-          className="max-w-[50rem] rounded-large border border-divider p-1"
-          height={400}
-        >
-          <AreaChart
-            data={chartData}
-            height={400}
-            width={800}
+    <ResponsiveContainer
+      className="max-w-[50rem] rounded-large border border-divider p-1"
+      height={300}
+    >
+      <AreaChart
+        data={chartData}
+        height={300}
+        width={800}
+      >
+        <defs>
+          <linearGradient
+            id="splitColor"
+            x1="0"
+            x2="0"
+            y1="0"
+            y2="1"
           >
-            <defs>
-              <linearGradient
-                id="splitColor"
-                x1="0"
-                x2="0"
-                y1="0"
-                y2="1"
-              >
-                <stop
-                  offset={off}
-                  stopColor="#16a34a"
-                  stopOpacity={0.8}
-                />
-                <stop
-                  offset={off}
-                  stopColor="#ef4444"
-                  stopOpacity={0.8}
-                />
-              </linearGradient>
-            </defs>
-            <CartesianGrid stroke="#666" />
-            <XAxis
-              dataKey="time"
-              interval={9}
+            <stop
+              offset={off}
+              stopColor="#16a34a"
+              stopOpacity={0.8}
             />
-            <YAxis
-              allowDataOverflow={true}
-              domain={["auto", "auto"]}
-              type="number"
+            <stop
+              offset={off}
+              stopColor="#ef4444"
+              stopOpacity={0.8}
             />
-            <Tooltip content={<CustomTooltip />} />
-            <Legend content={<CustomLegend />} />
+          </linearGradient>
+        </defs>
+        <CartesianGrid stroke="#666" />
+        <XAxis
+          dataKey="time"
+          interval={9}
+        />
+        <YAxis
+          allowDataOverflow={true}
+          domain={["auto", "auto"]}
+          type="number"
+        />
+        <Tooltip content={<CustomTooltip />} />
+        <Legend content={<CustomLegend />} />
 
-            <Area
-              dataKey="networthLead"
-              fill="url(#splitColor)"
-              fillOpacity={1}
-              name="Networth Lead"
-              stroke="url(#splitColor)"
-              type="monotone"
-            />
-            <Area
-              dataKey="experienceLead"
-              fill="#171717"
-              fillOpacity={0.5}
-              name="Experience Lead"
-              stroke="#171717"
-              type="monotone"
-            />
-          </AreaChart>
-        </ResponsiveContainer>
-      </div>
-    </section>
+        <Area
+          dataKey="networthLead"
+          fill="url(#splitColor)"
+          fillOpacity={1}
+          name="Networth Lead"
+          stroke="url(#splitColor)"
+          type="monotone"
+        />
+        <Area
+          dataKey="experienceLead"
+          fill="#171717"
+          fillOpacity={0.5}
+          name="Experience Lead"
+          stroke="#171717"
+          type="monotone"
+        />
+      </AreaChart>
+    </ResponsiveContainer>
   );
 }
 

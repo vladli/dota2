@@ -22,6 +22,8 @@ query GetMatchById($id: Long!) {
     topLaneOutcome
     radiantKills
     direKills
+    radiantNetworthLeads
+    radiantExperienceLeads
     pickBans {
       isPick
       heroId

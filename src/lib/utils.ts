@@ -89,3 +89,15 @@ export function getRoleImage(
 
   return null;
 }
+
+export const formatNumber = (num: number) => {
+  if (!num) return "-";
+  if (num < 1000) {
+    return num.toString();
+  }
+  return (
+    (num / 1000).toLocaleString(undefined, {
+      maximumFractionDigits: 1,
+    }) + "k"
+  );
+};

@@ -4,9 +4,9 @@ import { getClient } from "@/lib/client";
 import { cn } from "@/lib/utils";
 
 import ClientTabs from "./components/ClientTabs";
-import MatchCard from "./components/MatchCard";
-import MatchInfo from "./components/MatchInfo";
-import ParseCard from "./components/ParseCard";
+import MatchCard from "./components/TabOverview/MatchCard";
+import MatchInfo from "./components/TabOverview/MatchInfo";
+import ParseCard from "./components/TabOverview/ParseCard";
 
 export const revalidate = 30;
 

@@ -26,7 +26,7 @@ export default function PickPhase({ phase, data, heroes }: Props) {
     phasePicks = playerPicks!.slice(8, 10);
   }
   return (
-    <div className="w-full max-w-[30rem] rounded-large bg-black p-4 xl:max-w-[10rem]">
+    <div className="w-full max-w-[30rem] rounded-large bg-black p-4 lg:max-w-[8rem]">
       <h1 className="mb-1 text-sm font-semibold text-foreground-500">
         Pick Phase {phase}
       </h1>

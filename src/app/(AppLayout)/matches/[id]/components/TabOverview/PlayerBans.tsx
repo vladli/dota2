@@ -16,7 +16,7 @@ export default function PlayerBans({ data, heroes }: Props) {
     (hero) => hero?.playerIndex !== null && hero?.bannedHeroId !== null
   );
   return (
-    <div className="w-full max-w-[30rem] rounded-large bg-black p-4 xl:max-w-[20rem]">
+    <div className="w-full min-w-fit max-w-[30rem] rounded-large bg-black p-4 xl:max-w-[20rem]">
       <h1 className="mb-1 text-sm font-semibold text-foreground-500">
         Player Bans
       </h1>

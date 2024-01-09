@@ -8,8 +8,6 @@ import { cn } from "@/lib/utils";
 
 import TabOverview from "../tabs/TabOverview";
 
-import PickBan from "./PickBan";
-
 type Props = {
   data: GetMatchByIdQuery;
   items: GetAllItemsQuery;
@@ -27,25 +25,11 @@ export default function ClientTabs({ data, items, heroes }: Props) {
           />
         }
       >
-        <div className="flex flex-col gap-4">
-          <TabOverview
-            data={data}
-            items={items}
-            team="Radiant"
-          />
-
-          <TabOverview
-            data={data}
-            items={items}
-            team="Dire"
-          />
-        </div>
-        {data.match?.pickBans && (
-          <PickBan
-            data={data}
-            heroes={heroes}
-          />
-        )}
+        <TabOverview
+          data={data}
+          heroes={heroes}
+          items={items}
+        />
       </Tab>
       {/* <Tab
         key="ability"
@@ -85,7 +69,13 @@ export default function ClientTabs({ data, items, heroes }: Props) {
   );
 }
 
-const TabHeader = ({ text, icon: Icon }: { text: string; icon: any }) => {
+export const TabHeader = ({
+  text,
+  icon: Icon,
+}: {
+  text: string;
+  icon: any;
+}) => {
   return (
     <div className="flex items-center space-x-2">
       <Icon size={18} />

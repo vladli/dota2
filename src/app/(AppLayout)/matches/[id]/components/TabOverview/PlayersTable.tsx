@@ -293,7 +293,7 @@ export default function PlayersTable({ data, team, items }: Props) {
                   </div>
                 </TableCell>
                 <TableCell>
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-gray-600">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-divider">
                     {player?.level}
                   </div>
                 </TableCell>

@@ -1,11 +1,12 @@
 "use client";
 import { Tab, Tabs } from "@nextui-org/react";
-import { AreaChart, Trophy } from "lucide-react";
+import { AreaChart, LandPlot, Trophy } from "lucide-react";
 
 import { GetAllHeroesQuery, GetAllItemsQuery } from "@/graphql/constants";
 import { GetMatchByIdQuery } from "@/graphql/mathch";
 import { cn } from "@/lib/utils";
 
+import TabLanes from "../tabs/TabLanes";
 import TabOverview from "../tabs/TabOverview";
 
 type Props = {
@@ -15,7 +16,13 @@ type Props = {
 };
 export default function ClientTabs({ data, items, heroes }: Props) {
   return (
-    <Tabs defaultSelectedKey="ability">
+    <Tabs
+      classNames={{
+        tabList: "bg-transparent border border-divider",
+        cursor: "group-data-[selected=true]:bg-content2",
+      }}
+      defaultSelectedKey="overview"
+    >
       <Tab
         key="overview"
         title={
@@ -31,40 +38,19 @@ export default function ClientTabs({ data, items, heroes }: Props) {
           items={items}
         />
       </Tab>
-      {/* <Tab
-        key="ability"
-        title={
-          <TabHeader
-            icon={GrVulnerability}
-            text="Ability"
-          />
-        }
-      >
-        <Card className="gap-4 p-4">
-          <Header
-            text="Radiant"
-            win={data.radiant_win}
-          />
-          <TabAbility
-            data={data}
-            heroes={heroes}
-            items={items}
-            itemsId={itemsId}
-            team="Radiant"
-          />
-          <Header
-            text="Dire"
-            win={data.radiant_win}
-          />
-          <TabAbility
-            data={data}
-            heroes={heroes}
-            items={items}
-            itemsId={itemsId}
-            team="Dire"
-          />
-        </Card>
-      </Tab> */}
+      {data.match?.parsedDateTime && (
+        <Tab
+          key="lanes"
+          title={
+            <TabHeader
+              icon={LandPlot}
+              text="Lanes"
+            />
+          }
+        >
+          <TabLanes matchId={data.match?.id} />
+        </Tab>
+      )}
     </Tabs>
   );
 }

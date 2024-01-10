@@ -11,6 +11,7 @@ import {
 import { Backpack } from "lucide-react";
 import NextLink from "next/link";
 
+import Tooltip from "@/components/Tooltip";
 import { GetAllItemsQuery } from "@/graphql/constants";
 import { GetMatchByIdQuery } from "@/graphql/mathch";
 import { IMAGE } from "@/lib/constants";
@@ -57,6 +58,19 @@ function compareLaneAndRole(a: any, b: any) {
   }
 
   return positionA - positionB;
+}
+
+function ToolTipContent({ img, name }: { img: string; name: string }) {
+  return (
+    <div className="flex items-center gap-2">
+      <Image
+        alt=""
+        src={img}
+        width={60}
+      />
+      <span className="font-medium">{name}</span>
+    </div>
+  );
 }
 
 export default function PlayersTable({ data, team, items }: Props) {
@@ -109,7 +123,15 @@ export default function PlayersTable({ data, team, items }: Props) {
         <div className="flex gap-1">
           {playerItems.map((item, i) =>
             item ? (
-              <div key={i}>
+              <Tooltip
+                content={
+                  <ToolTipContent
+                    img={IMAGE.urlItem + getItem(item)?.shortName + ".png"}
+                    name={getItem(item)?.displayName || ""}
+                  />
+                }
+                key={i}
+              >
                 <Image
                   alt="item"
                   className="min-w-[40px]"
@@ -117,7 +139,7 @@ export default function PlayersTable({ data, team, items }: Props) {
                   src={IMAGE.urlItem + getItem(item)?.shortName + ".png"}
                   width={40}
                 />
-              </div>
+              </Tooltip>
             ) : (
               <div
                 className="h-[29.09px] w-[40px] bg-content2"
@@ -133,7 +155,15 @@ export default function PlayersTable({ data, team, items }: Props) {
           />
           {playerBackpack.map((item, i) =>
             item ? (
-              <div key={i}>
+              <Tooltip
+                content={
+                  <ToolTipContent
+                    img={IMAGE.urlItem + getItem(item)?.shortName + ".png"}
+                    name={getItem(item)?.displayName || ""}
+                  />
+                }
+                key={i}
+              >
                 <Image
                   alt="item"
                   className="min-w-[40px]"
@@ -141,7 +171,7 @@ export default function PlayersTable({ data, team, items }: Props) {
                   src={IMAGE.urlItem + getItem(item)?.shortName + ".png"}
                   width={40}
                 />
-              </div>
+              </Tooltip>
             ) : (
               <div
                 className="h-[29.09px] w-[40px] bg-content2"
@@ -158,16 +188,25 @@ export default function PlayersTable({ data, team, items }: Props) {
     const item = items?.constants?.items!.find((item) => item?.id === id);
     if (item) {
       return (
-        <div className="h-[35px] w-[35px]">
-          <Image
-            alt="item"
-            className="h-full w-full object-cover"
-            radius="full"
-            removeWrapper
-            src={IMAGE.urlItem + item.shortName + ".png"}
-            width={40}
-          />
-        </div>
+        <Tooltip
+          content={
+            <ToolTipContent
+              img={IMAGE.urlItem + item.shortName + ".png"}
+              name={item?.displayName || ""}
+            />
+          }
+        >
+          <div className="h-[35px] w-[35px]">
+            <Image
+              alt="item"
+              className="h-full w-full object-cover"
+              radius="full"
+              removeWrapper
+              src={IMAGE.urlItem + item.shortName + ".png"}
+              width={40}
+            />
+          </div>
+        </Tooltip>
       );
     }
     return null;

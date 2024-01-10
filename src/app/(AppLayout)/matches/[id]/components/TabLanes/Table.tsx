@@ -138,8 +138,8 @@ export default function Table({
                 className="min-w-20"
                 classNames={{
                   indicator: info.getValue().isRadiant
-                    ? "bg-green-500"
-                    : "bg-red-500",
+                    ? "!bg-green-500"
+                    : "!bg-red-500",
                 }}
                 maxValue={highestNetWorth}
                 radius="none"

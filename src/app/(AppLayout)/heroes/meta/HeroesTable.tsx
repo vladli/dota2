@@ -209,7 +209,7 @@ export default function HeroesTable({ heroes }: Props) {
       </h1>
       <div className="relative overflow-x-auto rounded-large shadow-md">
         <table className="w-full text-left">
-          <thead className="whitespace-nowrap bg-default-100 text-tiny uppercase text-foreground-500">
+          <thead className="whitespace-nowrap bg-content1 text-tiny uppercase text-foreground-500">
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (

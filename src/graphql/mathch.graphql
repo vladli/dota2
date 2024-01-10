@@ -97,3 +97,57 @@ query GetMatchById($id: Long!) {
     }
   }
 }
+
+query GetMatchLanes($id: Long!) {
+  match(id: $id) {
+    id
+    statsDateTime
+    endDateTime
+    players {
+      position
+      lane
+      role
+      isRadiant
+      isRandom
+      heroId
+      hero {
+        displayName
+        shortName
+      }
+      steamAccount {
+        name
+      }
+      stats {
+        level
+        killEvents {
+          time
+          target
+        }
+        deathEvents {
+          time
+        }
+        assistEvents {
+          time
+          target
+        }
+        experiencePerMinute
+        lastHitsPerMinute
+        deniesPerMinute
+        networthPerMinute
+        heroDamagePerMinute
+        towerDamagePerMinute
+        healPerMinute
+        itemPurchases {
+          time
+          itemId
+        }
+        tripsFountainPerMinute
+        campStack
+        wards {
+          time
+          type
+        }
+      }
+    }
+  }
+}

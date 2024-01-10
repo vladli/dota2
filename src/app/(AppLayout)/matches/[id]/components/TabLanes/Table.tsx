@@ -77,7 +77,13 @@ export default function Table({
       {
         header: "Level",
         size: 10,
-        accessorFn: (row) => 1,
+        accessorFn: (row) =>
+          row.stats.level.filter((level: number) => level <= 600).length,
+        cell: (info: any) => (
+          <div className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-divider">
+            {info.getValue()}
+          </div>
+        ),
       },
       {
         header: "K",
@@ -190,6 +196,26 @@ export default function Table({
               />
             </div>
           );
+        },
+      },
+      {
+        header: "LH",
+        size: 10,
+        accessorFn: (row) => {
+          const lastHits = row.stats.lastHitsPerMinute
+            .slice(0, 10)
+            .reduce((a: number, b: number) => a + b, 0);
+          return lastHits;
+        },
+      },
+      {
+        header: "DN",
+        size: 10,
+        accessorFn: (row) => {
+          const denies = row.stats.deniesPerMinute
+            .slice(0, 10)
+            .reduce((a: number, b: number) => a + b, 0);
+          return denies;
         },
       },
     ],

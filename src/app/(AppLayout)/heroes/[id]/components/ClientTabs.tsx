@@ -31,7 +31,7 @@ export default function ClientTabs({
         tabList: "bg-transparent border border-divider",
         cursor: "group-data-[selected=true]:bg-content2",
       }}
-      defaultSelectedKey="Matchup"
+      defaultSelectedKey="Overview"
     >
       <Tab
         key="Overview"

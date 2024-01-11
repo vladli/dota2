@@ -65,23 +65,40 @@ export function getRegionName(id: number) {
   return REGION_NAME.find((region) => region.id === id)?.clientName;
 }
 
-export function getRoleImage(
+export function getRoleInfo(
   role: string | null | undefined,
   lane: string | null | undefined
 ) {
   if (!role || !lane) return null;
   const rolePositionMap = {
     CORE: {
-      SAFE_LANE: "/img/position/POSITION_1.svg",
-      MID_LANE: "/img/position/POSITION_2.svg",
-      OFF_LANE: "/img/position/POSITION_3.svg",
+      SAFE_LANE: {
+        image: "/img/position/POSITION_1.svg",
+        name: "Safe Lane",
+      },
+      MID_LANE: {
+        image: "/img/position/POSITION_2.svg",
+        name: "Mid Lane",
+      },
+      OFF_LANE: {
+        image: "/img/position/POSITION_3.svg",
+        name: "Off Lane",
+      },
     },
-    LIGHT_SUPPORT: "/img/position/POSITION_4.svg",
-    HARD_SUPPORT: "/img/position/POSITION_5.svg",
+    LIGHT_SUPPORT: {
+      image: "/img/position/POSITION_4.svg",
+      name: "Soft Support",
+    },
+    HARD_SUPPORT: {
+      image: "/img/position/POSITION_5.svg",
+      name: "Hard Support",
+    },
   };
+
   if (role === "LIGHT_SUPPORT" || role === "HARD_SUPPORT") {
-    return rolePositionMap[role] as string;
+    return rolePositionMap[role];
   }
+
   const laneMap = rolePositionMap[role as keyof typeof rolePositionMap];
   if (laneMap && laneMap[lane as keyof typeof laneMap]) {
     return laneMap[lane as keyof typeof laneMap];

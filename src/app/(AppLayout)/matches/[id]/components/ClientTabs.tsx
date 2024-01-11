@@ -22,7 +22,7 @@ export default function ClientTabs({ data, items, heroes }: Props) {
         tabList: "bg-transparent border border-divider",
         cursor: "group-data-[selected=true]:bg-content2",
       }}
-      defaultSelectedKey="logs"
+      defaultSelectedKey="overview"
     >
       <Tab
         key="overview"

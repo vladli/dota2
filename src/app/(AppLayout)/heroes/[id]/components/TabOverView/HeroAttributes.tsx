@@ -42,10 +42,10 @@ export default function HeroAttributes({ data }: Props) {
               HERO_STATS.strengthHp * hero?.stats?.strengthBase!}
             <span className="absolute right-1">
               +
-              {hero?.stats?.hpRegen! +
-                +(
-                  hero?.stats?.strengthBase! * HERO_STATS.strengthHpRegen
-                ).toFixed(1)}
+              {(
+                hero?.stats?.hpRegen! +
+                +hero?.stats?.strengthBase! * HERO_STATS.strengthHpRegen
+              ).toFixed(1)}
             </span>
           </div>
           <div className="relative flex items-center justify-center bg-blue-600">
@@ -53,11 +53,11 @@ export default function HeroAttributes({ data }: Props) {
               HERO_STATS.intelligenceMana * hero?.stats?.intelligenceBase!}
             <span className="absolute right-1">
               +
-              {hero?.stats?.mpRegen! +
-                +(
-                  hero?.stats?.intelligenceBase! *
+              {(
+                hero?.stats?.mpRegen! +
+                +hero?.stats?.intelligenceBase! *
                   HERO_STATS.intelligenceManaRegen
-                ).toFixed(1)}
+              ).toFixed(1)}
             </span>
           </div>
         </div>

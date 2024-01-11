@@ -2,6 +2,7 @@
 import { Tab, Tabs } from "@nextui-org/react";
 import { AreaChart, LandPlot, ScrollText, Trophy } from "lucide-react";
 
+import TabHeader from "@/components/TabHeader";
 import { GetAllHeroesQuery, GetAllItemsQuery } from "@/graphql/constants";
 import { GetMatchByIdQuery } from "@/graphql/mathch";
 import { cn } from "@/lib/utils";
@@ -71,21 +72,6 @@ export default function ClientTabs({ data, items, heroes }: Props) {
     </Tabs>
   );
 }
-
-export const TabHeader = ({
-  text,
-  icon: Icon,
-}: {
-  text: string;
-  icon: any;
-}) => {
-  return (
-    <div className="flex items-center space-x-2">
-      <Icon size={18} />
-      <span>{text}</span>
-    </div>
-  );
-};
 
 export const Header = ({
   text,

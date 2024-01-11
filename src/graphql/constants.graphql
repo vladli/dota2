@@ -10,6 +10,7 @@ query GetHeroById($id: Short!) {
         level
       }
       abilities {
+        abilityId
         slot
         ability {
           id

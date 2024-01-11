@@ -16,7 +16,7 @@ export default function HeroCard({ data }: Props) {
         src={IMAGE.url + hero?.shortName + IMAGE.vertical}
         width={120}
       />
-      <div className="">
+      <div>
         <h2 className="flex items-center gap-1 text-lg font-medium uppercase">
           <Image
             alt="icon"

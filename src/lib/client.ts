@@ -5,19 +5,6 @@ import {
   NextSSRInMemoryCache,
 } from "@apollo/experimental-nextjs-app-support/ssr";
 
-const typePolicies = {
-  constants: {
-    fields: {
-      abilities: {
-        keyFields: ["id"],
-      },
-      heroes: {
-        keyFields: ["id"],
-      },
-    },
-  },
-};
-
 export const { getClient } = registerApolloClient(() => {
   return new NextSSRApolloClient({
     cache: new NextSSRInMemoryCache({
@@ -32,12 +19,16 @@ export const { getClient } = registerApolloClient(() => {
             },
           },
         },
+
         AbilityType: {
           fields: {
             language: {
               merge: true,
             },
           },
+        },
+        HeroStatType: {
+          merge: true,
         },
       },
     }),

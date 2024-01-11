@@ -1,13 +1,10 @@
-import { GetAbilitiesDocument, GetHeroByIdQuery } from "@/graphql/constants";
-import { getClient } from "@/lib/client";
+import { GetAbilitiesQuery, GetHeroByIdQuery } from "@/graphql/constants";
 
 type Props = {
   data: GetHeroByIdQuery;
+  abilities: GetAbilitiesQuery;
 };
-export default async function HeroTalents({ data }: Props) {
-  const { data: abilities } = await getClient().query({
-    query: GetAbilitiesDocument,
-  });
+export default function HeroTalents({ data, abilities }: Props) {
   const getAbility = (id: number) =>
     abilities.constants?.abilities?.find((ability) => ability?.id === id);
   const heroAbilities = (slot: number) =>

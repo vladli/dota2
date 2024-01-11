@@ -69,7 +69,7 @@ const AbilityDescription = ({ ability }: { ability: AbilityType }) => {
               {ability.language?.displayName}
             </h1>
             {ability.language?.description ? (
-              <p
+              <div
                 className="font-medium"
                 dangerouslySetInnerHTML={{
                   __html: ability.language?.description!,

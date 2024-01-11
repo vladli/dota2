@@ -20,3 +20,35 @@ query GetHeroesStats(
     }
   }
 }
+
+query GetHeroMatchUps(
+  $heroId: Short!
+  $matchLimit: Int!
+  $bracketBasicIds: [RankBracketBasicEnum]
+) {
+  heroStats {
+    heroVsHeroMatchup(
+      heroId: $heroId
+      matchLimit: $matchLimit
+      bracketBasicIds: $bracketBasicIds
+    ) {
+      advantage {
+        heroId
+        matchCountWith
+        matchCountVs
+        with {
+          heroId2
+          matchCount
+          winCount
+          synergy
+        }
+        vs {
+          heroId2
+          matchCount
+          winCount
+          synergy
+        }
+      }
+    }
+  }
+}

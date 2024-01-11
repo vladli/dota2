@@ -1,6 +1,12 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@apollo/client";
-import { Image, Progress } from "@nextui-org/react";
+import {
+  Image,
+  Progress,
+  Select,
+  Selection,
+  SelectItem,
+} from "@nextui-org/react";
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
 
@@ -10,6 +16,8 @@ import Tooltip from "@/components/Tooltip";
 import { GetAllHeroesQuery, GetHeroByIdQuery } from "@/graphql/constants";
 import { GetHeroMatchUpsDocument } from "@/graphql/heroStats";
 import { IMAGE } from "@/lib/constants";
+
+import HeroesCard from "../components/TabMatchup/HeroesCard";
 
 type Props = {
   heroId: number;
@@ -24,6 +32,13 @@ export default function Matchup({ hero, allHeroes }: Props) {
       matchLimit: 0,
     },
   });
+  const [selectedOption, setSelectedOption] = useState<Selection>(
+    new Set(["bestVersus"])
+  );
+  const selectedValue = [...selectedOption][0] || "";
+  useEffect(() => {
+    console.log(selectedValue);
+  }, [selectedOption]);
 
   const columns = useMemo<ColumnDef<any>[]>(
     () => [
@@ -144,6 +159,7 @@ export default function Matchup({ hero, allHeroes }: Props) {
     []
   );
   if (!data || loading) return <Loading />;
+  const matches = data.heroStats?.heroVsHeroMatchup?.advantage?.[0];
   const vsRows = data?.heroStats?.heroVsHeroMatchup?.advantage?.[0]?.vs?.map(
     (vsItem) => ({
       heroId2: vsItem?.heroId2,
@@ -173,13 +189,107 @@ export default function Matchup({ hero, allHeroes }: Props) {
       ...(correspondingVsItem || {}),
     };
   });
+
+  const bestVersus = matches?.vs?.toSorted(
+    (a, b) => (b?.synergy ?? 0) - (a?.synergy ?? 0)
+  );
+
+  const worstVersus = matches?.vs?.toSorted(
+    (a, b) => (a?.synergy ?? 0) - (b?.synergy ?? 0)
+  );
+
+  const bestWith = matches?.with?.toSorted(
+    (a, b) => (b?.synergy ?? 0) - (a?.synergy ?? 0)
+  );
+
+  const worstWith = matches?.with?.toSorted(
+    (a, b) => (a?.synergy ?? 0) - (b?.synergy ?? 0)
+  );
+  const renderSelectedCard = () => {
+    switch (selectedValue) {
+      case "bestVersus":
+        return (
+          <HeroesCard
+            allHeroes={allHeroes}
+            data={bestVersus}
+            header="Best Versus"
+          />
+        );
+      case "worstVersus":
+        return (
+          <HeroesCard
+            allHeroes={allHeroes}
+            data={worstVersus}
+            header="Worst Versus"
+          />
+        );
+      case "bestWith":
+        return (
+          <HeroesCard
+            allHeroes={allHeroes}
+            data={bestWith}
+            header="Best With"
+          />
+        );
+      case "worstWith":
+        return (
+          <HeroesCard
+            allHeroes={allHeroes}
+            data={worstWith}
+            header="Worst With"
+          />
+        );
+      default:
+        return null;
+    }
+  };
   return (
-    <div className="overflow-x-auto rounded-large bg-black">
-      <Table
-        columns={columns}
-        data={combinedRows || []}
-        defaultSorting={[{ id: "Counter", desc: true }]}
-      />
-    </div>
+    <main>
+      <section className="flex flex-col gap-2 lg:hidden">
+        <Select
+          aria-label="Select"
+          onSelectionChange={setSelectedOption}
+          selectedKeys={selectedOption}
+          size="sm"
+        >
+          <SelectItem key="bestVersus">Best Versus</SelectItem>
+          <SelectItem key="worstVersus">Worst Versus</SelectItem>
+          <SelectItem key="bestWith">Best With</SelectItem>
+          <SelectItem key="worstWith">Worst With</SelectItem>
+        </Select>
+        <div>{renderSelectedCard()}</div>
+      </section>
+      <section>
+        <div className="hidden grid-cols-2 gap-4 lg:grid lg:grid-cols-4">
+          <HeroesCard
+            allHeroes={allHeroes}
+            data={bestVersus}
+            header="Best Versus"
+          />
+          <HeroesCard
+            allHeroes={allHeroes}
+            data={worstVersus}
+            header="Worst Versus"
+          />
+          <HeroesCard
+            allHeroes={allHeroes}
+            data={bestWith}
+            header="Best With"
+          />
+          <HeroesCard
+            allHeroes={allHeroes}
+            data={worstWith}
+            header="Worst With"
+          />
+        </div>
+      </section>
+      <section className="my-4 overflow-x-auto rounded-large bg-black">
+        <Table
+          columns={columns}
+          data={combinedRows || []}
+          defaultSorting={[{ id: "Counter", desc: true }]}
+        />
+      </section>
+    </main>
   );
 }

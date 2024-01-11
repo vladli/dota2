@@ -1,3 +1,5 @@
+import { Card, CardBody, CardHeader } from "@nextui-org/react";
+import { EyeOff } from "lucide-react";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
@@ -47,13 +49,26 @@ export default async function page({ params }: Props) {
         </div>
         <PlayerCard data={data} />
       </div>
-      <section className="flex w-full flex-col gap-4 p-4 xl:flex-row">
-        <RecentMatches steamId={params.id} />
-        <div className="flex flex-col gap-1">
-          <PlayedWith steamId={params.id} />
-          <FavoriteHeroes steamId={params.id} />
-        </div>
-      </section>
+      {data.player?.matches?.length ? (
+        <section className="flex w-full flex-col gap-4 p-4 xl:flex-row">
+          <RecentMatches steamId={params.id} />
+          <div className="flex flex-col gap-1">
+            <PlayedWith steamId={params.id} />
+            <FavoriteHeroes steamId={params.id} />
+          </div>
+        </section>
+      ) : (
+        <section className="flex justify-center">
+          <Card className="min-w-fit max-w-28 p-4">
+            <CardHeader className="justify-center">
+              <EyeOff />
+            </CardHeader>
+            <CardBody className="font-medium">
+              This is a private profile
+            </CardBody>
+          </Card>
+        </section>
+      )}
     </main>
   );
 }

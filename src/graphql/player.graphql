@@ -22,6 +22,9 @@ query GetPlayerBySteamId($steamAccountId: Long!) {
     }
     matchCount
     winCount
+    matches(request: { take: 5 }) {
+      id
+    }
   }
 }
 

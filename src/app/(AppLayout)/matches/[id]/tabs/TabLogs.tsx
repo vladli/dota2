@@ -330,7 +330,7 @@ const TalkEvent = ({ event }: { event: TalkEventProps }) => (
         size={18}
         stroke="#60a5fa"
       />
-      {`${event.playerName} said `}
+      {`${event.playerName}: `}
       <span className="font-semibold text-white">{event.message} </span>
     </div>
   </LogWrapper>

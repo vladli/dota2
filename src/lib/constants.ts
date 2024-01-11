@@ -250,3 +250,150 @@ export const gameModes = [
     name: "Mutation",
   },
 ] as const;
+
+export const CONST_TOWERS = [
+  {
+    id: 16,
+    name: "npc_dota_goodguys_tower1_top",
+  },
+  {
+    id: 17,
+    name: "npc_dota_goodguys_tower1_mid",
+  },
+  {
+    id: 18,
+    name: "npc_dota_goodguys_tower1_bot",
+  },
+  {
+    id: 19,
+    name: "npc_dota_goodguys_tower2_top",
+  },
+  {
+    id: 20,
+    name: "npc_dota_goodguys_tower2_mid",
+  },
+  {
+    id: 21,
+    name: "npc_dota_goodguys_tower2_bot",
+  },
+  {
+    id: 22,
+    name: "npc_dota_goodguys_tower3_top",
+  },
+  {
+    id: 23,
+    name: "npc_dota_goodguys_tower3_mid",
+  },
+  {
+    id: 24,
+    name: "npc_dota_goodguys_tower3_bot",
+  },
+  {
+    id: 25,
+    name: "npc_dota_goodguys_tower4",
+  },
+  {
+    id: 26,
+    name: "npc_dota_badguys_tower1_top",
+  },
+  {
+    id: 27,
+    name: "npc_dota_badguys_tower1_mid",
+  },
+  {
+    id: 28,
+    name: "npc_dota_badguys_tower1_bot",
+  },
+  {
+    id: 29,
+    name: "npc_dota_badguys_tower2_top",
+  },
+  {
+    id: 30,
+    name: "npc_dota_badguys_tower2_mid",
+  },
+  {
+    id: 31,
+    name: "npc_dota_badguys_tower2_bot",
+  },
+  {
+    id: 32,
+    name: "npc_dota_badguys_tower3_top",
+  },
+  {
+    id: 33,
+    name: "npc_dota_badguys_tower3_mid",
+  },
+  {
+    id: 34,
+    name: "npc_dota_badguys_tower3_bot",
+  },
+  {
+    id: 35,
+    name: "npc_dota_badguys_tower4",
+  },
+  {
+    id: 36,
+    name: "npc_dota_goodguys_fillers",
+  },
+  {
+    id: 37,
+    name: "npc_dota_badguys_fillers",
+  },
+  {
+    id: 38,
+    name: "npc_dota_goodguys_melee_barracks_top",
+  },
+  {
+    id: 39,
+    name: "npc_dota_goodguys_melee_barracks_mid",
+  },
+  {
+    id: 40,
+    name: "npc_dota_goodguys_melee_barracks_bot",
+  },
+  {
+    id: 41,
+    name: "npc_dota_goodguys_range_barracks_top",
+  },
+  {
+    id: 42,
+    name: "npc_dota_goodguys_range_barracks_mid",
+  },
+  {
+    id: 43,
+    name: "npc_dota_goodguys_range_barracks_bot",
+  },
+  {
+    id: 44,
+    name: "npc_dota_badguys_melee_barracks_top",
+  },
+  {
+    id: 45,
+    name: "npc_dota_badguys_melee_barracks_mid",
+  },
+  {
+    id: 46,
+    name: "npc_dota_badguys_melee_barracks_bot",
+  },
+  {
+    id: 47,
+    name: "npc_dota_badguys_range_barracks_top",
+  },
+  {
+    id: 48,
+    name: "npc_dota_badguys_range_barracks_mid",
+  },
+  {
+    id: 49,
+    name: "npc_dota_badguys_range_barracks_bot",
+  },
+  {
+    id: 50,
+    name: "npc_dota_goodguys_ancient",
+  },
+  {
+    id: 51,
+    name: "npc_dota_badguys_ancient",
+  },
+];

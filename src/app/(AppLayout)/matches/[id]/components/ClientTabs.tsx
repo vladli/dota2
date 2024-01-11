@@ -1,12 +1,13 @@
 "use client";
 import { Tab, Tabs } from "@nextui-org/react";
-import { AreaChart, LandPlot, Trophy } from "lucide-react";
+import { AreaChart, LandPlot, ScrollText, Trophy } from "lucide-react";
 
 import { GetAllHeroesQuery, GetAllItemsQuery } from "@/graphql/constants";
 import { GetMatchByIdQuery } from "@/graphql/mathch";
 import { cn } from "@/lib/utils";
 
 import TabLanes from "../tabs/TabLanes";
+import TabLogs from "../tabs/TabLogs";
 import TabOverview from "../tabs/TabOverview";
 
 type Props = {
@@ -21,7 +22,7 @@ export default function ClientTabs({ data, items, heroes }: Props) {
         tabList: "bg-transparent border border-divider",
         cursor: "group-data-[selected=true]:bg-content2",
       }}
-      defaultSelectedKey="lanes"
+      defaultSelectedKey="logs"
     >
       <Tab
         key="overview"
@@ -49,6 +50,22 @@ export default function ClientTabs({ data, items, heroes }: Props) {
           }
         >
           <TabLanes matchId={data.match?.id} />
+        </Tab>
+      )}
+      {data.match?.parsedDateTime && (
+        <Tab
+          key="logs"
+          title={
+            <TabHeader
+              icon={ScrollText}
+              text="Logs"
+            />
+          }
+        >
+          <TabLogs
+            data={data}
+            heroes={heroes}
+          />
         </Tab>
       )}
     </Tabs>

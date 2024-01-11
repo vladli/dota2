@@ -1,7 +1,7 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
-import { REGION_NAME, STEAM_AVATAR } from "./constants";
+import { CONST_TOWERS, REGION_NAME, STEAM_AVATAR } from "./constants";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -43,6 +43,9 @@ export function getRankName(rank: string): string {
 }
 
 export function secondsToTime(seconds: number): string {
+  const isNegative = seconds < 0;
+  seconds = Math.abs(seconds);
+
   const hours = Math.floor(seconds / 3600);
   const minutes = Math.floor((seconds % 3600) / 60);
   const remainingSeconds = seconds % 60;
@@ -54,34 +57,61 @@ export function secondsToTime(seconds: number): string {
       ? "0" + remainingSeconds
       : remainingSeconds.toString();
 
+  let result = "";
+
   if (hours > 0) {
     const formattedHours = hours < 10 ? "0" + hours : hours.toString();
-    return formattedHours + ":" + formattedMinutes + ":" + formattedSeconds;
+    result = formattedHours + ":" + formattedMinutes + ":" + formattedSeconds;
+  } else {
+    result = formattedMinutes + ":" + formattedSeconds;
   }
-  return formattedMinutes + ":" + formattedSeconds;
+
+  // Add a minus sign at the start if the input was negative
+  if (isNegative) {
+    result = "-" + result;
+  }
+
+  return result;
 }
 
 export function getRegionName(id: number) {
   return REGION_NAME.find((region) => region.id === id)?.clientName;
 }
 
-export function getRoleImage(
+export function getRoleInfo(
   role: string | null | undefined,
   lane: string | null | undefined
 ) {
   if (!role || !lane) return null;
   const rolePositionMap = {
     CORE: {
-      SAFE_LANE: "/img/position/POSITION_1.svg",
-      MID_LANE: "/img/position/POSITION_2.svg",
-      OFF_LANE: "/img/position/POSITION_3.svg",
+      SAFE_LANE: {
+        image: "/img/position/POSITION_1.svg",
+        name: "Safe Lane",
+      },
+      MID_LANE: {
+        image: "/img/position/POSITION_2.svg",
+        name: "Mid Lane",
+      },
+      OFF_LANE: {
+        image: "/img/position/POSITION_3.svg",
+        name: "Off Lane",
+      },
     },
-    LIGHT_SUPPORT: "/img/position/POSITION_4.svg",
-    HARD_SUPPORT: "/img/position/POSITION_5.svg",
+    LIGHT_SUPPORT: {
+      image: "/img/position/POSITION_4.svg",
+      name: "Soft Support",
+    },
+    HARD_SUPPORT: {
+      image: "/img/position/POSITION_5.svg",
+      name: "Hard Support",
+    },
   };
+
   if (role === "LIGHT_SUPPORT" || role === "HARD_SUPPORT") {
-    return rolePositionMap[role] as string;
+    return rolePositionMap[role];
   }
+
   const laneMap = rolePositionMap[role as keyof typeof rolePositionMap];
   if (laneMap && laneMap[lane as keyof typeof laneMap]) {
     return laneMap[lane as keyof typeof laneMap];
@@ -101,3 +131,23 @@ export const formatNumber = (num: number) => {
     }) + "k"
   );
 };
+
+export function convertToHumanReadable(id: number) {
+  const towers = CONST_TOWERS.find((tower) => tower.id === id);
+  // Replace underscores with spaces
+  let result = towers?.name.replace(/_/g, " ");
+
+  // Replace 'npc dota' with empty string
+  result = result?.replace("npc dota", "");
+
+  // Replace 'goodguys' with 'Radiant'
+  result = result?.replace("goodguys", "Radiant");
+
+  // Replace 'badguys' with 'Dire'
+  result = result?.replace("badguys", "Dire");
+
+  // Capitalize the first letter of each word
+  result = result?.replace(/\b\w/g, (l) => l.toUpperCase());
+
+  return result;
+}

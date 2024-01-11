@@ -2,9 +2,10 @@ import { cn, Divider, Image } from "@nextui-org/react";
 import { formatDistanceToNow } from "date-fns";
 import NextLink from "next/link";
 
+import Tooltip from "@/components/Tooltip";
 import { GetPlayerMatchesQuery } from "@/graphql/player";
 import { IMAGE } from "@/lib/constants";
-import { getRoleImage, secondsToTime } from "@/lib/utils";
+import { getRoleInfo, secondsToTime } from "@/lib/utils";
 
 import TableTitle from "../TableTitle";
 
@@ -37,13 +38,17 @@ export default function RecentMatchesTable({ data }: Props) {
               </div>
               <Divider orientation="vertical" />
               <div className="shrink-0">
-                <Image
-                  alt=""
-                  height={14}
-                  radius="none"
-                  src={getRoleImage(player?.role, player?.lane) || ""}
-                  width={14}
-                />
+                <Tooltip
+                  content={getRoleInfo(player?.role, player?.lane)?.name}
+                >
+                  <Image
+                    alt=""
+                    height={14}
+                    radius="none"
+                    src={getRoleInfo(player?.role, player?.lane)?.image || ""}
+                    width={14}
+                  />
+                </Tooltip>
               </div>
               <div
                 className={cn(

@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Image, Link } from "@nextui-org/react";
 import {
   ColumnDef,
@@ -23,154 +23,158 @@ type Props = {
   heroes: GetAllHeroesQuery;
 };
 
-const columns: ColumnDef<any>[] = [
-  {
-    id: "hero",
-    header: "Hero",
-    accessorFn: (row) => ({
-      id: row.id,
-      displayName: row.displayName,
-      shortName: row.shortName,
-    }),
-    cell: (info: any) => (
-      <div className="flex items-center gap-2">
-        <Image
-          alt="Hero"
-          className="min-w-[70px]"
-          radius="sm"
-          src={IMAGE.url + info.getValue().shortName + IMAGE.horizontal}
-          width={70}
-        />
-        <Link
-          as={NextLink}
-          color="foreground"
-          href={`/heroes/${info.getValue().id}`}
-          underline="hover"
-        >
-          {info.getValue().displayName}
-        </Link>
-      </div>
-    ),
-    enableColumnFilter: true,
-    filterFn: (row, id, filterValue) => {
-      const value = row.getValue(id);
-      return (value as { displayName: string }).displayName
-        .toLowerCase()
-        .includes(filterValue);
-    },
-  },
-  {
-    header: "Winrate",
-    columns: [
-      {
-        id: "winStart",
-        header: "Start",
-
-        accessorFn: (row) => {
-          const length = row?.statistic.length - 1;
-          const winRate =
-            (row?.statistic?.[length]?.winCount! /
-              row?.statistic?.[length]?.matchCount!) *
-            100;
-          return winRate;
-        },
-        cell: (info: any) => <span>{info.getValue().toFixed(1)}</span>,
-      },
-      {
-        id: "winEnd",
-        header: "End",
-
-        accessorFn: (row) => {
-          const winRate =
-            (row?.statistic?.[0]?.winCount! /
-              row?.statistic?.[0]?.matchCount!) *
-            100;
-          return winRate;
-        },
-        cell: (info: any) => <span>{info.getValue().toFixed(1)}</span>,
-      },
-      {
-        id: "windDifference",
-        header: "+/-",
-
-        accessorFn: (row) => {
-          const length = row?.statistic.length - 1;
-          const winRate =
-            (row?.statistic?.[length]?.winCount! /
-              row?.statistic?.[length]?.matchCount!) *
-            100;
-          const winRateEnd =
-            (row?.statistic?.[0]?.winCount! /
-              row?.statistic?.[0]?.matchCount!) *
-            100;
-          const difference = winRateEnd - winRate;
-          return difference;
-        },
-        cell: (info: any) => (
-          <span
-            className={cn({
-              "text-red-400": info.getValue() < 0,
-              "text-green-400": info.getValue() > 0,
-            })}
-          >
-            {info.getValue().toFixed(1)}
-          </span>
-        ),
-      },
-    ],
-  },
-
-  {
-    header: "Matches",
-    columns: [
-      {
-        id: "pickStart",
-        header: "Start",
-
-        accessorFn: (row) => {
-          const length = row?.statistic.length - 1;
-          const pickRate = row?.statistic?.[length]?.matchCount!;
-          return pickRate;
-        },
-        cell: (info: any) => <span>{info.getValue()}</span>,
-      },
-      {
-        id: "pickEnd",
-        header: "End",
-
-        accessorFn: (row) => {
-          const winRate = row?.statistic?.[0]?.matchCount!;
-          return winRate;
-        },
-        cell: (info: any) => <span>{info.getValue()}</span>,
-      },
-      {
-        id: "pickDifference",
-        header: "+/-",
-
-        accessorFn: (row) => {
-          const length = row?.statistic.length - 1;
-          const winRate = row?.statistic?.[length]?.matchCount!;
-          const winRateEnd = row?.statistic?.[0]?.matchCount!;
-          const difference = winRateEnd - winRate;
-          return difference;
-        },
-        cell: (info: any) => (
-          <span
-            className={cn({
-              "text-red-400": info.getValue() < 0,
-              "text-green-400": info.getValue() > 0,
-            })}
-          >
-            {info.getValue()}
-          </span>
-        ),
-      },
-    ],
-  },
-];
 export default function HeroesTable({ heroes }: Props) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+
+  const columns = useMemo<ColumnDef<any>[]>(
+    () => [
+      {
+        id: "hero",
+        header: "Hero",
+        accessorFn: (row) => ({
+          id: row.id,
+          displayName: row.displayName,
+          shortName: row.shortName,
+        }),
+        cell: (info: any) => (
+          <div className="flex items-center gap-2">
+            <Image
+              alt="Hero"
+              className="min-w-[70px]"
+              radius="sm"
+              src={IMAGE.url + info.getValue().shortName + IMAGE.horizontal}
+              width={70}
+            />
+            <Link
+              as={NextLink}
+              color="foreground"
+              href={`/heroes/${info.getValue().id}`}
+              underline="hover"
+            >
+              {info.getValue().displayName}
+            </Link>
+          </div>
+        ),
+        enableColumnFilter: true,
+        filterFn: (row, id, filterValue) => {
+          const value = row.getValue(id);
+          return (value as { displayName: string }).displayName
+            .toLowerCase()
+            .includes(filterValue);
+        },
+      },
+      {
+        header: "Winrate",
+        columns: [
+          {
+            id: "winStart",
+            header: "Start",
+
+            accessorFn: (row) => {
+              const length = row?.statistic.length - 1;
+              const winRate =
+                (row?.statistic?.[length]?.winCount! /
+                  row?.statistic?.[length]?.matchCount!) *
+                100;
+              return winRate;
+            },
+            cell: (info: any) => <span>{info.getValue().toFixed(1)}</span>,
+          },
+          {
+            id: "winEnd",
+            header: "End",
+
+            accessorFn: (row) => {
+              const winRate =
+                (row?.statistic?.[0]?.winCount! /
+                  row?.statistic?.[0]?.matchCount!) *
+                100;
+              return winRate;
+            },
+            cell: (info: any) => <span>{info.getValue().toFixed(1)}</span>,
+          },
+          {
+            id: "windDifference",
+            header: "+/-",
+
+            accessorFn: (row) => {
+              const length = row?.statistic.length - 1;
+              const winRate =
+                (row?.statistic?.[length]?.winCount! /
+                  row?.statistic?.[length]?.matchCount!) *
+                100;
+              const winRateEnd =
+                (row?.statistic?.[0]?.winCount! /
+                  row?.statistic?.[0]?.matchCount!) *
+                100;
+              const difference = winRateEnd - winRate;
+              return difference;
+            },
+            cell: (info: any) => (
+              <span
+                className={cn({
+                  "text-red-400": info.getValue() < 0,
+                  "text-green-400": info.getValue() > 0,
+                })}
+              >
+                {info.getValue().toFixed(1)}
+              </span>
+            ),
+          },
+        ],
+      },
+
+      {
+        header: "Matches",
+        columns: [
+          {
+            id: "pickStart",
+            header: "Start",
+
+            accessorFn: (row) => {
+              const length = row?.statistic.length - 1;
+              const pickRate = row?.statistic?.[length]?.matchCount!;
+              return pickRate;
+            },
+            cell: (info: any) => <span>{info.getValue()}</span>,
+          },
+          {
+            id: "pickEnd",
+            header: "End",
+
+            accessorFn: (row) => {
+              const winRate = row?.statistic?.[0]?.matchCount!;
+              return winRate;
+            },
+            cell: (info: any) => <span>{info.getValue()}</span>,
+          },
+          {
+            id: "pickDifference",
+            header: "+/-",
+
+            accessorFn: (row) => {
+              const length = row?.statistic.length - 1;
+              const winRate = row?.statistic?.[length]?.matchCount!;
+              const winRateEnd = row?.statistic?.[0]?.matchCount!;
+              const difference = winRateEnd - winRate;
+              return difference;
+            },
+            cell: (info: any) => (
+              <span
+                className={cn({
+                  "text-red-400": info.getValue() < 0,
+                  "text-green-400": info.getValue() > 0,
+                })}
+              >
+                {info.getValue()}
+              </span>
+            ),
+          },
+        ],
+      },
+    ],
+    []
+  );
 
   const table = useReactTable({
     data: heroes.constants?.heroes!,

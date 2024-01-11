@@ -1,19 +1,12 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { Image, Progress } from "@nextui-org/react";
-import {
-  ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  getSortedRowModel,
-  SortingState,
-  useReactTable,
-} from "@tanstack/react-table";
-import { ArrowDownWideNarrow, ArrowUpWideNarrow } from "lucide-react";
+import { ColumnDef } from "@tanstack/react-table";
 
+import Table from "@/components/Table/Table";
 import Tooltip from "@/components/Tooltip";
 import { GetMatchLanesQuery } from "@/graphql/mathch";
 import { IMAGE } from "@/lib/constants";
-import { cn, getRoleImage } from "@/lib/utils";
+import { cn, getRoleInfo } from "@/lib/utils";
 
 type Props = {
   data: GetMatchLanesQuery;
@@ -21,7 +14,7 @@ type Props = {
   highestExperience: number;
 };
 
-export default function Table({
+export default function TableSummary({
   data,
   highestNetWorth,
   highestExperience,
@@ -39,14 +32,23 @@ export default function Table({
           lane: row.lane,
         }),
         cell: (info: any) => (
-          <Image
-            alt=""
-            className="min-w-[18px]"
-            height={18}
-            radius="none"
-            src={getRoleImage(info.getValue().role, info.getValue().lane) || ""}
-            width={18}
-          />
+          <Tooltip
+            content={
+              getRoleInfo(info.getValue().role, info.getValue().lane)?.name
+            }
+          >
+            <Image
+              alt=""
+              className="min-w-[18px]"
+              height={18}
+              radius="none"
+              src={
+                getRoleInfo(info.getValue().role, info.getValue().lane)
+                  ?.image || ""
+              }
+              width={18}
+            />
+          </Tooltip>
         ),
       },
       {
@@ -221,74 +223,14 @@ export default function Table({
     ],
     []
   );
-  const [sorting, setSorting] = useState<SortingState>([
-    { id: "netWorth", desc: true },
-  ]);
-  const table = useReactTable({
-    data: data.match?.players!,
-    columns,
-    state: {
-      sorting,
-    },
-    onSortingChange: setSorting,
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-  });
+
   return (
     <div className="relative overflow-x-auto rounded-large shadow-md">
-      <table className="w-full text-left">
-        <thead className="whitespace-nowrap bg-content1 text-tiny uppercase text-foreground-500">
-          {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <th
-                  className="px-4 py-3"
-                  key={header.id}
-                  style={{ width: `${header.getSize()}px` }}
-                >
-                  {header.isPlaceholder ? null : (
-                    <div
-                      {...{
-                        className: header.column.getCanSort()
-                          ? "cursor-pointer select-none flex gap-1 items-center"
-                          : "",
-                        onClick: header.column.getToggleSortingHandler(),
-                      }}
-                    >
-                      {flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                      {{
-                        asc: <ArrowUpWideNarrow size={16} />,
-                        desc: <ArrowDownWideNarrow size={16} />,
-                      }[header.column.getIsSorted() as string] ?? null}
-                    </div>
-                  )}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody>
-          {table.getRowModel().rows.map((row) => (
-            <tr
-              className="border-b border-content2"
-              key={row.id}
-            >
-              {row.getVisibleCells().map((cell) => (
-                <td
-                  className="px-4 py-2"
-                  key={cell.id}
-                  style={{ width: `${cell.column.getSize()}px` }}
-                >
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <Table
+        columns={columns}
+        data={data.match?.players!}
+        defaultSorting={[{ id: "netWorth", desc: true }]}
+      />
     </div>
   );
 }

@@ -24,6 +24,12 @@ query GetMatchById($id: Long!) {
     direKills
     radiantNetworthLeads
     radiantExperienceLeads
+    towerDeaths {
+      time
+      npcId
+      isRadiant
+      attacker
+    }
     pickBans {
       isPick
       heroId
@@ -48,6 +54,10 @@ query GetMatchById($id: Long!) {
         displayName
       }
       stats {
+        allTalks {
+          time
+          message
+        }
         itemPurchases {
           time
           itemId
@@ -55,6 +65,11 @@ query GetMatchById($id: Long!) {
         killEvents {
           time
           target
+        }
+        runes {
+          time
+          rune
+          action
         }
       }
       gameVersionId

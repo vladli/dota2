@@ -15,7 +15,7 @@ import Tooltip from "@/components/Tooltip";
 import { GetAllItemsQuery } from "@/graphql/constants";
 import { GetMatchByIdQuery } from "@/graphql/mathch";
 import { IMAGE } from "@/lib/constants";
-import { getRankName, getRoleImage } from "@/lib/utils";
+import { getRankName, getRoleInfo } from "@/lib/utils";
 import { MatchPlayerType } from "@/types/types.generated";
 
 import { Header } from "../ClientTabs";
@@ -254,13 +254,22 @@ export default function PlayersTable({ data, team, items }: Props) {
                   <div className="flex items-center gap-2">
                     {player?.position && (
                       <div className="shrink-0">
-                        <Image
-                          alt=""
-                          height={14}
-                          radius="none"
-                          src={getRoleImage(player?.role, player?.lane) || ""}
-                          width={14}
-                        />
+                        <Tooltip
+                          content={
+                            getRoleInfo(player?.role, player?.lane)?.name
+                          }
+                        >
+                          <Image
+                            alt=""
+                            height={14}
+                            radius="none"
+                            src={
+                              getRoleInfo(player?.role, player?.lane)?.image ||
+                              ""
+                            }
+                            width={14}
+                          />
+                        </Tooltip>
                       </div>
                     )}
                     <Link

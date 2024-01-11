@@ -44,7 +44,7 @@ export default function Table({ header, data }: Props) {
           </div>
 
           <Image
-            alt="Possition"
+            alt="Position"
             height={15}
             radius="none"
             src={

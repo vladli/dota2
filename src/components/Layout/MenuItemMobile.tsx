@@ -27,7 +27,7 @@ const MenuItemMobile = React.memo(
 
     const isActive = pathname === url;
     return (
-      <motion.div className="font-medium">
+      <motion.div>
         {!submenu!.length ? (
           <Link
             className="relative"

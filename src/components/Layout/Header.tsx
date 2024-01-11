@@ -6,6 +6,7 @@ import {
   NavbarBrand,
   NavbarContent,
   NavbarMenu,
+  NavbarMenuItem,
   NavbarMenuToggle,
 } from "@nextui-org/react";
 import Image from "next/image";
@@ -108,10 +109,12 @@ export default function Header() {
       <NavbarMenu className="select-none">
         <SearchBar {...{ setIsMenuOpen }} />
         {menu.map(({ url, name, submenu }, index) => (
-          <MenuItemMobile
-            key={`${name}-${index}`}
-            {...{ setIsMenuOpen, url, name, submenu }}
-          />
+          <NavbarMenuItem key={`${name}-${index}`}>
+            <MenuItemMobile
+              key={`${name}-${index}`}
+              {...{ setIsMenuOpen, url, name, submenu }}
+            />
+          </NavbarMenuItem>
         ))}
       </NavbarMenu>
     </Navbar>

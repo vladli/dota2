@@ -26,6 +26,9 @@ export default function TableSummary({
         size: 35,
         header: "",
         enableSorting: false,
+        meta: {
+          isSticky: true,
+        },
         accessorFn: (row) => ({
           position: row.position,
           role: row.role,
@@ -55,6 +58,9 @@ export default function TableSummary({
         header: "Hero",
         size: 70,
         enableSorting: false,
+        meta: {
+          isSticky: true,
+        },
         accessorFn: (row) => ({
           displayName: row.hero.displayName,
           shortName: row.hero.shortName,

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useQuery } from "@apollo/client";
 import {
   Image,
@@ -36,9 +36,6 @@ export default function Matchup({ hero, allHeroes }: Props) {
     new Set(["bestVersus"])
   );
   const selectedValue = [...selectedOption][0] || "";
-  useEffect(() => {
-    console.log(selectedValue);
-  }, [selectedOption]);
 
   const columns = useMemo<ColumnDef<any>[]>(
     () => [
@@ -46,6 +43,9 @@ export default function Matchup({ hero, allHeroes }: Props) {
         header: "Hero",
         accessorKey: "heroId2",
         size: 70,
+        meta: {
+          isSticky: true,
+        },
         sortingFn: (rowA, rowB, columnId) => {
           const heroA = allHeroes?.constants?.heroes?.find(
             (hero) => hero?.id === rowA.getValue(columnId)

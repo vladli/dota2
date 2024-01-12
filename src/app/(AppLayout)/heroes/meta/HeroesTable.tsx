@@ -31,6 +31,10 @@ export default function HeroesTable({ heroes }: Props) {
       {
         id: "hero",
         header: "Hero",
+        meta: {
+          isSticky: true,
+        },
+        size: 100,
         accessorFn: (row) => ({
           id: row.id,
           displayName: row.displayName,
@@ -218,9 +222,15 @@ export default function HeroesTable({ heroes }: Props) {
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
                   <th
-                    className="px-4 py-3 text-center"
+                    className={cn("px-4 py-3 text-center", {
+                      "sticky bg-content1 z-10 left-0":
+                        header.column.columnDef.meta?.isSticky,
+                    })}
                     colSpan={header.colSpan}
                     key={header.id}
+                    style={{
+                      width: `${header.column.getSize()}px`,
+                    }}
                   >
                     {header.isPlaceholder ? null : (
                       <div
@@ -254,8 +264,14 @@ export default function HeroesTable({ heroes }: Props) {
               >
                 {row.getVisibleCells().map((cell) => (
                   <td
-                    className="px-4 py-2"
+                    className={cn("px-4 py-2", {
+                      "sticky bg-black z-10 left-0":
+                        cell.column.columnDef.meta?.isSticky,
+                    })}
                     key={cell.id}
+                    style={{
+                      width: `${cell.column.getSize()}px`,
+                    }}
                   >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>

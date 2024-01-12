@@ -1,40 +1,18 @@
-import {
-  Image,
-  Link,
-  Table,
-  TableBody,
-  TableCell,
-  TableColumn,
-  TableHeader,
-  TableRow,
-} from "@nextui-org/react";
+import { useMemo } from "react";
+import { Image } from "@nextui-org/react";
+import { ColumnDef } from "@tanstack/react-table";
 import { Backpack } from "lucide-react";
-import NextLink from "next/link";
+import Link from "next/link";
 
+import Table from "@/components/Table/Table";
 import Tooltip from "@/components/Tooltip";
 import { GetAllItemsQuery } from "@/graphql/constants";
 import { GetMatchByIdQuery } from "@/graphql/mathch";
 import { IMAGE } from "@/lib/constants";
-import { getRankName, getRoleInfo } from "@/lib/utils";
+import { formatNumber, getRankName, getRoleInfo } from "@/lib/utils";
 import { MatchPlayerType } from "@/types/types.generated";
 
 import { Header } from "../ClientTabs";
-
-const TABLE_HEADER = [
-  "Player",
-  "LVL",
-  "K",
-  "D",
-  "A",
-  "LH / DN",
-  "NET",
-  "GPM / XPM",
-  "DMG",
-  "BLD",
-  "HEAL",
-  "ITEMS",
-  "",
-];
 
 type Props = {
   data: GetMatchByIdQuery;
@@ -60,48 +38,12 @@ function compareLaneAndRole(a: any, b: any) {
   return positionA - positionB;
 }
 
-function ToolTipContent({ img, name }: { img: string; name: string }) {
-  return (
-    <div className="flex items-center gap-2">
-      <Image
-        alt=""
-        src={img}
-        width={60}
-      />
-      <span className="font-medium">{name}</span>
-    </div>
-  );
-}
-
 export default function PlayersTable({ data, team, items }: Props) {
   const match = data.match;
   const players =
     team === "Radiant"
       ? match?.players!.filter((player) => player?.isRadiant)
       : match?.players!.filter((player) => !player?.isRadiant);
-
-  let totalKills = 0,
-    totalDeaths = 0,
-    totalAssists = 0,
-    totalLastHits = 0,
-    totalDenies = 0,
-    totalNetWorth = 0,
-    totalGoldPerMin = 0,
-    totalXpPerMin = 0,
-    totalHeroDamage = 0,
-    totalTowerDamage = 0,
-    totalHeroHealing = 0;
-  const formatNumber = (num: number) => {
-    if (!num) return "-";
-    if (num < 1000) {
-      return num.toString();
-    }
-    return (
-      (num / 1000).toLocaleString(undefined, {
-        maximumFractionDigits: 1,
-      }) + "k"
-    );
-  };
 
   const renderPlayerItems = (player: MatchPlayerType) => {
     const playerItems: number[] = [];
@@ -184,175 +126,221 @@ export default function PlayersTable({ data, team, items }: Props) {
     );
   };
 
-  const renderNeutralItem = (id: number) => {
-    const item = items?.constants?.items!.find((item) => item?.id === id);
-    if (item) {
-      return (
-        <Tooltip
-          content={
-            <ToolTipContent
-              img={IMAGE.urlItem + item.shortName + ".png"}
-              name={item?.displayName || ""}
-            />
-          }
-        >
-          <div className="h-[35px] w-[35px]">
+  const columns = useMemo<ColumnDef<any>[]>(
+    () => [
+      {
+        id: "role",
+        header: "",
+        enableSorting: false,
+        size: 30,
+        meta: {
+          isSticky: true,
+        },
+        accessorFn: (row) => ({
+          role: row.role,
+          lane: row.lane,
+        }),
+        cell: ({ getValue }: any) => (
+          <Tooltip
+            content={getRoleInfo(getValue().role, getValue().lane)?.name}
+          >
             <Image
-              alt="item"
-              className="h-full w-full object-cover"
-              radius="full"
-              removeWrapper
-              src={IMAGE.urlItem + item.shortName + ".png"}
-              width={40}
+              alt=""
+              className="min-w-[14px]"
+              height={14}
+              radius="none"
+              src={getRoleInfo(getValue().role, getValue().lane)?.image || ""}
+              width={14}
             />
+          </Tooltip>
+        ),
+      },
+      {
+        header: "Player",
+        size: 250,
+        minSize: 250,
+        enableSorting: false,
+        meta: {
+          isSticky: true,
+        },
+        accessorFn: (row) => ({
+          player: row.steamAccount.name,
+          playerRank: row.steamAccount.seasonRank,
+          steamAccountId: row.steamAccountId,
+          heroId: row.heroId,
+          displayName: row.hero.displayName,
+          shortName: row.hero.shortName,
+        }),
+        cell: ({ getValue }: any) => {
+          const rank = getRankName(getValue().playerRank.toString()[0]);
+          return (
+            <div className="flex items-center gap-2">
+              <Link href={`/heroes/${getValue().heroId}`}>
+                <Image
+                  alt=""
+                  className="min-w-[70px]"
+                  src={IMAGE.url + getValue().shortName + IMAGE.horizontal}
+                  width={70}
+                />
+              </Link>
+              <div className="flex flex-col">
+                <Link href={`/players/${getValue().steamAccountId}`}>
+                  {getValue().player}
+                </Link>
+                <span className="text-sm text-foreground-400">
+                  {rank} {getValue()?.playerRank?.toString()[1]}
+                </span>
+              </div>
+            </div>
+          );
+        },
+      },
+      {
+        header: "Level",
+        accessorKey: "level",
+        size: 25,
+        enableSorting: false,
+        cell: ({ getValue }: any) => (
+          <span className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-divider">
+            {getValue()}
+          </span>
+        ),
+      },
+      {
+        header: "K / D / A",
+        minSize: 110,
+        enableSorting: false,
+        accessorFn: (row) => ({
+          kills: row.kills,
+          deaths: row.deaths,
+          assists: row.assists,
+        }),
+        cell: ({ getValue }: any) => (
+          <div>
+            {getValue().kills} / {getValue().deaths} / {getValue().assists}
           </div>
-        </Tooltip>
-      );
-    }
-    return null;
-  };
-
+        ),
+      },
+      {
+        header: "LH / DN",
+        minSize: 100,
+        enableSorting: false,
+        accessorFn: (row) => ({
+          lastHits: row.numLastHits,
+          denies: row.numDenies,
+        }),
+        cell: ({ getValue }: any) => (
+          <>
+            {getValue().lastHits} / {getValue().denies}
+          </>
+        ),
+      },
+      {
+        header: "NET",
+        size: 25,
+        enableSorting: false,
+        accessorKey: "networth",
+        cell: ({ getValue }: any) => <>{formatNumber(getValue()!)}</>,
+      },
+      {
+        header: "GPM / XPM",
+        minSize: 110,
+        enableSorting: false,
+        accessorFn: (row) => ({
+          goldPerMinute: row.goldPerMinute,
+          experiencePerMinute: row.experiencePerMinute,
+        }),
+        cell: ({ getValue }: any) => (
+          <>
+            {getValue().goldPerMinute} / {getValue().experiencePerMinute}
+          </>
+        ),
+      },
+      {
+        header: "DMG",
+        enableSorting: false,
+        accessorKey: "heroDamage",
+        cell: ({ getValue }: any) => <>{formatNumber(getValue()!)}</>,
+      },
+      {
+        header: "BLD",
+        enableSorting: false,
+        accessorKey: "towerDamage",
+        cell: ({ getValue }: any) => <>{formatNumber(getValue()!)}</>,
+      },
+      {
+        header: "HEAL",
+        enableSorting: false,
+        accessorKey: "heroHealing",
+        cell: ({ getValue }: any) => <>{formatNumber(getValue()!)}</>,
+      },
+      {
+        header: "ITEMS",
+        enableSorting: false,
+        accessorFn: (row) => ({ ...row }),
+        cell: ({ getValue }: any) => <>{renderPlayerItems(getValue())}</>,
+      },
+      {
+        id: "neutralItems",
+        header: "",
+        enableSorting: false,
+        accessorKey: "neutral0Id",
+        cell: ({ getValue }: any) => {
+          const item = items?.constants?.items!.find(
+            (item) => item?.id === getValue()
+          );
+          return (
+            <Tooltip
+              content={
+                <ToolTipContent
+                  img={IMAGE.urlItem + item?.shortName + ".png"}
+                  name={item?.displayName || ""}
+                />
+              }
+            >
+              <div className="h-[35px] w-[35px]">
+                <Image
+                  alt="item"
+                  className="h-full w-full object-cover"
+                  radius="full"
+                  removeWrapper
+                  src={IMAGE.urlItem + item?.shortName + ".png"}
+                  width={40}
+                />
+              </div>
+            </Tooltip>
+          );
+        },
+      },
+    ],
+    []
+  );
   return (
-    <Table
-      aria-label="Overview"
-      shadow="none"
-      topContent={
-        <Header
-          showWin
-          text={team}
-          win={match?.didRadiantWin!}
+    <section className="flex flex-col gap-y-4 rounded-large border border-divider p-4">
+      <Header
+        showWin
+        text={team}
+        win={match?.didRadiantWin!}
+      />
+      <div className="overflow-x-auto rounded-large border border-divider">
+        <Table
+          columns={columns}
+          data={players?.sort(compareLaneAndRole) || []}
         />
-      }
-    >
-      <TableHeader>
-        {TABLE_HEADER.map((header) => (
-          <TableColumn key={header}>{header}</TableColumn>
-        ))}
-      </TableHeader>
+      </div>
+    </section>
+  );
+}
 
-      <TableBody>
-        {
-          players!.sort(compareLaneAndRole).map((player, i) => {
-            totalKills += player?.kills;
-            totalDeaths += player?.deaths;
-            totalAssists += player?.assists;
-            totalLastHits += player?.numLastHits;
-            totalDenies += player?.numDenies;
-            totalNetWorth += player?.networth!;
-            totalGoldPerMin += player?.goldPerMinute;
-            totalXpPerMin += player?.experiencePerMinute;
-            totalHeroDamage += player?.heroDamage!;
-            totalTowerDamage += player?.towerDamage!;
-            totalHeroHealing += player?.heroHealing!;
-            const rank = getRankName(
-              player?.steamAccount?.seasonRank?.toString()[0]
-            );
-
-            return (
-              <TableRow key={i}>
-                <TableCell>
-                  <div className="flex items-center gap-2">
-                    {player?.position && (
-                      <div className="shrink-0">
-                        <Tooltip
-                          content={
-                            getRoleInfo(player?.role, player?.lane)?.name
-                          }
-                        >
-                          <Image
-                            alt=""
-                            height={14}
-                            radius="none"
-                            src={
-                              getRoleInfo(player?.role, player?.lane)?.image ||
-                              ""
-                            }
-                            width={14}
-                          />
-                        </Tooltip>
-                      </div>
-                    )}
-                    <Link
-                      as={NextLink}
-                      href={`/heroes/${player?.heroId}`}
-                    >
-                      <Image
-                        alt="HeroImage"
-                        className="min-w-[70px]"
-                        radius="sm"
-                        src={
-                          IMAGE.url + player?.hero?.shortName + IMAGE.horizontal
-                        }
-                        width={70}
-                      />
-                    </Link>
-                    <div className="flex flex-col">
-                      <Link
-                        as={NextLink}
-                        color="foreground"
-                        href={`/players/${player?.steamAccountId}`}
-                        underline="hover"
-                      >
-                        {player?.steamAccount?.name}
-                      </Link>
-                      <span className="text-gray-400">
-                        {rank} {player?.steamAccount?.seasonRank?.toString()[1]}
-                      </span>
-                    </div>
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-divider">
-                    {player?.level}
-                  </div>
-                </TableCell>
-                <TableCell>{player?.kills}</TableCell>
-                <TableCell>{player?.deaths}</TableCell>
-                <TableCell>{player?.assists}</TableCell>
-                <TableCell>
-                  {player?.numLastHits} / {player?.numDenies}
-                </TableCell>
-                <TableCell>{formatNumber(player?.networth!)}</TableCell>
-                <TableCell>
-                  {player?.goldPerMinute} / {player?.experiencePerMinute}
-                </TableCell>
-                <TableCell>{formatNumber(player?.heroDamage!)}</TableCell>
-                <TableCell>{formatNumber(player?.towerDamage!)}</TableCell>
-                <TableCell>{formatNumber(player?.heroHealing!)}</TableCell>
-                <TableCell>
-                  {renderPlayerItems(player as MatchPlayerType)}
-                </TableCell>
-                <TableCell>{renderNeutralItem(player?.neutral0Id)}</TableCell>
-              </TableRow>
-            );
-          }) as any
-        }
-
-        <TableRow
-          className="rounded-full bg-content2"
-          key="Overall"
-        >
-          <TableCell>
-            <span className="font-semibold">Total:</span>
-          </TableCell>
-          <TableCell>{null}</TableCell>
-          <TableCell>{totalKills}</TableCell>
-          <TableCell>{totalDeaths}</TableCell>
-          <TableCell>{totalAssists}</TableCell>
-          <TableCell>
-            {formatNumber(totalLastHits)} / {totalDenies}
-          </TableCell>
-          <TableCell>{formatNumber(totalNetWorth)}</TableCell>
-          <TableCell>
-            {formatNumber(totalGoldPerMin)} / {formatNumber(totalXpPerMin)}
-          </TableCell>
-          <TableCell>{formatNumber(totalHeroDamage)}</TableCell>
-          <TableCell>{formatNumber(totalTowerDamage)}</TableCell>
-          <TableCell>{formatNumber(totalHeroHealing)}</TableCell>
-          <TableCell>{null}</TableCell>
-          <TableCell>{null}</TableCell>
-        </TableRow>
-      </TableBody>
-    </Table>
+function ToolTipContent({ img, name }: { img: string; name: string }) {
+  return (
+    <div className="flex items-center gap-2">
+      <Image
+        alt=""
+        src={img}
+        width={60}
+      />
+      <span className="font-medium">{name}</span>
+    </div>
   );
 }

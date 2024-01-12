@@ -1,5 +1,6 @@
 import { Card, Image } from "@nextui-org/react";
 import NextImage from "next/image";
+import Link from "next/link";
 
 import { GetAllHeroesQuery } from "@/graphql/constants";
 import { IMAGE } from "@/lib/constants";
@@ -25,6 +26,7 @@ export default function HeroesCard({ allHeroes, data, header }: Props) {
       <h1 className="font-semibold">{header}</h1>
       {data?.slice(0, 4).map((hero, index) => (
         <CardItem
+          heroId={hero?.heroId2}
           heroImage={getHero(hero?.heroId2)?.shortName}
           heroName={getHero(hero?.heroId2)?.displayName}
           index={index + 1}
@@ -38,18 +40,29 @@ export default function HeroesCard({ allHeroes, data, header }: Props) {
 
 type CardItemProps = {
   index: number;
+  heroId: number | null | undefined;
   heroName: string | null | undefined;
   heroImage: string | null | undefined;
   synergy: number;
 };
 
-function CardItem({ index, heroName, heroImage, synergy }: CardItemProps) {
+function CardItem({
+  index,
+  heroId,
+  heroName,
+  heroImage,
+  synergy,
+}: CardItemProps) {
   return (
-    <div className="relative">
+    <Link
+      className="relative transition-background hover:bg-content2"
+      href={`/heroes/${heroId}`}
+    >
       <div className="absolute top-0 h-full w-full overflow-hidden">
         <NextImage
           alt=""
           className="blur-[80px]"
+          draggable={false}
           fill
           src={IMAGE.url + heroImage + IMAGE.horizontal}
           unoptimized
@@ -66,10 +79,11 @@ function CardItem({ index, heroName, heroImage, synergy }: CardItemProps) {
         <Image
           alt=""
           className="min-w-[70px]"
+          draggable={false}
           src={IMAGE.url + heroImage + IMAGE.horizontal}
           width={70}
         />
       </section>
-    </div>
+    </Link>
   );
 }

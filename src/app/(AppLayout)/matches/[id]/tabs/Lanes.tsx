@@ -2,7 +2,7 @@ import { useQuery } from "@apollo/client";
 import { Spinner, Tab, Tabs } from "@nextui-org/react";
 
 import Alert from "@/components/Alert";
-import { GetMatchLanesDocument } from "@/graphql/mathch";
+import { GetMatchLanesDocument } from "@/graphql/match";
 
 import LanesPositions from "../subtabs/LanesPositions";
 import LanesSummary from "../subtabs/LanesSummary";

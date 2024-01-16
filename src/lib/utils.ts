@@ -42,6 +42,17 @@ export function getRankName(rank: string): string {
   return rankNames[rank];
 }
 
+export function minutesToTime(minutes: number) {
+  const hours = Math.floor(minutes / 60);
+  const remainingMinutes = minutes % 60;
+
+  const formattedHours = hours < 10 ? "0" + hours : hours;
+  const formattedMinutes =
+    remainingMinutes < 10 ? "0" + remainingMinutes : remainingMinutes;
+
+  return formattedHours + ":" + formattedMinutes;
+}
+
 export function secondsToTime(seconds: number): string {
   const isNegative = seconds < 0;
   seconds = Math.abs(seconds);

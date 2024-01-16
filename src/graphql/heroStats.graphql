@@ -52,3 +52,104 @@ query GetHeroMatchUps(
     }
   }
 }
+
+query HeroesOverview {
+  heroStats {
+    POSITION_1: winDay(
+      take: 1
+      positionIds: [POSITION_1]
+      bracketIds: [
+        HERALD
+        GUARDIAN
+        CRUSADER
+        ARCHON
+        LEGEND
+        ANCIENT
+        DIVINE
+        IMMORTAL
+      ]
+    ) {
+      heroId
+      matchCount
+      winCount
+      __typename
+    }
+    POSITION_2: winDay(
+      take: 1
+      positionIds: [POSITION_2]
+      bracketIds: [
+        HERALD
+        GUARDIAN
+        CRUSADER
+        ARCHON
+        LEGEND
+        ANCIENT
+        DIVINE
+        IMMORTAL
+      ]
+    ) {
+      heroId
+      matchCount
+      winCount
+      __typename
+    }
+    POSITION_3: winDay(
+      take: 1
+      positionIds: [POSITION_3]
+      bracketIds: [
+        HERALD
+        GUARDIAN
+        CRUSADER
+        ARCHON
+        LEGEND
+        ANCIENT
+        DIVINE
+        IMMORTAL
+      ]
+    ) {
+      heroId
+      matchCount
+      winCount
+      __typename
+    }
+    POSITION_4: winDay(
+      take: 1
+      positionIds: [POSITION_4]
+      bracketIds: [
+        HERALD
+        GUARDIAN
+        CRUSADER
+        ARCHON
+        LEGEND
+        ANCIENT
+        DIVINE
+        IMMORTAL
+      ]
+    ) {
+      heroId
+      matchCount
+      winCount
+      __typename
+    }
+    POSITION_5: winDay(
+      take: 1
+      positionIds: [POSITION_5]
+      bracketIds: [
+        HERALD
+        GUARDIAN
+        CRUSADER
+        ARCHON
+        LEGEND
+        ANCIENT
+        DIVINE
+        IMMORTAL
+      ]
+    ) {
+      heroId
+      matchCount
+      winCount
+      __typename
+    }
+    __typename
+  }
+}

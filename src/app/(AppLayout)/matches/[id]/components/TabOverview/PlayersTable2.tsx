@@ -13,7 +13,7 @@ import NextLink from "next/link";
 
 import Tooltip from "@/components/Tooltip";
 import { GetAllItemsQuery } from "@/graphql/constants";
-import { GetMatchByIdQuery } from "@/graphql/mathch";
+import { GetMatchByIdQuery } from "@/graphql/match";
 import { IMAGE } from "@/lib/constants";
 import { getRankName, getRoleInfo } from "@/lib/utils";
 import { MatchPlayerType } from "@/types/types.generated";

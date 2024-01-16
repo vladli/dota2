@@ -50,7 +50,6 @@ export default function FavoriteHeroesTable({ data }: Props) {
                   <Image
                     alt=""
                     className="min-w-[60px]"
-                    radius="none"
                     src={IMAGE.url + hero.hero?.shortName + IMAGE.horizontal}
                     width={60}
                   />

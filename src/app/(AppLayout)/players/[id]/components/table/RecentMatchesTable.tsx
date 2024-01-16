@@ -30,8 +30,6 @@ export default function RecentMatchesTable({ data }: Props) {
                 <Image
                   alt="Hero"
                   className="min-w-[60px]"
-                  radius="none"
-                  removeWrapper
                   src={IMAGE.url + player?.hero?.shortName + IMAGE.horizontal}
                   width={60}
                 />

@@ -1,7 +1,7 @@
 import { cn } from "@nextui-org/react";
 
 import { GetAllHeroesQuery } from "@/graphql/constants";
-import { GetMatchByIdQuery } from "@/graphql/mathch";
+import { GetMatchByIdQuery } from "@/graphql/match";
 
 import BanItem from "./PickBanItem";
 

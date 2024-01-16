@@ -18,6 +18,8 @@ type Props = {
   data: GetMatchByIdQuery;
   team: "Dire" | "Radiant";
   items: GetAllItemsQuery;
+  time: number;
+  endTime: number;
 };
 
 function compareLaneAndRole(a: any, b: any) {
@@ -38,26 +40,32 @@ function compareLaneAndRole(a: any, b: any) {
   return positionA - positionB;
 }
 
-export default function PlayersTable({ data, team, items }: Props) {
+export default function PlayersTable({
+  data,
+  team,
+  items,
+  time,
+  endTime,
+}: Props) {
   const match = data.match;
   const players =
     team === "Radiant"
       ? match?.players!.filter((player) => player?.isRadiant)
       : match?.players!.filter((player) => !player?.isRadiant);
 
-  const renderPlayerItems = (player: MatchPlayerType) => {
+  const renderPlayerItems = (player: MatchPlayerType, time: number) => {
     const playerItems: number[] = [];
     const playerBackpack: number[] = [];
     const getItem = (id: number) =>
       items.constants?.items?.find((item) => item?.id === id);
     for (let i = 0; i < 6; i++) {
       //@ts-ignore
-      const itemId = player[`item${i}Id`];
+      const itemId = player.stats.inventoryReport[time + 1][`item${i}`]?.itemId;
       playerItems.push(itemId);
     }
     for (let i = 0; i < 3; i++) {
-      //@ts-ignore
-      const itemId = player[`backpack${i}Id`];
+      const itemId = //@ts-ignore
+        player.stats.inventoryReport[time + 1][`backPack${i}`]?.itemId;
       playerBackpack.push(itemId);
     }
     return (
@@ -197,9 +205,11 @@ export default function PlayersTable({ data, team, items }: Props) {
       },
       {
         header: "Level",
-        accessorKey: "level",
         size: 25,
         enableSorting: false,
+        accessorFn: (row) =>
+          row?.stats?.level?.filter((value: number) => value / 60 <= time)
+            .length,
         cell: ({ getValue }: any) => (
           <span className="flex size-8 items-center justify-center rounded-full border-2 border-divider">
             {getValue()}
@@ -211,9 +221,15 @@ export default function PlayersTable({ data, team, items }: Props) {
         minSize: 110,
         enableSorting: false,
         accessorFn: (row) => ({
-          kills: row.kills,
-          deaths: row.deaths,
-          assists: row.assists,
+          kills: row.stats.killEvents.filter(
+            (kill: any) => kill.time / 60 <= time
+          ).length,
+          deaths: row.stats.deathEvents.filter(
+            (death: any) => death.time / 60 <= time
+          ).length,
+          assists: row.stats.assistEvents.filter(
+            (assist: any) => assist.time / 60 <= time
+          ).length,
         }),
         cell: ({ getValue }: any) => (
           <div>
@@ -226,8 +242,18 @@ export default function PlayersTable({ data, team, items }: Props) {
         minSize: 100,
         enableSorting: false,
         accessorFn: (row) => ({
-          lastHits: row.numLastHits,
-          denies: row.numDenies,
+          lastHits:
+            time !== endTime
+              ? row.stats.lastHitsPerMinute
+                  .slice(0, time)
+                  .reduce((a: number, b: number) => a + b, 0)
+              : row.numLastHits,
+          denies:
+            time !== endTime
+              ? row.stats.deniesPerMinute
+                  .slice(0, time)
+                  .reduce((a: number, b: number) => a + b, 0)
+              : row.numDenies,
         }),
         cell: ({ getValue }: any) => (
           <>
@@ -239,7 +265,8 @@ export default function PlayersTable({ data, team, items }: Props) {
         header: "NET",
         size: 25,
         enableSorting: false,
-        accessorKey: "networth",
+        accessorFn: (row) =>
+          time !== endTime ? row.stats.networthPerMinute[time] : row.networth,
         cell: ({ getValue }: any) => <>{formatNumber(getValue()!)}</>,
       },
       {
@@ -247,44 +274,68 @@ export default function PlayersTable({ data, team, items }: Props) {
         minSize: 110,
         enableSorting: false,
         accessorFn: (row) => ({
-          goldPerMinute: row.goldPerMinute,
-          experiencePerMinute: row.experiencePerMinute,
+          goldPerMinute:
+            time !== endTime
+              ? row.stats.goldPerMinute[time - 1]
+              : row.goldPerMinute,
+          experiencePerMinute:
+            time !== endTime
+              ? row.stats.experiencePerMinute[time - 1]
+              : row.experiencePerMinute,
         }),
         cell: ({ getValue }: any) => (
           <>
-            {getValue().goldPerMinute} / {getValue().experiencePerMinute}
+            {getValue().goldPerMinute || 0} /{" "}
+            {getValue().experiencePerMinute || 0}
           </>
         ),
       },
       {
         header: "DMG",
         enableSorting: false,
-        accessorKey: "heroDamage",
+        accessorFn: (row) =>
+          time !== endTime
+            ? row.stats.heroDamagePerMinute
+                .slice(0, time)
+                .reduce((a: number, b: number) => a + b, 0)
+            : row.heroDamage,
         cell: ({ getValue }: any) => <>{formatNumber(getValue()!)}</>,
       },
       {
         header: "BLD",
         enableSorting: false,
-        accessorKey: "towerDamage",
+        accessorFn: (row) =>
+          time !== endTime
+            ? row.stats.towerDamagePerMinute
+                .slice(0, time)
+                .reduce((a: number, b: number) => a + b, 0)
+            : row.towerDamage,
         cell: ({ getValue }: any) => <>{formatNumber(getValue()!)}</>,
       },
+
       {
         header: "HEAL",
         enableSorting: false,
-        accessorKey: "heroHealing",
+        accessorFn: (row) =>
+          time !== endTime
+            ? row.stats.healPerMinute
+                .slice(0, time)
+                .reduce((a: number, b: number) => a + b, 0)
+            : row.heroHealing,
         cell: ({ getValue }: any) => <>{formatNumber(getValue()!)}</>,
       },
       {
         header: "ITEMS",
         enableSorting: false,
         accessorFn: (row) => ({ ...row }),
-        cell: ({ getValue }: any) => <>{renderPlayerItems(getValue())}</>,
+        cell: ({ getValue }: any) => <>{renderPlayerItems(getValue(), time)}</>,
       },
       {
         id: "neutralItems",
         header: "",
         enableSorting: false,
-        accessorKey: "neutral0Id",
+        accessorFn: (row) =>
+          row.stats.inventoryReport[time + 1].neutral0?.itemId,
         cell: ({ getValue }: any) => {
           const item = items?.constants?.items!.find(
             (item) => item?.id === getValue()
@@ -313,7 +364,7 @@ export default function PlayersTable({ data, team, items }: Props) {
         },
       },
     ],
-    []
+    [time]
   );
   return (
     <section className="flex flex-col gap-y-4 rounded-large border border-divider p-4">

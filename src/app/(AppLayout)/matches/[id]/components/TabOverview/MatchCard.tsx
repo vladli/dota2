@@ -1,6 +1,6 @@
 import { formatDistanceToNow } from "date-fns";
 
-import { GetMatchByIdQuery } from "@/graphql/mathch";
+import { GetMatchByIdQuery } from "@/graphql/match";
 import { cn, secondsToTime } from "@/lib/utils";
 
 type Props = {

@@ -12,7 +12,7 @@ import {
 } from "recharts";
 
 import { GetAllHeroesQuery } from "@/graphql/constants";
-import { GetMatchByIdQuery } from "@/graphql/mathch";
+import { GetMatchByIdQuery } from "@/graphql/match";
 import { cn, formatNumber } from "@/lib/utils";
 
 type Props = {

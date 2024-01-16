@@ -1,5 +1,5 @@
 import Alert from "@/components/Alert";
-import { GetMatchLanesQuery } from "@/graphql/mathch";
+import { GetMatchLanesQuery } from "@/graphql/match";
 
 import TableSummary from "../components/TabLanes/TableSummary";
 

@@ -58,13 +58,80 @@ query GetMatchById($id: Long!) {
           time
           message
         }
+
         itemPurchases {
           time
           itemId
         }
+        inventoryReport {
+          item0 {
+            itemId
+            charges
+          }
+          item1 {
+            itemId
+            charges
+          }
+          item2 {
+            itemId
+            charges
+          }
+          item3 {
+            itemId
+            charges
+          }
+          item4 {
+            itemId
+            charges
+          }
+          item5 {
+            itemId
+            charges
+          }
+          backPack0 {
+            itemId
+            charges
+          }
+          backPack1 {
+            itemId
+            charges
+          }
+          backPack2 {
+            itemId
+            charges
+          }
+          neutral0 {
+            itemId
+            charges
+          }
+        }
         killEvents {
           time
           target
+        }
+        deathEvents {
+          time
+          attacker
+        }
+        assistEvents {
+          time
+          target
+        }
+        level
+        lastHitsPerMinute
+        deniesPerMinute
+        goldPerMinute
+        experiencePerMinute
+        healPerMinute
+        heroDamagePerMinute
+        heroDamageReceivedPerMinute
+        towerDamagePerMinute
+        networthPerMinute
+        matchPlayerBuffEvent {
+          time
+          abilityId
+          itemId
+          stackCount
         }
         runes {
           time

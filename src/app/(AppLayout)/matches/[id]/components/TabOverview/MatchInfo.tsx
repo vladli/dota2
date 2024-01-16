@@ -4,7 +4,7 @@ import { Button, Image } from "@nextui-org/react";
 import { format } from "date-fns";
 import { icons } from "lucide-react";
 
-import { GetMatchByIdQuery } from "@/graphql/mathch";
+import { GetMatchByIdQuery } from "@/graphql/match";
 import { cn, getRankName, getRegionName } from "@/lib/utils";
 
 type Props = {

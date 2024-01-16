@@ -1,5 +1,5 @@
 import { GetAllHeroesQuery, GetAllItemsQuery } from "@/graphql/constants";
-import { GetMatchByIdQuery } from "@/graphql/mathch";
+import { GetMatchByIdQuery } from "@/graphql/match";
 
 import MatchStats from "../components/TabOverview/MatchStats";
 import PickBan from "../components/TabOverview/PickBan";
@@ -11,7 +11,7 @@ type Props = {
   items: GetAllItemsQuery;
 };
 
-export default function TabOverview({ data, heroes, items }: Props) {
+export default function Overview({ data, heroes, items }: Props) {
   return (
     <>
       <div className="flex flex-col gap-4">

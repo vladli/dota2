@@ -3,7 +3,7 @@ import { Image } from "@nextui-org/react";
 import { MessageSquareQuote, Sword, Swords } from "lucide-react";
 
 import { GetAllHeroesQuery } from "@/graphql/constants";
-import { GetMatchByIdQuery } from "@/graphql/mathch";
+import { GetMatchByIdQuery } from "@/graphql/match";
 import { IMAGE } from "@/lib/constants";
 import { cn, convertToHumanReadable, secondsToTime } from "@/lib/utils";
 import { RuneAction, RuneEnums } from "@/types/types.generated";

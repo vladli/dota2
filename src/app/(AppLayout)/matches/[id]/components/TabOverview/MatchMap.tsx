@@ -3,7 +3,7 @@ import { MouseEvent, MouseEventHandler, useState } from "react";
 import { icons } from "lucide-react";
 
 import SVGTooltip from "@/components/SVGTooltip";
-import { GetMatchByIdQuery } from "@/graphql/mathch";
+import { GetMatchByIdQuery } from "@/graphql/match";
 
 type Props = { data: GetMatchByIdQuery };
 

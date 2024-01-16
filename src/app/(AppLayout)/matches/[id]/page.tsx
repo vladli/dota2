@@ -1,5 +1,5 @@
 import { GetAllHeroesDocument, GetAllItemsDocument } from "@/graphql/constants";
-import { GetMatchByIdDocument } from "@/graphql/mathch";
+import { GetMatchByIdDocument } from "@/graphql/match";
 import { getClient } from "@/lib/client";
 import { cn } from "@/lib/utils";
 

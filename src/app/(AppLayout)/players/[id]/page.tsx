@@ -38,10 +38,10 @@ export default async function page({ params }: Props) {
   return (
     <main>
       <div className="relative">
-        <div className="absolute -z-10 h-full w-full">
+        <div className="absolute -z-10 size-full">
           <Image
             alt="Background"
-            className="h-[calc(100%+368px)] w-[calc(100%+368px)] object-cover opacity-60 blur-[100px]"
+            className="size-[calc(100%+368px)] object-cover opacity-60 blur-[100px]"
             fill
             src={data.player?.steamAccount?.avatar || ""}
             unoptimized

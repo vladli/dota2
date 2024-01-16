@@ -4,7 +4,7 @@ import { ColumnDef } from "@tanstack/react-table";
 
 import Table from "@/components/Table/Table";
 import Tooltip from "@/components/Tooltip";
-import { GetMatchLanesQuery } from "@/graphql/mathch";
+import { GetMatchLanesQuery } from "@/graphql/match";
 import { IMAGE } from "@/lib/constants";
 import { cn, getRoleInfo } from "@/lib/utils";
 
@@ -88,7 +88,7 @@ export default function TableSummary({
         accessorFn: (row) =>
           row.stats.level.filter((level: number) => level <= 600).length,
         cell: (info: any) => (
-          <div className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-divider">
+          <div className="flex size-8 items-center justify-center rounded-full border-2 border-divider">
             {info.getValue()}
           </div>
         ),

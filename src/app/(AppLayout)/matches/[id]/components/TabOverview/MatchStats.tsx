@@ -1,5 +1,5 @@
 import { GetAllHeroesQuery } from "@/graphql/constants";
-import { GetMatchByIdQuery } from "@/graphql/mathch";
+import { GetMatchByIdQuery } from "@/graphql/match";
 
 import MatchGraph from "./MatchGraph";
 import MatchMap from "./MatchMap";

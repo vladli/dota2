@@ -25,8 +25,8 @@ export default async function PlayedWith({ steamId }: Props) {
     },
   });
   return (
-    <section>
+    <>
       <PlayedWithTable data={data} />
-    </section>
+    </>
   );
 }

@@ -20,7 +20,7 @@ export default function MatchInfo({ data }: Props) {
           text={getRegionName(match?.regionId)}
         />
         <Button
-          className="cursor-copy"
+          className="hidden cursor-copy lg:flex"
           onClick={() => {
             toast.success("Copied to clipboard");
             navigator.clipboard.writeText(match?.id);
@@ -29,7 +29,6 @@ export default function MatchInfo({ data }: Props) {
           variant="light"
         >
           <Item
-            className="hidden lg:flex"
             icon="Files"
             text={match?.id}
           />

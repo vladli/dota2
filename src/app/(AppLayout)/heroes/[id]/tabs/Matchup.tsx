@@ -283,7 +283,7 @@ export default function Matchup({ hero, allHeroes }: Props) {
           />
         </div>
       </section>
-      <section className="my-4 overflow-x-auto rounded-large bg-black">
+      <section className="my-4">
         <Table
           columns={columns}
           data={combinedRows || []}

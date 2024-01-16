@@ -58,7 +58,7 @@ function CardItem({
       className="relative transition-background hover:bg-content2"
       href={`/heroes/${heroId}`}
     >
-      <div className="absolute top-0 h-full w-full overflow-hidden">
+      <div className="absolute top-0 size-full overflow-hidden">
         <NextImage
           alt=""
           className="blur-[80px]"
@@ -69,7 +69,7 @@ function CardItem({
         />
       </div>
       <section className="flex items-center gap-x-2 rounded-large border border-divider p-2">
-        <div className="flex h-8 w-8 items-center justify-center rounded-large bg-content2">
+        <div className="flex size-8 items-center justify-center rounded-large bg-content2">
           <span>{index}</span>
         </div>
         <div className="flex grow flex-col">

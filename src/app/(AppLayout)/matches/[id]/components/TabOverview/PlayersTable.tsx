@@ -322,12 +322,10 @@ export default function PlayersTable({ data, team, items }: Props) {
         text={team}
         win={match?.didRadiantWin!}
       />
-      <div className="overflow-x-auto rounded-large border border-divider">
-        <Table
-          columns={columns}
-          data={players?.sort(compareLaneAndRole) || []}
-        />
-      </div>
+      <Table
+        columns={columns}
+        data={players?.sort(compareLaneAndRole) || []}
+      />
     </section>
   );
 }

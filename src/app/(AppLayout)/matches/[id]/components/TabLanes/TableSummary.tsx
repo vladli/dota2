@@ -231,12 +231,10 @@ export default function TableSummary({
   );
 
   return (
-    <div className="relative overflow-x-auto rounded-large shadow-md">
-      <Table
-        columns={columns}
-        data={data.match?.players!}
-        defaultSorting={[{ id: "netWorth", desc: true }]}
-      />
-    </div>
+    <Table
+      columns={columns}
+      data={data.match?.players!}
+      defaultSorting={[{ id: "netWorth", desc: true }]}
+    />
   );
 }

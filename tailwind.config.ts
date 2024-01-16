@@ -35,6 +35,7 @@ const config: Config = {
         },
       },
     }),
+    require("tailwind-scrollbar"),
   ],
   darkMode: "class",
 };

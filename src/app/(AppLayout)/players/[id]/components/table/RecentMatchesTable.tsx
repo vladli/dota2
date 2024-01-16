@@ -17,7 +17,7 @@ export default function RecentMatchesTable({ data }: Props) {
   return (
     <div className="flex flex-col gap-2 rounded-large bg-content1 p-4">
       <TableTitle>Recent Matches</TableTitle>
-      <div className="overflow-x-auto">
+      <div className="overflow-hidden hover:overflow-x-auto">
         {matches!.map((match) => {
           const player = match?.players![0];
           return (

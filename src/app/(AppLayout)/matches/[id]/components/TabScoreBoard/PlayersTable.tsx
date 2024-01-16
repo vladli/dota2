@@ -6,10 +6,16 @@ import Link from "next/link";
 
 import Table from "@/components/Table/Table";
 import Tooltip from "@/components/Tooltip";
-import { GetAllItemsQuery } from "@/graphql/constants";
+import { GetAllHeroesQuery, GetAllItemsQuery } from "@/graphql/constants";
 import { GetMatchByIdQuery } from "@/graphql/match";
 import { IMAGE } from "@/lib/constants";
-import { formatNumber, getRankName, getRoleInfo } from "@/lib/utils";
+import {
+  cn,
+  formatNumber,
+  getRankName,
+  getRoleInfo,
+  secondsToTime,
+} from "@/lib/utils";
 import { MatchPlayerType } from "@/types/types.generated";
 
 import { Header } from "../ClientTabs";
@@ -18,6 +24,7 @@ type Props = {
   data: GetMatchByIdQuery;
   team: "Dire" | "Radiant";
   items: GetAllItemsQuery;
+  heroes: GetAllHeroesQuery;
   time: number;
   endTime: number;
 };
@@ -44,6 +51,7 @@ export default function PlayersTable({
   data,
   team,
   items,
+  heroes,
   time,
   endTime,
 }: Props) {
@@ -52,12 +60,14 @@ export default function PlayersTable({
     team === "Radiant"
       ? match?.players!.filter((player) => player?.isRadiant)
       : match?.players!.filter((player) => !player?.isRadiant);
-
+  const getHero = (id: number) =>
+    heroes.constants?.heroes?.find((hero) => hero?.id === id);
+  const getItem = (id: number) =>
+    items.constants?.items?.find((item) => item?.id === id);
   const renderPlayerItems = (player: MatchPlayerType, time: number) => {
     const playerItems: number[] = [];
     const playerBackpack: number[] = [];
-    const getItem = (id: number) =>
-      items.constants?.items?.find((item) => item?.id === id);
+
     for (let i = 0; i < 6; i++) {
       //@ts-ignore
       const itemId = player.stats.inventoryReport[time + 1][`item${i}`]?.itemId;
@@ -84,7 +94,7 @@ export default function PlayersTable({
               >
                 <Image
                   alt="item"
-                  className="min-w-[40px]"
+                  className="z-0 min-w-[40px]"
                   radius="none"
                   src={IMAGE.urlItem + getItem(item)?.shortName + ".png"}
                   width={40}
@@ -116,7 +126,7 @@ export default function PlayersTable({
               >
                 <Image
                   alt="item"
-                  className="min-w-[40px]"
+                  className="z-0 min-w-[40px] "
                   radius="none"
                   src={IMAGE.urlItem + getItem(item)?.shortName + ".png"}
                   width={40}
@@ -271,7 +281,7 @@ export default function PlayersTable({
       },
       {
         header: "GPM / XPM",
-        minSize: 110,
+        minSize: 120,
         enableSorting: false,
         accessorFn: (row) => ({
           goldPerMinute:
@@ -280,7 +290,11 @@ export default function PlayersTable({
               : row.goldPerMinute,
           experiencePerMinute:
             time !== endTime
-              ? row.stats.experiencePerMinute[time - 1]
+              ? Math.round(
+                  row.stats.experiencePerMinute
+                    .slice(0, time)
+                    .reduce((a: number, b: number) => a + b, 0) / time
+                )
               : row.experiencePerMinute,
         }),
         cell: ({ getValue }: any) => (
@@ -289,40 +303,6 @@ export default function PlayersTable({
             {getValue().experiencePerMinute || 0}
           </>
         ),
-      },
-      {
-        header: "DMG",
-        enableSorting: false,
-        accessorFn: (row) =>
-          time !== endTime
-            ? row.stats.heroDamagePerMinute
-                .slice(0, time)
-                .reduce((a: number, b: number) => a + b, 0)
-            : row.heroDamage,
-        cell: ({ getValue }: any) => <>{formatNumber(getValue()!)}</>,
-      },
-      {
-        header: "BLD",
-        enableSorting: false,
-        accessorFn: (row) =>
-          time !== endTime
-            ? row.stats.towerDamagePerMinute
-                .slice(0, time)
-                .reduce((a: number, b: number) => a + b, 0)
-            : row.towerDamage,
-        cell: ({ getValue }: any) => <>{formatNumber(getValue()!)}</>,
-      },
-
-      {
-        header: "HEAL",
-        enableSorting: false,
-        accessorFn: (row) =>
-          time !== endTime
-            ? row.stats.healPerMinute
-                .slice(0, time)
-                .reduce((a: number, b: number) => a + b, 0)
-            : row.heroHealing,
-        cell: ({ getValue }: any) => <>{formatNumber(getValue()!)}</>,
       },
       {
         header: "ITEMS",
@@ -352,7 +332,7 @@ export default function PlayersTable({
               <div className="size-[35px]">
                 <Image
                   alt="item"
-                  className="size-full object-cover"
+                  className="z-0 size-full object-cover "
                   radius="full"
                   removeWrapper
                   src={IMAGE.urlItem + item?.shortName + ".png"}
@@ -362,6 +342,166 @@ export default function PlayersTable({
             </Tooltip>
           );
         },
+      },
+      {
+        header: "DMG",
+        enableSorting: false,
+        accessorFn: (row) =>
+          time !== endTime
+            ? row.stats.heroDamagePerMinute
+                .slice(0, time)
+                .reduce((a: number, b: number) => a + b, 0)
+            : row.heroDamage,
+        cell: ({ getValue }: any) => <>{formatNumber(getValue()!)}</>,
+      },
+      {
+        header: "BLD",
+        enableSorting: false,
+        accessorFn: (row) =>
+          time !== endTime
+            ? row.stats.towerDamagePerMinute
+                .slice(0, time)
+                .reduce((a: number, b: number) => a + b, 0)
+            : row.towerDamage,
+        cell: ({ getValue }: any) => <>{formatNumber(getValue()!)}</>,
+      },
+      {
+        header: "HEAL",
+        enableSorting: false,
+        accessorFn: (row) =>
+          time !== endTime
+            ? row.stats.healPerMinute
+                .slice(0, time)
+                .reduce((a: number, b: number) => a + b, 0)
+            : row.heroHealing,
+        cell: ({ getValue }: any) => <>{formatNumber(getValue()!)}</>,
+      },
+      {
+        header: "DEATH GOLD",
+        enableSorting: false,
+        accessorFn: (row) => {
+          const val = row.stats.deathEvents
+            .filter((death: any) => death.time / 60 <= time)
+            .reduce((a: number, b: any) => a + b.goldLost, 0);
+          return val;
+        },
+        cell: ({ getValue }: any) => <>{formatNumber(getValue()!)}</>,
+      },
+      {
+        header: "DEATH TIME",
+        enableSorting: false,
+        accessorFn: (row) => {
+          const val = row.stats.deathEvents
+            .filter((death: any) => death.time / 60 <= time)
+            .reduce((a: number, b: any) => a + b.timeDead, 0);
+          return val;
+        },
+        cell: ({ getValue }: any) => <>{secondsToTime(getValue()!)}</>,
+      },
+      {
+        header: "KILLS",
+        enableSorting: false,
+        accessorFn: (row) => ({
+          killEvents: row.stats.killEvents.filter(
+            (death: any) => death.time / 60 <= time
+          ),
+          playerTeam: row.isRadiant,
+        }),
+        cell: ({ getValue }: any) => {
+          const getKills = (heroId: number) =>
+            getValue().killEvents.filter((kill: any) => kill.target == heroId)
+              .length;
+          const enemyHeroes = data?.match?.players?.filter(
+            (player) => player?.isRadiant !== getValue().playerTeam
+          );
+          return (
+            <div className="flex gap-x-2">
+              {enemyHeroes?.map((hero) => (
+                <div
+                  className="flex items-center gap-x-1 rounded-large bg-content1 px-3"
+                  key={hero?.heroId}
+                >
+                  <Image
+                    alt=""
+                    className={cn("min-w-[30px] z-0", {
+                      grayscale: getKills(hero?.heroId) === 0,
+                    })}
+                    height={30}
+                    src={IMAGE.url + hero?.hero?.shortName + IMAGE.icon}
+                    width={30}
+                  />
+                  {getKills(hero?.heroId) > 0 ? getKills(hero?.heroId) : "-"}
+                </div>
+              ))}
+            </div>
+          );
+        },
+      },
+      {
+        header: "Support Items",
+        enableSorting: false,
+        accessorFn: (row) => ({
+          itemPurchases: row.stats.itemPurchases.filter(
+            (item: any) => item.time / 60 <= time
+          ),
+        }),
+        cell: ({ getValue }: any) => {
+          const observerWards = getValue().itemPurchases.filter(
+            (item: any) => item.itemId == 42
+          );
+          const sentryWards = getValue().itemPurchases.filter(
+            (item: any) => item.itemId == 43
+          );
+          const dusts = getValue().itemPurchases.filter(
+            (item: any) => item.itemId == 40
+          );
+          const sod = getValue().itemPurchases.filter(
+            (item: any) => item.itemId == 188
+          );
+          const renderItem = (itemId: number, count: number) => {
+            return (
+              <Tooltip
+                content={
+                  <ToolTipContent
+                    img={IMAGE.urlItem + getItem(itemId)?.shortName + ".png"}
+                    name={getItem(itemId)?.displayName || ""}
+                  />
+                }
+              >
+                <div className="flex w-fit items-center gap-x-1 rounded-large bg-content1 px-3">
+                  <Image
+                    alt="item"
+                    className="z-0 min-w-[40px]"
+                    src={IMAGE.urlItem + getItem(itemId)?.shortName + ".png"}
+                    width={40}
+                  />
+                  <span>x{count}</span>
+                </div>
+              </Tooltip>
+            );
+          };
+          return (
+            <div className="flex gap-x-2">
+              {observerWards.length
+                ? renderItem(42, observerWards.length)
+                : null}
+              {sentryWards.length ? renderItem(43, sentryWards.length) : null}
+              {dusts.length ? renderItem(40, dusts.length) : null}
+              {sod.length ? renderItem(188, sod.length) : null}
+            </div>
+          );
+        },
+      },
+      {
+        header: "CAMP STACKS",
+        enableSorting: false,
+        accessorFn: (row) => {
+          const length = row.stats?.campStack?.length - 1;
+          return time !== endTime
+            ? row.stats.campStack?.[time - 1] || "-"
+            : row.stats.campStack?.[length] || "-";
+        },
+        cell: ({ getValue }: any) => <>{getValue()}</>,
       },
     ],
     [time]
@@ -373,12 +513,10 @@ export default function PlayersTable({
         text={team}
         win={match?.didRadiantWin!}
       />
-      <div className="overflow-x-auto rounded-large border border-divider">
-        <Table
-          columns={columns}
-          data={players?.sort(compareLaneAndRole) || []}
-        />
-      </div>
+      <Table
+        columns={columns}
+        data={players?.sort(compareLaneAndRole) || []}
+      />
     </section>
   );
 }

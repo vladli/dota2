@@ -112,6 +112,9 @@ query GetMatchById($id: Long!) {
         deathEvents {
           time
           attacker
+          target
+          timeDead
+          goldLost
         }
         assistEvents {
           time
@@ -127,6 +130,7 @@ query GetMatchById($id: Long!) {
         heroDamageReceivedPerMinute
         towerDamagePerMinute
         networthPerMinute
+        campStack
         matchPlayerBuffEvent {
           time
           abilityId

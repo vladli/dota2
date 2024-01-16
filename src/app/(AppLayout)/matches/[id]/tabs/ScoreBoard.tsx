@@ -27,16 +27,18 @@ export default function ScoreBoard({ data, heroes, items }: Props) {
           maxValue={time}
           minValue={0}
           onChangeEnd={setValue}
-          showSteps
+          showTooltip={true}
           size="sm"
           startContent={minutesToTime(value as number)}
           step={1}
+          tooltipProps={{ color: "default" }}
         />
       </div>
       <div className="flex flex-col gap-4">
         <PlayersTable
           data={data}
           endTime={time}
+          heroes={heroes}
           items={items}
           team="Radiant"
           time={value as number}
@@ -45,6 +47,7 @@ export default function ScoreBoard({ data, heroes, items }: Props) {
         <PlayersTable
           data={data}
           endTime={time}
+          heroes={heroes}
           items={items}
           team="Dire"
           time={value as number}

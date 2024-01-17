@@ -69,13 +69,13 @@ export default function PlayersTable({
     const playerBackpack: number[] = [];
 
     for (let i = 0; i < 6; i++) {
-      //@ts-ignore
-      const itemId = player.stats.inventoryReport[time + 1][`item${i}`]?.itemId;
+      const itemId = //@ts-ignore
+        player?.stats?.inventoryReport?.[time + 1][`item${i}`]?.itemId;
       playerItems.push(itemId);
     }
     for (let i = 0; i < 3; i++) {
       const itemId = //@ts-ignore
-        player.stats.inventoryReport[time + 1][`backPack${i}`]?.itemId;
+        player.stats.inventoryReport?.[time + 1][`backPack${i}`]?.itemId;
       playerBackpack.push(itemId);
     }
     return (
@@ -147,8 +147,7 @@ export default function PlayersTable({
   const columns = useMemo<ColumnDef<any>[]>(
     () => [
       {
-        id: "role",
-        header: "",
+        header: "Hero",
         enableSorting: false,
         size: 30,
         meta: {
@@ -157,20 +156,33 @@ export default function PlayersTable({
         accessorFn: (row) => ({
           role: row.role,
           lane: row.lane,
+          heroId: row.heroId,
+          displayName: row.hero.displayName,
+          shortName: row.hero.shortName,
         }),
         cell: ({ getValue }: any) => (
-          <Tooltip
-            content={getRoleInfo(getValue().role, getValue().lane)?.name}
-          >
-            <Image
-              alt=""
-              className="min-w-[14px]"
-              height={14}
-              radius="none"
-              src={getRoleInfo(getValue().role, getValue().lane)?.image || ""}
-              width={14}
-            />
-          </Tooltip>
+          <div className="flex items-center gap-x-2">
+            <Tooltip
+              content={getRoleInfo(getValue().role, getValue().lane)?.name}
+            >
+              <Image
+                alt=""
+                className="min-w-[14px]"
+                height={14}
+                radius="none"
+                src={getRoleInfo(getValue().role, getValue().lane)?.image || ""}
+                width={14}
+              />
+            </Tooltip>
+            <Link href={`/heroes/${getValue().heroId}`}>
+              <Image
+                alt=""
+                className="min-w-[70px]"
+                src={IMAGE.url + getValue().shortName + IMAGE.horizontal}
+                width={70}
+              />
+            </Link>
+          </div>
         ),
       },
       {
@@ -178,37 +190,25 @@ export default function PlayersTable({
         size: 250,
         minSize: 250,
         enableSorting: false,
-        meta: {
-          isSticky: true,
-        },
+
         accessorFn: (row) => ({
           player: row.steamAccount.name,
           playerRank: row.steamAccount.seasonRank,
           steamAccountId: row.steamAccountId,
-          heroId: row.heroId,
-          displayName: row.hero.displayName,
-          shortName: row.hero.shortName,
         }),
         cell: ({ getValue }: any) => {
           const rank = getRankName(getValue().playerRank?.toString()[0]);
           return (
-            <div className="flex items-center gap-2">
-              <Link href={`/heroes/${getValue().heroId}`}>
-                <Image
-                  alt=""
-                  className="min-w-[70px]"
-                  src={IMAGE.url + getValue().shortName + IMAGE.horizontal}
-                  width={70}
-                />
+            <div className="flex flex-col">
+              <Link
+                className="w-fit"
+                href={`/players/${getValue().steamAccountId}`}
+              >
+                {getValue().player}
               </Link>
-              <div className="flex flex-col">
-                <Link href={`/players/${getValue().steamAccountId}`}>
-                  {getValue().player}
-                </Link>
-                <span className="text-sm text-foreground-400">
-                  {rank} {getValue()?.playerRank?.toString()[1]}
-                </span>
-              </div>
+              <span className="text-sm text-foreground-400">
+                {rank} {getValue()?.playerRank?.toString()[1]}
+              </span>
             </div>
           );
         },
@@ -231,13 +231,13 @@ export default function PlayersTable({
         minSize: 110,
         enableSorting: false,
         accessorFn: (row) => ({
-          kills: row.stats.killEvents.filter(
+          kills: row.stats.killEvents?.filter(
             (kill: any) => kill.time / 60 <= time
           ).length,
-          deaths: row.stats.deathEvents.filter(
+          deaths: row.stats.deathEvents?.filter(
             (death: any) => death.time / 60 <= time
           ).length,
-          assists: row.stats.assistEvents.filter(
+          assists: row.stats.assistEvents?.filter(
             (assist: any) => assist.time / 60 <= time
           ).length,
         }),
@@ -315,7 +315,7 @@ export default function PlayersTable({
         header: "",
         enableSorting: false,
         accessorFn: (row) =>
-          row.stats.inventoryReport[time + 1].neutral0?.itemId,
+          row.stats.inventoryReport?.[time + 1].neutral0?.itemId,
         cell: ({ getValue }: any) => {
           const item = items?.constants?.items!.find(
             (item) => item?.id === getValue()
@@ -381,7 +381,7 @@ export default function PlayersTable({
         enableSorting: false,
         accessorFn: (row) => {
           const val = row.stats.deathEvents
-            .filter((death: any) => death.time / 60 <= time)
+            ?.filter((death: any) => death.time / 60 <= time)
             .reduce((a: number, b: any) => a + b.goldLost, 0);
           return val;
         },
@@ -392,7 +392,7 @@ export default function PlayersTable({
         enableSorting: false,
         accessorFn: (row) => {
           const val = row.stats.deathEvents
-            .filter((death: any) => death.time / 60 <= time)
+            ?.filter((death: any) => death.time / 60 <= time)
             .reduce((a: number, b: any) => a + b.timeDead, 0);
           return val;
         },
@@ -402,14 +402,14 @@ export default function PlayersTable({
         header: "KILLS",
         enableSorting: false,
         accessorFn: (row) => ({
-          killEvents: row.stats.killEvents.filter(
+          killEvents: row.stats.killEvents?.filter(
             (death: any) => death.time / 60 <= time
           ),
           playerTeam: row.isRadiant,
         }),
         cell: ({ getValue }: any) => {
           const getKills = (heroId: number) =>
-            getValue().killEvents.filter((kill: any) => kill.target == heroId)
+            getValue().killEvents?.filter((kill: any) => kill.target == heroId)
               .length;
           const enemyHeroes = data?.match?.players?.filter(
             (player) => player?.isRadiant !== getValue().playerTeam
@@ -441,21 +441,21 @@ export default function PlayersTable({
         header: "Support Items",
         enableSorting: false,
         accessorFn: (row) => ({
-          itemPurchases: row.stats.itemPurchases.filter(
+          itemPurchases: row.stats.itemPurchases?.filter(
             (item: any) => item.time / 60 <= time
           ),
         }),
         cell: ({ getValue }: any) => {
-          const observerWards = getValue().itemPurchases.filter(
+          const observerWards = getValue().itemPurchases?.filter(
             (item: any) => item.itemId == 42
           );
-          const sentryWards = getValue().itemPurchases.filter(
+          const sentryWards = getValue().itemPurchases?.filter(
             (item: any) => item.itemId == 43
           );
-          const dusts = getValue().itemPurchases.filter(
+          const dusts = getValue().itemPurchases?.filter(
             (item: any) => item.itemId == 40
           );
-          const sod = getValue().itemPurchases.filter(
+          const sod = getValue().itemPurchases?.filter(
             (item: any) => item.itemId == 188
           );
           const renderItem = (itemId: number, count: number) => {
@@ -482,12 +482,12 @@ export default function PlayersTable({
           };
           return (
             <div className="flex gap-x-2">
-              {observerWards.length
+              {observerWards?.length
                 ? renderItem(42, observerWards.length)
                 : null}
-              {sentryWards.length ? renderItem(43, sentryWards.length) : null}
-              {dusts.length ? renderItem(40, dusts.length) : null}
-              {sod.length ? renderItem(188, sod.length) : null}
+              {sentryWards?.length ? renderItem(43, sentryWards.length) : null}
+              {dusts?.length ? renderItem(40, dusts.length) : null}
+              {sod?.length ? renderItem(188, sod.length) : null}
             </div>
           );
         },

@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { Image, Progress } from "@nextui-org/react";
 import { ColumnDef } from "@tanstack/react-table";
+import Link from "next/link";
 
 import Table from "@/components/Table/Table";
 import Tooltip from "@/components/Tooltip";
@@ -22,9 +23,7 @@ export default function TableSummary({
   const columns = useMemo<ColumnDef<any>[]>(
     () => [
       {
-        id: "position",
-        size: 35,
-        header: "",
+        header: "Hero",
         enableSorting: false,
         meta: {
           isSticky: true,
@@ -33,54 +32,59 @@ export default function TableSummary({
           position: row.position,
           role: row.role,
           lane: row.lane,
-        }),
-        cell: (info: any) => (
-          <Tooltip
-            content={
-              getRoleInfo(info.getValue().role, info.getValue().lane)?.name
-            }
-          >
-            <Image
-              alt=""
-              className="min-w-[18px]"
-              height={18}
-              radius="none"
-              src={
-                getRoleInfo(info.getValue().role, info.getValue().lane)
-                  ?.image || ""
-              }
-              width={18}
-            />
-          </Tooltip>
-        ),
-      },
-      {
-        header: "Hero",
-        size: 70,
-        enableSorting: false,
-        meta: {
-          isSticky: true,
-        },
-        accessorFn: (row) => ({
           displayName: row.hero.displayName,
           shortName: row.hero.shortName,
         }),
         cell: (info: any) => (
-          <Tooltip content={info.getValue().displayName}>
-            <Image
-              alt="Hero"
-              className="min-w-[70px]"
-              radius="sm"
-              src={IMAGE.url + info.getValue().shortName + IMAGE.horizontal}
-              width={70}
-            />
-          </Tooltip>
+          <div className="flex items-center gap-x-2">
+            <Tooltip
+              content={
+                getRoleInfo(info.getValue().role, info.getValue().lane)?.name
+              }
+            >
+              <Image
+                alt=""
+                className="min-w-[14px]"
+                height={14}
+                radius="none"
+                src={
+                  getRoleInfo(info.getValue().role, info.getValue().lane)
+                    ?.image || ""
+                }
+                width={14}
+              />
+            </Tooltip>
+            <Tooltip content={info.getValue().displayName}>
+              <Image
+                alt="Hero"
+                className="min-w-[70px]"
+                radius="sm"
+                src={IMAGE.url + info.getValue().shortName + IMAGE.horizontal}
+                width={70}
+              />
+            </Tooltip>
+          </div>
         ),
       },
       {
         header: "Player",
         enableSorting: false,
-        accessorFn: (row) => row.steamAccount.name,
+        accessorFn: (row) => ({
+          player: row.steamAccount.name,
+          steamAccountId: row.steamAccountId,
+        }),
+        cell: ({ getValue }: any) => {
+          return (
+            <div className="flex flex-col">
+              <Link
+                className="w-fit"
+                href={`/players/${getValue().steamAccountId}`}
+              >
+                {getValue().player}
+              </Link>
+            </div>
+          );
+        },
       },
       {
         header: "Level",

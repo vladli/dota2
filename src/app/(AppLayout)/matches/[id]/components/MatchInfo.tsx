@@ -1,9 +1,10 @@
 "use client";
 import toast from "react-hot-toast";
-import { Button, Image } from "@nextui-org/react";
+import { Button } from "@nextui-org/react";
 import { format } from "date-fns";
 import { icons } from "lucide-react";
 
+import RankImage from "@/components/RankImage";
 import { GetMatchByIdQuery } from "@/graphql/match";
 import { cn, getRankName, getRegionName } from "@/lib/utils";
 
@@ -33,31 +34,21 @@ export default function MatchInfo({ data }: Props) {
             text={match?.id}
           />
         </Button>
-
-        <Item
-          text={
-            <div className="flex items-center gap-1">
-              <div className="relative my-auto">
-                {match?.rank?.toString()[1] !== "0" && (
-                  <Image
-                    alt="rankStar"
-                    className="absolute -top-1"
-                    src={`/img/ranks/rank_star_${
-                      match?.rank?.toString()[1]
-                    }.png`}
+        {match?.rank ? (
+          <Item
+            text={
+              <div className="flex items-center gap-1">
+                <div className="relative my-auto">
+                  <RankImage
+                    rank={match.rank}
                     width={30}
                   />
-                )}
-                <Image
-                  alt="rank"
-                  src={`/img/ranks/${match?.rank?.toString()[0]}.png`}
-                  width={30}
-                />
+                </div>
+                <span>{getRankName(match?.rank?.toString()[0]!)}</span>
               </div>
-              <span>{getRankName(match?.rank?.toString()[0]!)}</span>
-            </div>
-          }
-        />
+            }
+          />
+        ) : null}
       </div>
       <Item
         icon="CalendarDays"

@@ -27,8 +27,10 @@ export default function ClientTabs({ data, items, heroes }: Props) {
   return (
     <Tabs
       classNames={{
+        base: "overflow-x-auto block",
         tabList: "bg-transparent border border-divider",
         cursor: "group-data-[selected=true]:bg-content2",
+        tab: "max-w-fit",
       }}
       defaultSelectedKey="overview"
     >

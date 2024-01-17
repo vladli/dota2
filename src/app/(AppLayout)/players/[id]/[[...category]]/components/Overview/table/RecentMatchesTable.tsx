@@ -2,6 +2,7 @@ import { cn, Divider, Image } from "@nextui-org/react";
 import { formatDistanceToNow } from "date-fns";
 import NextLink from "next/link";
 
+import RankImage from "@/components/RankImage";
 import Tooltip from "@/components/Tooltip";
 import { GetPlayerMatchesQuery } from "@/graphql/player";
 import { IMAGE } from "@/lib/constants";
@@ -35,9 +36,12 @@ export default function RecentMatchesTable({ data }: Props) {
                 />
               </div>
               <Divider orientation="vertical" />
+
               <div className="shrink-0">
                 <Tooltip
-                  content={getRoleInfo(player?.role, player?.lane)?.name}
+                  content={
+                    getRoleInfo(player?.role, player?.lane)?.name || "Unknown"
+                  }
                 >
                   <Image
                     alt=""
@@ -65,21 +69,7 @@ export default function RecentMatchesTable({ data }: Props) {
               </div>
               <div className="flex shrink-0 grow justify-end gap-2">
                 <div className="relative my-auto">
-                  {match?.actualRank?.toString()[1] !== "0" && (
-                    <Image
-                      alt="rankStar"
-                      className="absolute -top-1"
-                      src={`/img/ranks/rank_star_${
-                        match?.actualRank?.toString()[1]
-                      }.png`}
-                      width={40}
-                    />
-                  )}
-                  <Image
-                    alt="rank"
-                    src={`/img/ranks/${match?.actualRank?.toString()[0]}.png`}
-                    width={40}
-                  />
+                  <RankImage rank={match?.actualRank} />
                 </div>
                 <div>
                   <Divider orientation="vertical" />

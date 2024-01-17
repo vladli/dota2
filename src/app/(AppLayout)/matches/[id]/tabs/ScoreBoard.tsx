@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Slider, SliderValue } from "@nextui-org/react";
 
+import Alert from "@/components/Alert";
 import { GetAllHeroesQuery, GetAllItemsQuery } from "@/graphql/constants";
 import { GetMatchByIdQuery } from "@/graphql/match";
 import { minutesToTime } from "@/lib/utils";
@@ -16,6 +17,8 @@ export default function ScoreBoard({ data, heroes, items }: Props) {
   const time =
     data?.match?.players?.[0]?.stats?.networthPerMinute?.length || 1 || 0;
   const [value, setValue] = useState<SliderValue>(time);
+  if (data?.match?.players?.[0]?.stats?.experiencePerMinute === null)
+    return <Alert text="No data available." />;
   return (
     <>
       <div className="mb-4 rounded-large border border-divider p-2">

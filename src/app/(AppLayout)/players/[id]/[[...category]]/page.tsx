@@ -53,7 +53,8 @@ export default async function page({ params }: Props) {
         <PlayerCard data={data} />
       </div>
 
-      {data.player?.matches?.length ? (
+      {data.player?.matches?.length &&
+      !data.player.steamAccount?.isAnonymous ? (
         <>
           <ClientTabs playerId={params.id} />
           <section className="flex w-full flex-col p-4">

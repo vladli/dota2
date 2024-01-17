@@ -6,6 +6,7 @@ import { formatDistanceToNow } from "date-fns";
 import Link from "next/link";
 
 import Loading from "@/components/Loading";
+import RankImage from "@/components/RankImage";
 import Tooltip from "@/components/Tooltip";
 import { GetPlayerMatchesDocument } from "@/graphql/player";
 import { IMAGE } from "@/lib/constants";
@@ -79,21 +80,7 @@ export default function PlayerMatches({ playerId, matchCount }: Props) {
               </div>
               <div className="flex shrink-0 grow justify-end gap-2">
                 <div className="relative my-auto">
-                  {match?.actualRank?.toString()[1] !== "0" && (
-                    <Image
-                      alt="rankStar"
-                      className="absolute -top-1"
-                      src={`/img/ranks/rank_star_${
-                        match?.actualRank?.toString()[1]
-                      }.png`}
-                      width={40}
-                    />
-                  )}
-                  <Image
-                    alt="rank"
-                    src={`/img/ranks/${match?.actualRank?.toString()[0]}.png`}
-                    width={40}
-                  />
+                  <RankImage rank={match?.actualRank} />
                 </div>
                 <div>
                   <Divider orientation="vertical" />

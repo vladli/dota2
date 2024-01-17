@@ -1,5 +1,5 @@
 import { FaSteam } from "react-icons/fa";
-import { Avatar, Button, Image, Link } from "@nextui-org/react";
+import { Button, Image, Link } from "@nextui-org/react";
 import { CheckCircle2 } from "lucide-react";
 
 import { roboto_mono } from "@/app/fonts";
@@ -18,11 +18,13 @@ export default async function PlayerCard({ data }: Props) {
   const leaderRank = player?.steamAccount?.seasonLeaderboardRank;
   return (
     <section className="flex flex-col items-center gap-4 p-4 md:flex-row">
-      <div className="select-none">
-        <Avatar
-          // eslint-disable-next-line tailwindcss/enforces-shorthand
-          className="h-36 w-36"
+      <div className="min-w-36 select-none">
+        <Image
+          alt="Avatar"
+          className="size-full"
           draggable={false}
+          fetchPriority="high"
+          radius="full"
           src={getAvatarLink(player?.steamAccount?.avatar) || ""}
         />
       </div>

@@ -2,6 +2,7 @@ import { Fragment } from "react";
 import { Image } from "@nextui-org/react";
 import { MessageSquareQuote, Sword, Swords } from "lucide-react";
 
+import Alert from "@/components/Alert";
 import { GetAllHeroesQuery } from "@/graphql/constants";
 import { GetMatchByIdQuery } from "@/graphql/match";
 import { IMAGE } from "@/lib/constants";
@@ -70,6 +71,8 @@ type AllEvent =
 export default function TabLogs({ data, heroes }: Props) {
   const towerDeaths = data.match?.towerDeaths || [];
 
+  if (data?.match?.players?.[0]?.stats?.experiencePerMinute === null)
+    return <Alert text="No data available." />;
   const killEvents: KillEventProps[] = (data.match?.players || []).reduce<
     KillEventProps[]
   >(

@@ -200,6 +200,7 @@ query GetMatchLanes($id: Long!) {
         displayName
         shortName
       }
+      steamAccountId
       steamAccount {
         name
       }

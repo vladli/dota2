@@ -76,7 +76,7 @@ export default function PlayersTable({ data, team, items }: Props) {
               >
                 <Image
                   alt="item"
-                  className="min-w-[40px]"
+                  className="z-0 min-w-[40px]"
                   radius="none"
                   src={IMAGE.urlItem + getItem(item)?.shortName + ".png"}
                   width={40}
@@ -108,7 +108,7 @@ export default function PlayersTable({ data, team, items }: Props) {
               >
                 <Image
                   alt="item"
-                  className="min-w-[40px]"
+                  className="z-0 min-w-[40px]"
                   radius="none"
                   src={IMAGE.urlItem + getItem(item)?.shortName + ".png"}
                   width={40}
@@ -129,30 +129,41 @@ export default function PlayersTable({ data, team, items }: Props) {
   const columns = useMemo<ColumnDef<any>[]>(
     () => [
       {
-        id: "role",
-        header: "",
+        header: "Hero",
         enableSorting: false,
-        size: 30,
         meta: {
           isSticky: true,
         },
         accessorFn: (row) => ({
           role: row.role,
           lane: row.lane,
+          heroId: row.heroId,
+          displayName: row.hero.displayName,
+          shortName: row.hero.shortName,
         }),
         cell: ({ getValue }: any) => (
-          <Tooltip
-            content={getRoleInfo(getValue().role, getValue().lane)?.name}
-          >
-            <Image
-              alt=""
-              className="min-w-[14px]"
-              height={14}
-              radius="none"
-              src={getRoleInfo(getValue().role, getValue().lane)?.image || ""}
-              width={14}
-            />
-          </Tooltip>
+          <div className="flex items-center gap-x-2">
+            <Tooltip
+              content={getRoleInfo(getValue().role, getValue().lane)?.name}
+            >
+              <Image
+                alt=""
+                className="min-w-[14px]"
+                height={14}
+                radius="none"
+                src={getRoleInfo(getValue().role, getValue().lane)?.image || ""}
+                width={14}
+              />
+            </Tooltip>
+            <Link href={`/heroes/${getValue().heroId}`}>
+              <Image
+                alt=""
+                className="z-0 min-w-[70px]"
+                src={IMAGE.url + getValue().shortName + IMAGE.horizontal}
+                width={70}
+              />
+            </Link>
+          </div>
         ),
       },
       {
@@ -160,37 +171,25 @@ export default function PlayersTable({ data, team, items }: Props) {
         size: 250,
         minSize: 250,
         enableSorting: false,
-        meta: {
-          isSticky: true,
-        },
+
         accessorFn: (row) => ({
           player: row.steamAccount.name,
           playerRank: row.steamAccount.seasonRank,
           steamAccountId: row.steamAccountId,
-          heroId: row.heroId,
-          displayName: row.hero.displayName,
-          shortName: row.hero.shortName,
         }),
         cell: ({ getValue }: any) => {
           const rank = getRankName(getValue().playerRank?.toString()[0]);
           return (
-            <div className="flex items-center gap-2">
-              <Link href={`/heroes/${getValue().heroId}`}>
-                <Image
-                  alt=""
-                  className="min-w-[70px]"
-                  src={IMAGE.url + getValue().shortName + IMAGE.horizontal}
-                  width={70}
-                />
+            <div className="flex flex-col">
+              <Link
+                className="w-fit"
+                href={`/players/${getValue().steamAccountId}`}
+              >
+                {getValue().player}
               </Link>
-              <div className="flex flex-col">
-                <Link href={`/players/${getValue().steamAccountId}`}>
-                  {getValue().player}
-                </Link>
-                <span className="text-sm text-foreground-400">
-                  {rank} {getValue()?.playerRank?.toString()[1]}
-                </span>
-              </div>
+              <span className="text-sm text-foreground-400">
+                {rank} {getValue()?.playerRank?.toString()[1]}
+              </span>
             </div>
           );
         },
@@ -301,7 +300,7 @@ export default function PlayersTable({ data, team, items }: Props) {
               <div className="size-[35px]">
                 <Image
                   alt="item"
-                  className="size-full object-cover"
+                  className="z-0 size-full object-cover"
                   radius="full"
                   removeWrapper
                   src={IMAGE.urlItem + item?.shortName + ".png"}

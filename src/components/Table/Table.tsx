@@ -86,7 +86,9 @@ export default function Table<T>({ data, columns, defaultSorting }: Props<T>) {
         <tbody>
           {table.getRowModel().rows.map((row) => (
             <tr
-              className="border-b border-content2"
+              className={cn("border-content2", {
+                "border-b": row.index !== table.getRowModel().rows.length - 1,
+              })}
               key={row.id}
             >
               {row.getVisibleCells().map((cell, i) => (
@@ -109,6 +111,25 @@ export default function Table<T>({ data, columns, defaultSorting }: Props<T>) {
             </tr>
           ))}
         </tbody>
+        <tfoot>
+          {table.getFooterGroups().map((footerGroup) => (
+            <tr key={footerGroup.id}>
+              {footerGroup.headers.map((header) => (
+                <th
+                  colSpan={header.colSpan}
+                  key={header.id}
+                >
+                  {header.isPlaceholder
+                    ? null
+                    : flexRender(
+                        header.column.columnDef.footer,
+                        header.getContext()
+                      )}
+                </th>
+              ))}
+            </tr>
+          ))}
+        </tfoot>
       </table>
     </div>
   );

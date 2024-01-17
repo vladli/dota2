@@ -171,7 +171,6 @@ export default function PlayersTable({ data, team, items }: Props) {
         size: 250,
         minSize: 250,
         enableSorting: false,
-
         accessorFn: (row) => ({
           player: row.steamAccount.name,
           playerRank: row.steamAccount.seasonRank,
@@ -207,7 +206,7 @@ export default function PlayersTable({ data, team, items }: Props) {
       },
       {
         header: "K / D / A",
-        minSize: 110,
+        minSize: 120,
         enableSorting: false,
         accessorFn: (row) => ({
           kills: row.kills,

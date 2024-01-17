@@ -13,6 +13,10 @@ export default function ClientTabs({ playerId }: Props) {
     <Tabs
       aria-label="Options"
       className="mx-4 mt-4"
+      classNames={{
+        tabList: "bg-transparent border border-divider",
+        cursor: "group-data-[selected=true]:bg-content2",
+      }}
       selectedKey={pathname}
     >
       <Tab

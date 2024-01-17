@@ -1,13 +1,14 @@
 import { useMemo } from "react";
 import { Image, Progress } from "@nextui-org/react";
 import { ColumnDef } from "@tanstack/react-table";
-import Link from "next/link";
 
+import PlayerName from "@/components/PlayerName";
 import Table from "@/components/Table/Table";
 import Tooltip from "@/components/Tooltip";
 import { GetMatchLanesQuery } from "@/graphql/match";
 import { IMAGE } from "@/lib/constants";
 import { cn, getRoleInfo } from "@/lib/utils";
+import { MatchPlayerType } from "@/types/types.generated";
 
 type Props = {
   data: GetMatchLanesQuery;
@@ -20,7 +21,7 @@ export default function TableSummary({
   highestNetWorth,
   highestExperience,
 }: Props) {
-  const columns = useMemo<ColumnDef<any>[]>(
+  const columns = useMemo<ColumnDef<MatchPlayerType, any>[]>(
     () => [
       {
         header: "Hero",
@@ -33,8 +34,8 @@ export default function TableSummary({
           position: row.position,
           role: row.role,
           lane: row.lane,
-          displayName: row.hero.displayName,
-          shortName: row.hero.shortName,
+          displayName: row.hero?.displayName,
+          shortName: row.hero?.shortName,
         }),
         cell: (info: any) => (
           <div className="flex items-center gap-x-2">
@@ -71,28 +72,19 @@ export default function TableSummary({
         header: "Player",
         enableSorting: false,
         accessorFn: (row) => ({
-          player: row.steamAccount.name,
+          steamAccount: row.steamAccount,
           steamAccountId: row.steamAccountId,
         }),
-        cell: ({ getValue }: any) => {
-          return (
-            <div className="flex flex-col">
-              <Link
-                className="w-fit"
-                href={`/players/${getValue().steamAccountId}`}
-              >
-                {getValue().player}
-              </Link>
-            </div>
-          );
-        },
+        cell: ({ getValue }) => (
+          <PlayerName steamAccount={getValue()?.steamAccount} />
+        ),
       },
       {
         header: "Level",
         size: 10,
         accessorFn: (row) =>
-          row.stats.level.filter((level: number) => level <= 600).length,
-        cell: (info: any) => (
+          row.stats?.level?.filter((time) => time || 0 <= 600).length,
+        cell: (info) => (
           <div className="flex size-8 items-center justify-center rounded-full border-2 border-divider">
             {info.getValue()}
           </div>
@@ -102,20 +94,20 @@ export default function TableSummary({
         header: "K",
         size: 10,
         accessorFn: (row) => {
-          const kills = row.stats.killEvents.filter(
-            (kill: any) => kill.time <= 600
+          const kills = row.stats?.killEvents?.filter(
+            (kill) => kill?.time ?? 0 <= 600
           );
-          return kills.length;
+          return kills?.length || 0;
         },
       },
       {
         header: "D",
         size: 10,
         accessorFn: (row) => {
-          const deaths = row.stats.deathEvents.filter(
-            (death: any) => death.time <= 600
+          const deaths = row.stats?.deathEvents?.filter(
+            (death) => death?.time ?? 0 <= 600
           );
-          return deaths.length;
+          return deaths?.length || 0;
         },
       },
       {
@@ -123,10 +115,10 @@ export default function TableSummary({
         header: "A",
         size: 10,
         accessorFn: (row) => {
-          const assists = row.stats.assistEvents.filter(
-            (assist: any) => assist.time <= 600
+          const assists = row.stats?.assistEvents?.filter(
+            (assist) => assist?.time ?? 0 <= 600
           );
-          return assists.length;
+          return assists?.length || 0;
         },
       },
       {
@@ -134,7 +126,7 @@ export default function TableSummary({
         header: "Net Worth",
         accessorFn: (row) => ({
           isRadiant: row.isRadiant,
-          netWorth: row.stats.networthPerMinute,
+          netWorth: row.stats?.networthPerMinute,
         }),
         sortingFn: (rowA, rowB, columnId) => {
           const numA = rowA.getValue<any>(columnId).netWorth[10];
@@ -171,7 +163,7 @@ export default function TableSummary({
       {
         header: "Experience",
         accessorFn: (row) => ({
-          experiencePerMinute: row.stats.experiencePerMinute,
+          experiencePerMinute: row.stats?.experiencePerMinute,
         }),
         sortingFn: (rowA, rowB, columnId) => {
           const numA = rowA
@@ -215,9 +207,9 @@ export default function TableSummary({
         header: "LH",
         size: 10,
         accessorFn: (row) => {
-          const lastHits = row.stats.lastHitsPerMinute
-            .slice(0, 10)
-            .reduce((a: number, b: number) => a + b, 0);
+          const lastHits = row.stats?.lastHitsPerMinute
+            ?.slice(0, 10)
+            .reduce((a, b) => (a || 0) + (b || 0), 0);
           return lastHits;
         },
       },
@@ -225,9 +217,9 @@ export default function TableSummary({
         header: "DN",
         size: 10,
         accessorFn: (row) => {
-          const denies = row.stats.deniesPerMinute
-            .slice(0, 10)
-            .reduce((a: number, b: number) => a + b, 0);
+          const denies = row.stats?.deniesPerMinute
+            ?.slice(0, 10)
+            .reduce((a, b) => (a || 0) + (b || 0), 0);
           return denies;
         },
       },
@@ -238,7 +230,7 @@ export default function TableSummary({
   return (
     <Table
       columns={columns}
-      data={data.match?.players!}
+      data={data.match?.players! as object[]}
       defaultSorting={[{ id: "netWorth", desc: true }]}
     />
   );

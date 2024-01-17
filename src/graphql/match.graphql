@@ -1,3 +1,27 @@
+fragment SteamAccountFragment on SteamAccountType {
+  id
+  name
+  seasonRank
+  isAnonymous
+  isStratzPublic
+  proSteamAccount {
+    ...ProSteamAccountFragment
+  }
+}
+fragment ProSteamAccountFragment on ProSteamAccountType {
+  id
+  name
+  realName
+  isLocked
+  isPro
+  totalEarnings
+  team {
+    id
+    name
+    tag
+  }
+}
+
 query GetMatchById($id: Long!) {
   match(id: $id) {
     id
@@ -43,9 +67,9 @@ query GetMatchById($id: Long!) {
       playerSlot
       steamAccountId
       steamAccount {
-        name
-        seasonRank
+        ...SteamAccountFragment
       }
+
       isRadiant
       isVictory
       heroId
@@ -202,7 +226,7 @@ query GetMatchLanes($id: Long!) {
       }
       steamAccountId
       steamAccount {
-        name
+        ...SteamAccountFragment
       }
       stats {
         level

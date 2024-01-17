@@ -163,15 +163,17 @@ export default async function PlayerCard({ data }: Props) {
             )}
             {!leaderRank && player?.steamAccount?.seasonRank && (
               <>
-                <Image
-                  alt="rankStar"
-                  className="absolute -top-2"
-                  draggable={false}
-                  src={`/img/ranks/rank_star_${
-                    player?.steamAccount?.seasonRank.toString()[1]
-                  }.png`}
-                  width={100}
-                />
+                {+player?.steamAccount?.seasonRank?.toString()[1] !== 0 ? (
+                  <Image
+                    alt="rankStar"
+                    className="absolute -top-2"
+                    draggable={false}
+                    src={`/img/ranks/rank_star_${
+                      player?.steamAccount?.seasonRank.toString()[1]
+                    }.png`}
+                    width={100}
+                  />
+                ) : null}
                 <Image
                   alt="rank"
                   draggable={false}

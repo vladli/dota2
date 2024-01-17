@@ -228,7 +228,7 @@ export default function PlayersTable({
       },
       {
         header: "K / D / A",
-        minSize: 110,
+        minSize: 120,
         enableSorting: false,
         accessorFn: (row) => ({
           kills: row.stats.killEvents?.filter(

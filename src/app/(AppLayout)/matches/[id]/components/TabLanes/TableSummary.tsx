@@ -24,6 +24,7 @@ export default function TableSummary({
     () => [
       {
         header: "Hero",
+        size: 30,
         enableSorting: false,
         meta: {
           isSticky: true,

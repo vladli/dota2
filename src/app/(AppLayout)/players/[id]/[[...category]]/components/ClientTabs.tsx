@@ -1,8 +1,10 @@
 "use client";
 
-import { Tab, Tabs } from "@nextui-org/react";
+import { Tab } from "@nextui-org/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+
+import Tabs from "@/components/Tabs/Tabs";
 
 type Props = {
   playerId: string;
@@ -13,12 +15,6 @@ export default function ClientTabs({ playerId }: Props) {
     <Tabs
       aria-label="Options"
       className="mx-4 mt-4"
-      classNames={{
-        base: "overflow-x-auto block",
-        tabList: "bg-transparent border border-divider",
-        cursor: "group-data-[selected=true]:bg-content2",
-        tab: "max-w-fit",
-      }}
       selectedKey={pathname}
     >
       <Tab

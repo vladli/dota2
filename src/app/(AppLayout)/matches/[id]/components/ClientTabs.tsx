@@ -1,5 +1,5 @@
 "use client";
-import { Tab, Tabs } from "@nextui-org/react";
+import { Tab } from "@nextui-org/react";
 import {
   AreaChart,
   LandPlot,
@@ -8,7 +8,8 @@ import {
   Trophy,
 } from "lucide-react";
 
-import TabHeader from "@/components/TabHeader";
+import TabHeader from "@/components/Tabs/TabHeader";
+import Tabs from "@/components/Tabs/Tabs";
 import { GetAllHeroesQuery, GetAllItemsQuery } from "@/graphql/constants";
 import { GetMatchByIdQuery } from "@/graphql/match";
 import { cn } from "@/lib/utils";
@@ -25,15 +26,7 @@ type Props = {
 };
 export default function ClientTabs({ data, items, heroes }: Props) {
   return (
-    <Tabs
-      classNames={{
-        base: "overflow-x-auto block",
-        tabList: "bg-transparent border border-divider",
-        cursor: "group-data-[selected=true]:bg-content2",
-        tab: "max-w-fit",
-      }}
-      defaultSelectedKey="overview"
-    >
+    <Tabs defaultSelectedKey="overview">
       <Tab
         key="overview"
         title={

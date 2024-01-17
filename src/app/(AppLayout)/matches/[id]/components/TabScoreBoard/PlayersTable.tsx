@@ -4,18 +4,13 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Backpack } from "lucide-react";
 import Link from "next/link";
 
+import PlayerName from "@/components/PlayerName";
 import Table from "@/components/Table/Table";
 import Tooltip from "@/components/Tooltip";
 import { GetAllHeroesQuery, GetAllItemsQuery } from "@/graphql/constants";
 import { GetMatchByIdQuery } from "@/graphql/match";
 import { IMAGE } from "@/lib/constants";
-import {
-  cn,
-  formatNumber,
-  getRankName,
-  getRoleInfo,
-  secondsToTime,
-} from "@/lib/utils";
+import { cn, formatNumber, getRoleInfo, secondsToTime } from "@/lib/utils";
 import { MatchPlayerType } from "@/types/types.generated";
 
 import { Header } from "../ClientTabs";
@@ -144,7 +139,7 @@ export default function PlayersTable({
     );
   };
 
-  const columns = useMemo<ColumnDef<any>[]>(
+  const columns = useMemo<ColumnDef<MatchPlayerType, any>[]>(
     () => [
       {
         header: "Hero",
@@ -157,8 +152,8 @@ export default function PlayersTable({
           role: row.role,
           lane: row.lane,
           heroId: row.heroId,
-          displayName: row.hero.displayName,
-          shortName: row.hero.shortName,
+          displayName: row.hero?.displayName,
+          shortName: row.hero?.shortName,
         }),
         cell: ({ getValue }: any) => (
           <div className="flex items-center gap-x-2">
@@ -192,34 +187,19 @@ export default function PlayersTable({
         enableSorting: false,
 
         accessorFn: (row) => ({
-          player: row.steamAccount.name,
-          playerRank: row.steamAccount.seasonRank,
+          steamAccount: row.steamAccount,
           steamAccountId: row.steamAccountId,
         }),
-        cell: ({ getValue }: any) => {
-          const rank = getRankName(getValue().playerRank?.toString()[0]);
-          return (
-            <div className="flex flex-col">
-              <Link
-                className="w-fit"
-                href={`/players/${getValue().steamAccountId}`}
-              >
-                {getValue().player}
-              </Link>
-              <span className="text-sm text-foreground-400">
-                {rank} {getValue()?.playerRank?.toString()[1]}
-              </span>
-            </div>
-          );
-        },
+        cell: ({ getValue }: any) => (
+          <PlayerName steamAccount={getValue().steamAccount} />
+        ),
       },
       {
         header: "Level",
         size: 25,
         enableSorting: false,
         accessorFn: (row) =>
-          row?.stats?.level?.filter((value: number) => value / 60 <= time)
-            .length,
+          row?.stats?.level?.filter((value) => value ?? 0 / 60 <= time).length,
         cell: ({ getValue }: any) => (
           <span className="flex size-8 items-center justify-center rounded-full border-2 border-divider">
             {getValue()}
@@ -231,14 +211,14 @@ export default function PlayersTable({
         minSize: 120,
         enableSorting: false,
         accessorFn: (row) => ({
-          kills: row.stats.killEvents?.filter(
-            (kill: any) => kill.time / 60 <= time
+          kills: row.stats?.killEvents?.filter(
+            (kill) => kill?.time ?? 0 / 60 <= time
           ).length,
-          deaths: row.stats.deathEvents?.filter(
-            (death: any) => death.time / 60 <= time
+          deaths: row.stats?.deathEvents?.filter(
+            (death) => death?.time ?? 0 / 60 <= time
           ).length,
-          assists: row.stats.assistEvents?.filter(
-            (assist: any) => assist.time / 60 <= time
+          assists: row.stats?.assistEvents?.filter(
+            (assist) => assist?.time ?? 0 / 60 <= time
           ).length,
         }),
         cell: ({ getValue }: any) => (
@@ -254,18 +234,18 @@ export default function PlayersTable({
         accessorFn: (row) => ({
           lastHits:
             time !== endTime
-              ? row.stats.lastHitsPerMinute
-                  .slice(0, time)
-                  .reduce((a: number, b: number) => a + b, 0)
+              ? row.stats?.lastHitsPerMinute
+                  ?.slice(0, time)
+                  .reduce((a, b) => (a ?? 0) + (b ?? 0), 0)
               : row.numLastHits,
           denies:
             time !== endTime
-              ? row.stats.deniesPerMinute
-                  .slice(0, time)
-                  .reduce((a: number, b: number) => a + b, 0)
+              ? row.stats?.deniesPerMinute
+                  ?.slice(0, time)
+                  .reduce((a, b) => (a ?? 0) + (b ?? 0), 0)
               : row.numDenies,
         }),
-        cell: ({ getValue }: any) => (
+        cell: ({ getValue }) => (
           <>
             {getValue().lastHits} / {getValue().denies}
           </>
@@ -276,8 +256,10 @@ export default function PlayersTable({
         size: 25,
         enableSorting: false,
         accessorFn: (row) =>
-          time !== endTime ? row.stats.networthPerMinute[time] : row.networth,
-        cell: ({ getValue }: any) => <>{formatNumber(getValue()!)}</>,
+          time !== endTime
+            ? row.stats?.networthPerMinute?.[time]
+            : row.networth,
+        cell: ({ getValue }) => <>{formatNumber(getValue()!)}</>,
       },
       {
         header: "GPM / XPM",
@@ -286,18 +268,18 @@ export default function PlayersTable({
         accessorFn: (row) => ({
           goldPerMinute:
             time !== endTime
-              ? row.stats.goldPerMinute[time - 1]
+              ? row.stats?.goldPerMinute?.[time - 1]
               : row.goldPerMinute,
           experiencePerMinute:
             time !== endTime
               ? Math.round(
-                  row.stats.experiencePerMinute
-                    .slice(0, time)
-                    .reduce((a: number, b: number) => a + b, 0) / time
+                  row?.stats
+                    ?.experiencePerMinute!.slice(0, time)!
+                    .reduce((a, b) => a! + (b || 0), 0)! / time
                 )
               : row.experiencePerMinute,
         }),
-        cell: ({ getValue }: any) => (
+        cell: ({ getValue }) => (
           <>
             {getValue().goldPerMinute || 0} /{" "}
             {getValue().experiencePerMinute || 0}
@@ -308,14 +290,14 @@ export default function PlayersTable({
         header: "ITEMS",
         enableSorting: false,
         accessorFn: (row) => ({ ...row }),
-        cell: ({ getValue }: any) => <>{renderPlayerItems(getValue(), time)}</>,
+        cell: ({ getValue }) => <>{renderPlayerItems(getValue(), time)}</>,
       },
       {
         id: "neutralItems",
         header: "",
         enableSorting: false,
         accessorFn: (row) =>
-          row.stats.inventoryReport?.[time + 1].neutral0?.itemId,
+          row?.stats?.inventoryReport?.[time + 1]?.neutral0?.itemId,
         cell: ({ getValue }: any) => {
           const item = items?.constants?.items!.find(
             (item) => item?.id === getValue()
@@ -348,9 +330,9 @@ export default function PlayersTable({
         enableSorting: false,
         accessorFn: (row) =>
           time !== endTime
-            ? row.stats.heroDamagePerMinute
-                .slice(0, time)
-                .reduce((a: number, b: number) => a + b, 0)
+            ? row.stats?.heroDamagePerMinute
+                ?.slice(0, time)
+                .reduce((a, b) => (a ?? 0) + (b ?? 0), 0)
             : row.heroDamage,
         cell: ({ getValue }: any) => <>{formatNumber(getValue()!)}</>,
       },
@@ -359,9 +341,9 @@ export default function PlayersTable({
         enableSorting: false,
         accessorFn: (row) =>
           time !== endTime
-            ? row.stats.towerDamagePerMinute
-                .slice(0, time)
-                .reduce((a: number, b: number) => a + b, 0)
+            ? row.stats?.towerDamagePerMinute
+                ?.slice(0, time)
+                .reduce((a, b) => a ?? 0 + (b ?? 0), 0)
             : row.towerDamage,
         cell: ({ getValue }: any) => <>{formatNumber(getValue()!)}</>,
       },
@@ -370,9 +352,9 @@ export default function PlayersTable({
         enableSorting: false,
         accessorFn: (row) =>
           time !== endTime
-            ? row.stats.healPerMinute
-                .slice(0, time)
-                .reduce((a: number, b: number) => a + b, 0)
+            ? row.stats?.healPerMinute
+                ?.slice(0, time)
+                .reduce((a, b) => a ?? 0 + (b ?? 0), 0)
             : row.heroHealing,
         cell: ({ getValue }: any) => <>{formatNumber(getValue()!)}</>,
       },
@@ -380,34 +362,34 @@ export default function PlayersTable({
         header: "DEATH GOLD",
         enableSorting: false,
         accessorFn: (row) => {
-          const val = row.stats.deathEvents
-            ?.filter((death: any) => death.time / 60 <= time)
-            .reduce((a: number, b: any) => a + b.goldLost, 0);
+          const val = row.stats?.deathEvents
+            ?.filter((death) => death?.time ?? 0 / 60 <= time)
+            .reduce((a, b) => a + (b?.goldLost ?? 0), 0);
           return val;
         },
-        cell: ({ getValue }: any) => <>{formatNumber(getValue()!)}</>,
+        cell: ({ getValue }) => <>{formatNumber(getValue()!)}</>,
       },
       {
         header: "DEATH TIME",
         enableSorting: false,
         accessorFn: (row) => {
-          const val = row.stats.deathEvents
-            ?.filter((death: any) => death.time / 60 <= time)
-            .reduce((a: number, b: any) => a + b.timeDead, 0);
+          const val = row.stats?.deathEvents
+            ?.filter((death) => death?.time ?? 0 / 60 <= time)
+            .reduce((a, b) => a + (b?.timeDead ?? 0), 0);
           return val;
         },
-        cell: ({ getValue }: any) => <>{secondsToTime(getValue()!)}</>,
+        cell: ({ getValue }) => <>{secondsToTime(getValue()!)}</>,
       },
       {
         header: "KILLS",
         enableSorting: false,
         accessorFn: (row) => ({
-          killEvents: row.stats.killEvents?.filter(
-            (death: any) => death.time / 60 <= time
+          killEvents: row.stats?.killEvents?.filter(
+            (death) => death?.time ?? 0 / 60 <= time
           ),
           playerTeam: row.isRadiant,
         }),
-        cell: ({ getValue }: any) => {
+        cell: ({ getValue }) => {
           const getKills = (heroId: number) =>
             getValue().killEvents?.filter((kill: any) => kill.target == heroId)
               .length;
@@ -441,8 +423,8 @@ export default function PlayersTable({
         header: "Support Items",
         enableSorting: false,
         accessorFn: (row) => ({
-          itemPurchases: row.stats.itemPurchases?.filter(
-            (item: any) => item.time / 60 <= time
+          itemPurchases: row.stats?.itemPurchases?.filter(
+            (item) => item?.time ?? 0 / 60 <= time
           ),
         }),
         cell: ({ getValue }: any) => {
@@ -496,10 +478,10 @@ export default function PlayersTable({
         header: "CAMP STACK",
         enableSorting: false,
         accessorFn: (row) => {
-          const length = row.stats?.campStack?.length - 1;
+          const length = row?.stats?.campStack?.length! - 1;
           return time !== endTime
-            ? row.stats.campStack?.[time - 1] || "-"
-            : row.stats.campStack?.[length] || "-";
+            ? row.stats?.campStack?.[time - 1] || "-"
+            : row.stats?.campStack?.[length] || "-";
         },
         cell: ({ getValue }: any) => <>{getValue()}</>,
       },
@@ -515,7 +497,7 @@ export default function PlayersTable({
       />
       <Table
         columns={columns}
-        data={players?.sort(compareLaneAndRole) || []}
+        data={players?.sort(compareLaneAndRole) as object[]}
       />
     </section>
   );

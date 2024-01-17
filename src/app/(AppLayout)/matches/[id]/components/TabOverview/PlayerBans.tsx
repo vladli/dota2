@@ -1,5 +1,6 @@
 import { cn } from "@nextui-org/react";
 
+import PlayerName from "@/components/PlayerName";
 import { GetAllHeroesQuery } from "@/graphql/constants";
 import { GetMatchByIdQuery } from "@/graphql/match";
 
@@ -37,10 +38,14 @@ export default function PlayerBans({ data, heroes }: Props) {
                       data.match?.players?.[hero?.playerIndex || 0]?.isRadiant,
                   })}
                 >
-                  {
-                    data?.match?.players?.[hero?.playerIndex || 0]?.steamAccount
-                      ?.name
-                  }
+                  <PlayerName
+                    isLink={false}
+                    showProIcon={false}
+                    steamAccount={
+                      data?.match?.players?.[hero?.playerIndex || 0]
+                        ?.steamAccount
+                    }
+                  />
                 </span>
               </div>
             }

@@ -16,7 +16,11 @@ type Props<T> = {
   columns: ColumnDef<T>[];
   defaultSorting?: SortingState;
 };
-export default function Table<T>({ data, columns, defaultSorting }: Props<T>) {
+export default function Table<T extends object>({
+  data,
+  columns,
+  defaultSorting,
+}: Props<T>) {
   const [sorting, setSorting] = useState<SortingState>(defaultSorting || []);
   const table = useReactTable({
     data,

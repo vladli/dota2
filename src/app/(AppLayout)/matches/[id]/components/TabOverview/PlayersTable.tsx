@@ -4,6 +4,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Backpack } from "lucide-react";
 import Link from "next/link";
 
+import PlayerName from "@/components/PlayerName";
 import Table from "@/components/Table/Table";
 import Tooltip from "@/components/Tooltip";
 import { GetAllItemsQuery } from "@/graphql/constants";
@@ -126,7 +127,7 @@ export default function PlayersTable({ data, team, items }: Props) {
     );
   };
 
-  const columns = useMemo<ColumnDef<any>[]>(
+  const columns = useMemo<ColumnDef<MatchPlayerType, any>[]>(
     () => [
       {
         header: "Hero",
@@ -138,8 +139,8 @@ export default function PlayersTable({ data, team, items }: Props) {
           role: row.role,
           lane: row.lane,
           heroId: row.heroId,
-          displayName: row.hero.displayName,
-          shortName: row.hero.shortName,
+          displayName: row.hero?.displayName,
+          shortName: row.hero?.shortName,
         }),
         cell: ({ getValue }: any) => (
           <div className="flex items-center gap-x-2">
@@ -172,22 +173,18 @@ export default function PlayersTable({ data, team, items }: Props) {
         minSize: 250,
         enableSorting: false,
         accessorFn: (row) => ({
-          player: row.steamAccount.name,
-          playerRank: row.steamAccount.seasonRank,
+          steamAccount: row.steamAccount,
           steamAccountId: row.steamAccountId,
         }),
         cell: ({ getValue }: any) => {
-          const rank = getRankName(getValue().playerRank?.toString()[0]);
+          const rank = getRankName(
+            getValue().steamAccount?.seasonRank?.toString()[0]
+          );
           return (
             <div className="flex flex-col">
-              <Link
-                className="w-fit"
-                href={`/players/${getValue().steamAccountId}`}
-              >
-                {getValue().player}
-              </Link>
+              <PlayerName steamAccount={getValue().steamAccount} />
               <span className="text-sm text-foreground-400">
-                {rank} {getValue()?.playerRank?.toString()[1]}
+                {rank} {getValue()?.steamAccount?.seasonRank?.toString()[1]}
               </span>
             </div>
           );
@@ -322,7 +319,7 @@ export default function PlayersTable({ data, team, items }: Props) {
       />
       <Table
         columns={columns}
-        data={players?.sort(compareLaneAndRole) || []}
+        data={players?.sort(compareLaneAndRole) as object[]}
       />
     </section>
   );

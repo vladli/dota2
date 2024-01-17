@@ -33,6 +33,7 @@ export default function HeroAttributes({ data }: Props) {
         <div className="flex flex-col">
           <Image
             alt="hero"
+            draggable={false}
             radius="none"
             src={IMAGE.url + hero?.shortName + IMAGE.horizontal}
             width={200}
@@ -70,6 +71,7 @@ export default function HeroAttributes({ data }: Props) {
               <Image
                 alt=""
                 className="min-w-[18px]"
+                draggable={false}
                 src={img}
                 width={32}
               />

@@ -28,9 +28,9 @@ query GetPlayerBySteamId($steamAccountId: Long!) {
   }
 }
 
-query GetPlayerMatches($steamAccountId: Long!, $take: Int!) {
+query GetPlayerMatches($steamAccountId: Long!, $take: Int!, $skip: Int) {
   player(steamAccountId: $steamAccountId) {
-    matches(request: { take: $take }) {
+    matches(request: { take: $take, skip: $skip }) {
       id
       didRadiantWin
       durationSeconds

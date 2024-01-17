@@ -10,7 +10,7 @@ import HeroesTable from "./HeroesTable";
 export const revalidate = 0;
 
 export const metadata: Metadata = {
-  title: "Heroes",
+  title: "Meta",
 };
 
 type Props = {

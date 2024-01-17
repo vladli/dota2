@@ -40,6 +40,7 @@ export default function AbilityCard({ abilities, data }: Props) {
                   className={cn("hover:scale-105 cursor-pointer", {
                     grayscale: selectedAbility?.id !== ability?.ability?.id,
                   })}
+                  draggable={false}
                   src={IMAGE.urlAbility + ability?.ability?.name + ".png"}
                   width={120}
                 />
@@ -62,6 +63,7 @@ const AbilityDescription = ({ ability }: { ability: AbilityType }) => {
           <Image
             alt=""
             className="min-w-[120px]"
+            draggable={false}
             src={IMAGE.urlAbility + ability?.name + ".png"}
           />
           <div className="flex flex-col">
@@ -124,7 +126,8 @@ const AbilityDescription = ({ ability }: { ability: AbilityType }) => {
               <div className="flex items-center gap-2 place-self-start">
                 <Image
                   alt=""
-                  className="h-4 w-4"
+                  className="size-4"
+                  draggable={false}
                   radius="none"
                   src="/img/hero_stats/cooldown.png"
                 />
@@ -133,7 +136,7 @@ const AbilityDescription = ({ ability }: { ability: AbilityType }) => {
             )}
             {ability.stat?.manaCost && (
               <div className="ml-auto flex place-content-end items-center gap-2">
-                <div className="h-4 w-4 bg-gradient-to-b from-[#00A4DB] to-[#007196]" />
+                <div className="size-4 bg-gradient-to-b from-[#00A4DB] to-[#007196]" />
                 <HealthMana text={ability.stat.manaCost} />{" "}
               </div>
             )}

@@ -6,10 +6,12 @@ import { notFound } from "next/navigation";
 import { GetPlayerBySteamIdDocument } from "@/graphql/player";
 import { getClient } from "@/lib/client";
 
-import FavoriteHeroes from "./components/FavoriteHeroes";
-import PlayedWith from "./components/PlayedWith";
+import ClientTabs from "./components/ClientTabs";
+import PlayerMatches from "./components/Matches/PlayerMatches";
+import FavoriteHeroes from "./components/Overview/FavoriteHeroes";
+import PlayedWith from "./components/Overview/PlayedWith";
+import RecentMatches from "./components/Overview/RecentMatches";
 import PlayerCard from "./components/PlayerCard";
-import RecentMatches from "./components/RecentMatches";
 
 export const dynamic = "force-dynamic";
 
@@ -27,6 +29,7 @@ export async function generateMetadata({ params }: Props) {
 type Props = {
   params: {
     id: string;
+    category?: string[];
   };
 };
 export default async function page({ params }: Props) {
@@ -49,14 +52,29 @@ export default async function page({ params }: Props) {
         </div>
         <PlayerCard data={data} />
       </div>
+
       {data.player?.matches?.length ? (
-        <section className="flex w-full flex-col gap-4 p-4 xl:flex-row">
-          <RecentMatches steamId={params.id} />
-          <div className="flex flex-col gap-1">
-            <PlayedWith steamId={params.id} />
-            <FavoriteHeroes steamId={params.id} />
-          </div>
-        </section>
+        <>
+          <ClientTabs playerId={params.id} />
+          <section className="flex w-full flex-col p-4">
+            {params.category?.includes("matches") ? (
+              <PlayerMatches
+                matchCount={data.player.matchCount}
+                playerId={params.id}
+              />
+            ) : params.category?.includes("anotherCategory") ? (
+              <>a</>
+            ) : (
+              <section className="flex w-full flex-col gap-4 xl:flex-row">
+                <RecentMatches steamId={params.id} />
+                <div className="flex flex-col gap-1">
+                  <PlayedWith steamId={params.id} />
+                  <FavoriteHeroes steamId={params.id} />
+                </div>
+              </section>
+            )}
+          </section>
+        </>
       ) : (
         <section className="flex justify-center">
           <Card className="min-w-fit max-w-28 p-4">

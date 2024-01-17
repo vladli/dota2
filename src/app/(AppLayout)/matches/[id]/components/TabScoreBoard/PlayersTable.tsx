@@ -493,7 +493,7 @@ export default function PlayersTable({
         },
       },
       {
-        header: "CAMP STACKS",
+        header: "CAMP STACK",
         enableSorting: false,
         accessorFn: (row) => {
           const length = row.stats?.campStack?.length - 1;

@@ -19,6 +19,7 @@ export default function Table({ header, data }: Props) {
       <div className="flex items-center gap-2 p-4">
         <Image
           alt="Rank Image"
+          draggable={false}
           height={40}
           src={`/img/ranks/8_${isTop10 ? "10" : "100"}.png`}
           width={40}
@@ -38,7 +39,7 @@ export default function Table({ header, data }: Props) {
               color={isTop10 ? "#4338ca" : "#ca8a04"}
               size={40}
             />
-            <span className="absolute top-0 flex h-full w-full items-center justify-center">
+            <span className="absolute top-0 flex size-full items-center justify-center">
               {player?.rank}
             </span>
           </div>

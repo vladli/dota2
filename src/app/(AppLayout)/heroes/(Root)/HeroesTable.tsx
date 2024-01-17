@@ -32,6 +32,7 @@ export default function HeroesTable({ header, data }: Props) {
       <div className="mb-2 flex items-center gap-1">
         <Image
           alt="Attribute"
+          draggable={false}
           height={24}
           src={`/img/hero_type/${ATTR_IMAGE[header]}.png`}
           width={24}
@@ -51,6 +52,7 @@ export default function HeroesTable({ header, data }: Props) {
             <Image
               alt="Hero"
               className="z-0 grayscale-[0.2] group-hover:z-10 group-hover:scale-150"
+              draggable={false}
               height={70}
               removeWrapper
               src={IMAGE.url + hero?.shortName + IMAGE.vertical}

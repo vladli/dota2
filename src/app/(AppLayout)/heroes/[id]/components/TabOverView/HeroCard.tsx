@@ -13,6 +13,7 @@ export default function HeroCard({ data }: Props) {
     <section className="mx-10 flex items-center gap-4">
       <Image
         alt="hero"
+        draggable={false}
         src={IMAGE.url + hero?.shortName + IMAGE.vertical}
         width={120}
       />
@@ -20,6 +21,7 @@ export default function HeroCard({ data }: Props) {
         <h2 className="flex items-center gap-1 text-lg font-medium uppercase">
           <Image
             alt="icon"
+            draggable={false}
             height={24}
             src={
               HERO_ATTRIBUTE[
@@ -45,6 +47,7 @@ export default function HeroCard({ data }: Props) {
         <h3 className="flex items-center gap-2 text-lg font-medium">
           <Image
             alt=""
+            draggable={false}
             radius="none"
             src={`/img/hero_stats/${hero?.stats?.attackType}.svg`}
             width={24}

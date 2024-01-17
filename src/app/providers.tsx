@@ -9,6 +9,7 @@ import {
   SSRMultipartLink,
 } from "@apollo/experimental-nextjs-app-support/ssr";
 import { NextUIProvider } from "@nextui-org/react";
+import { useRouter } from "next/navigation";
 import { SessionProvider } from "next-auth/react";
 
 loadDevMessages();
@@ -41,11 +42,12 @@ type Props = {
   session: any;
 };
 export default function Providers({ children, session }: Props) {
+  const router = useRouter();
   return (
     <>
       <ApolloNextAppProvider makeClient={makeClient}>
         <SessionProvider session={session}>
-          <NextUIProvider>{children}</NextUIProvider>
+          <NextUIProvider navigate={router.push}>{children}</NextUIProvider>
         </SessionProvider>
       </ApolloNextAppProvider>
     </>

@@ -20,7 +20,9 @@ export default async function PlayerCard({ data }: Props) {
     <section className="flex flex-col items-center gap-4 p-4 md:flex-row">
       <div className="select-none">
         <Avatar
+          // eslint-disable-next-line tailwindcss/enforces-shorthand
           className="h-36 w-36"
+          draggable={false}
           src={getAvatarLink(player?.steamAccount?.avatar) || ""}
         />
       </div>
@@ -44,6 +46,7 @@ export default async function PlayerCard({ data }: Props) {
                     <div className="flex items-center gap-2">
                       <Image
                         alt="Team Logo"
+                        draggable={false}
                         height={40}
                         src={IMAGE.urlTeam + proPlayer.team.id + ".png"}
                         width={40}
@@ -102,6 +105,7 @@ export default async function PlayerCard({ data }: Props) {
           <div className="flex select-none flex-col items-center">
             <Image
               alt=""
+              draggable={false}
               height={60}
               src="/img/other/dota_plus.webp"
               width={60}
@@ -131,6 +135,7 @@ export default async function PlayerCard({ data }: Props) {
               <div className="relative">
                 <Image
                   alt="rankStar"
+                  draggable={false}
                   removeWrapper
                   src={`/img/ranks/8_10.png`}
                   width={100}
@@ -144,6 +149,7 @@ export default async function PlayerCard({ data }: Props) {
               <div className="relative">
                 <Image
                   alt="rankStar"
+                  draggable={false}
                   removeWrapper
                   src={`/img/ranks/8_100.png`}
                   width={100}
@@ -158,6 +164,7 @@ export default async function PlayerCard({ data }: Props) {
                 <Image
                   alt="rankStar"
                   className="absolute -top-2"
+                  draggable={false}
                   src={`/img/ranks/rank_star_${
                     player?.steamAccount?.seasonRank.toString()[1]
                   }.png`}
@@ -165,6 +172,7 @@ export default async function PlayerCard({ data }: Props) {
                 />
                 <Image
                   alt="rank"
+                  draggable={false}
                   src={`/img/ranks/${
                     player?.steamAccount?.seasonRank.toString()[0]
                   }.png`}
@@ -175,6 +183,7 @@ export default async function PlayerCard({ data }: Props) {
             {!player?.steamAccount?.seasonRank && (
               <Image
                 alt="rank"
+                draggable={false}
                 src={`/img/ranks/0.png`}
                 width={100}
               />

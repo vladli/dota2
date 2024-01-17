@@ -72,6 +72,7 @@ export default function Matchup({ hero, allHeroes }: Props) {
                 <Image
                   alt=""
                   className="min-w-[70px]"
+                  draggable={false}
                   src={IMAGE.url + hero?.shortName + IMAGE.horizontal}
                   width={70}
                 />

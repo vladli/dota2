@@ -71,6 +71,7 @@ export default function TableSummary({
       {
         header: "Player",
         enableSorting: false,
+        size: 250,
         accessorFn: (row) => ({
           steamAccount: row.steamAccount,
           steamAccountId: row.steamAccountId,
@@ -83,7 +84,7 @@ export default function TableSummary({
         header: "Level",
         size: 10,
         accessorFn: (row) =>
-          row.stats?.level?.filter((time) => time || 0 <= 600).length,
+          row.stats?.level?.filter((time) => (time || 0) <= 600).length,
         cell: (info) => (
           <div className="flex size-8 items-center justify-center rounded-full border-2 border-divider">
             {info.getValue()}
@@ -95,7 +96,7 @@ export default function TableSummary({
         size: 10,
         accessorFn: (row) => {
           const kills = row.stats?.killEvents?.filter(
-            (kill) => kill?.time ?? 0 <= 600
+            (kill) => (kill?.time ?? 0) <= 600
           );
           return kills?.length || 0;
         },
@@ -105,7 +106,7 @@ export default function TableSummary({
         size: 10,
         accessorFn: (row) => {
           const deaths = row.stats?.deathEvents?.filter(
-            (death) => death?.time ?? 0 <= 600
+            (death) => (death?.time ?? 0) <= 600
           );
           return deaths?.length || 0;
         },
@@ -116,7 +117,7 @@ export default function TableSummary({
         size: 10,
         accessorFn: (row) => {
           const assists = row.stats?.assistEvents?.filter(
-            (assist) => assist?.time ?? 0 <= 600
+            (assist) => (assist?.time ?? 0) <= 600
           );
           return assists?.length || 0;
         },

@@ -199,7 +199,8 @@ export default function PlayersTable({
         size: 25,
         enableSorting: false,
         accessorFn: (row) =>
-          row?.stats?.level?.filter((value) => value ?? 0 / 60 <= time).length,
+          row?.stats?.level?.filter((value) => (value || 0) / 60 <= time)
+            .length,
         cell: ({ getValue }: any) => (
           <span className="flex size-8 items-center justify-center rounded-full border-2 border-divider">
             {getValue()}
@@ -212,13 +213,13 @@ export default function PlayersTable({
         enableSorting: false,
         accessorFn: (row) => ({
           kills: row.stats?.killEvents?.filter(
-            (kill) => kill?.time ?? 0 / 60 <= time
+            (kill) => (kill?.time ?? 0) / 60 <= time
           ).length,
           deaths: row.stats?.deathEvents?.filter(
-            (death) => death?.time ?? 0 / 60 <= time
+            (death) => (death?.time ?? 0) / 60 <= time
           ).length,
           assists: row.stats?.assistEvents?.filter(
-            (assist) => assist?.time ?? 0 / 60 <= time
+            (assist) => (assist?.time ?? 0) / 60 <= time
           ).length,
         }),
         cell: ({ getValue }: any) => (
@@ -374,7 +375,7 @@ export default function PlayersTable({
         enableSorting: false,
         accessorFn: (row) => {
           const val = row.stats?.deathEvents
-            ?.filter((death) => death?.time ?? 0 / 60 <= time)
+            ?.filter((death) => (death?.time ?? 0) / 60 <= time)
             .reduce((a, b) => a + (b?.timeDead ?? 0), 0);
           return val;
         },
@@ -385,7 +386,7 @@ export default function PlayersTable({
         enableSorting: false,
         accessorFn: (row) => ({
           killEvents: row.stats?.killEvents?.filter(
-            (death) => death?.time ?? 0 / 60 <= time
+            (death) => (death?.time ?? 0) / 60 <= time
           ),
           playerTeam: row.isRadiant,
         }),
@@ -478,10 +479,10 @@ export default function PlayersTable({
         header: "CAMP STACK",
         enableSorting: false,
         accessorFn: (row) => {
-          const length = row?.stats?.campStack?.length! - 1;
+          const [last] = row.stats?.campStack?.slice(-1) ?? [];
           return time !== endTime
             ? row.stats?.campStack?.[time - 1] || "-"
-            : row.stats?.campStack?.[length] || "-";
+            : last || "-";
         },
         cell: ({ getValue }: any) => <>{getValue()}</>,
       },

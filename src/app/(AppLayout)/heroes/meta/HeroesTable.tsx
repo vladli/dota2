@@ -100,7 +100,7 @@ export default function HeroesTable({ heroes }: Props) {
           {
             id: "windDifference",
             header: "+/-",
-
+            size: 50,
             accessorFn: (row) => {
               const length = row?.statistic.length - 1;
               const winRate =
@@ -127,7 +127,12 @@ export default function HeroesTable({ heroes }: Props) {
           },
         ],
       },
-
+      {
+        id: "spacer",
+        header: "",
+        size: 50,
+        cell: () => <div className="h-10 w-[1px] bg-divider" />,
+      },
       {
         header: "Matches",
         columns: [
@@ -215,7 +220,7 @@ export default function HeroesTable({ heroes }: Props) {
       <h1 className="mb-4 text-lg font-semibold">
         Stats for: {formatDate(startDate)} - {formatDate(endDate)}
       </h1>
-      <div className="relative overflow-hidden rounded-large hover:overflow-x-auto">
+      <div className="overflow-x-auto rounded-large border border-divider bg-black scrollbar-thin scrollbar-thumb-content2">
         <table className="w-full text-left">
           <thead className="whitespace-nowrap bg-content1 text-tiny uppercase text-foreground-500">
             {table.getHeaderGroups().map((headerGroup) => (
@@ -257,9 +262,11 @@ export default function HeroesTable({ heroes }: Props) {
             ))}
           </thead>
           <tbody>
-            {table.getRowModel().rows.map((row) => (
+            {table.getRowModel().rows.map((row, index) => (
               <tr
-                className="border-b border-content2"
+                className={cn("border-content2", {
+                  "border-b": index !== table.getRowModel().rows.length - 1,
+                })}
                 key={row.id}
               >
                 {row.getVisibleCells().map((cell) => (

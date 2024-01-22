@@ -12,7 +12,7 @@ export default function HeroTalents({ data, abilities }: Props) {
       ?.displayName;
   return (
     <section className="m-4 flex flex-col items-center gap-4">
-      <h1 className="text-xl font-semibold uppercase">Talents</h1>
+      <h2 className="uppercase">Talents</h2>
       {data && (
         <section className="grid grid-rows-4 gap-y-[0.15rem]">
           <Talent

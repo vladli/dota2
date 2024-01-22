@@ -1,6 +1,8 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
+import { GetAllHeroesQuery } from "@/graphql/constants";
+
 import { CONST_TOWERS, REGION_NAME, STEAM_AVATAR } from "./constants";
 
 export function cn(...inputs: ClassValue[]) {
@@ -131,6 +133,35 @@ export function getRoleInfo(
   return null;
 }
 
+export function getPositionInfo(position: string | null | undefined) {
+  if (!position) return null;
+  const rolePositionMap = {
+    POSITION_1: {
+      image: "/img/position/POSITION_1.svg",
+      name: "Safe Lane",
+    },
+    POSITION_2: {
+      image: "/img/position/POSITION_2.svg",
+      name: "Mid Lane",
+    },
+    POSITION_3: {
+      image: "/img/position/POSITION_3.svg",
+      name: "Off Lane",
+    },
+
+    POSITION_4: {
+      image: "/img/position/POSITION_4.svg",
+      name: "Soft Support",
+    },
+    POSITION_5: {
+      image: "/img/position/POSITION_5.svg",
+      name: "Hard Support",
+    },
+  };
+
+  return rolePositionMap[position as keyof typeof rolePositionMap];
+}
+
 export const formatNumber = (num: number) => {
   if (!num) return "-";
   if (num < 1000) {
@@ -161,4 +192,8 @@ export function convertToHumanReadable(id: number) {
   result = result?.replace(/\b\w/g, (l) => l.toUpperCase());
 
   return result;
+}
+
+export function getHero(heroId: number | string, heroes: GetAllHeroesQuery) {
+  return heroes?.constants?.heroes?.find((hero) => hero?.id == heroId);
 }

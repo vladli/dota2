@@ -36,7 +36,7 @@ export default function HeroCard({ data }: Props) {
             ].name
           }
         </h2>
-        <h1 className="text-3xl font-semibold">{hero?.displayName}</h1>
+        <h1 className="text-3xl">{hero?.displayName}</h1>
         <h2 className="flex flex-wrap gap-2 font-medium text-foreground-500">
           {hero?.roles
             ? hero?.roles.map((role, index) => (

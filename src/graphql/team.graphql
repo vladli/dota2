@@ -1,0 +1,73 @@
+query GetTeamById($id: Int!) {
+  team(teamId: $id) {
+    id
+    name
+    tag
+    dateCreated
+    winCount
+    lossCount
+    lastMatchDateTime
+    members {
+      steamAccountId
+      teamId
+      firstMatchDateTime
+      player {
+        steamAccountId
+        steamAccount {
+          id
+          proSteamAccount {
+            id
+            name
+            realName
+            isLocked
+            isPro
+            totalEarnings
+          }
+          name
+          isAnonymous
+          isStratzPublic
+        }
+        matches(request: { teamIdSteamAccount: $id, take: 3, skip: 0 }) {
+          id
+          players {
+            steamAccountId
+            position
+            isVictory
+            heroId
+          }
+        }
+        matchesGroupBy(
+          request: {
+            playerList: SINGLE
+            teamId: $id
+            groupBy: TEAM
+            take: 1000
+          }
+        ) {
+          ... on MatchGroupByTeamType {
+            teamId
+            matchCount
+            winCount
+          }
+        }
+      }
+    }
+    series(request: { take: 5, skip: 0 }) {
+      id
+      type
+      league {
+        id
+        displayName
+      }
+      winningTeamId
+      teamOne {
+        id
+        name
+      }
+      teamTwo {
+        name
+        id
+      }
+    }
+  }
+}

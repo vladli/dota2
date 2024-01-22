@@ -23,7 +23,7 @@ export default function HeroesCard({ allHeroes, data, header }: Props) {
     allHeroes?.constants?.heroes?.find((hero) => hero?.id === id);
   return (
     <Card className="flex flex-col gap-4 p-4">
-      <h1 className="font-semibold">{header}</h1>
+      <h2>{header}</h2>
       {data?.slice(0, 4).map((hero, index) => (
         <CardItem
           heroId={hero?.heroId2}

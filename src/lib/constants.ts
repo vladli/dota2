@@ -7,6 +7,7 @@ export const IMAGE = {
   urlAbility: "https://cdn.stratz.com/images/dota2/abilities/",
   urlItem: "https://cdn.stratz.com/images/dota2/items/",
   urlTeam: "https://cdn.stratz.com/images/dota2/teams/",
+  urlPlayer: "https://cdn.stratz.com/images/dota2/players/",
   model: "_modelcrop.png",
   horizontal: "_horz.png",
   vertical: "_vert.png",

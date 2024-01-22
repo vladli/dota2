@@ -61,7 +61,7 @@ export default function HeroStats({ data }: Props) {
   ];
   return (
     <section className="m-4 flex flex-col items-center gap-4">
-      <h1 className="text-xl font-semibold uppercase">Stats</h1>
+      <h2 className="uppercase">Stats</h2>
       <section className="flex w-full flex-col gap-10 md:flex-row">
         <div className="flex flex-col items-center">
           <Heading value="Attack" />
@@ -125,5 +125,5 @@ const Stat = ({
 };
 
 const Heading = ({ value }: { value: string }) => {
-  return <h1 className="mb-2 font-medium uppercase">{value}</h1>;
+  return <h3 className="mb-2 font-medium uppercase">{value}</h3>;
 };

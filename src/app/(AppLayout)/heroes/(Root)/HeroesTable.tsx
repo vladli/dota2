@@ -37,7 +37,7 @@ export default function HeroesTable({ header, data }: Props) {
           src={`/img/hero_type/${ATTR_IMAGE[header]}.png`}
           width={24}
         />
-        <h1 className="font-medium text-foreground-600">{header}</h1>
+        <h2 className="text-foreground-600">{header}</h2>
       </div>
       <div className="grid grid-cols-auto-fill gap-1 xl:flex xl:flex-wrap">
         {data?.map((hero) => (

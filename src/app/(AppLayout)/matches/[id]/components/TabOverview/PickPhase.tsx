@@ -28,9 +28,9 @@ export default function PickPhase({ phase, data, heroes }: Props) {
   }
   return (
     <div className="w-full max-w-[30rem] rounded-large bg-black p-4 lg:max-w-[8rem]">
-      <h1 className="mb-1 text-sm font-semibold text-foreground-500">
+      <h3 className="mb-1 text-sm font-semibold text-foreground-500">
         Pick Phase {phase}
-      </h1>
+      </h3>
       <div
         className={cn("grid grid-cols-1 place-items-center gap-4", {
           "grid-cols-2": phase !== 3,

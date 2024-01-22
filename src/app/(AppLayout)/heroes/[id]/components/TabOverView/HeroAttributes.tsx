@@ -28,7 +28,7 @@ export default function HeroAttributes({ data }: Props) {
   ];
   return (
     <section className="m-4 flex flex-col items-center gap-4">
-      <h1 className="text-xl font-semibold uppercase">Attributes</h1>
+      <h2 className="uppercase">Attributes</h2>
       <section className="flex flex-col items-center gap-4 md:flex-row">
         <div className="flex flex-col">
           <Image

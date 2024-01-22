@@ -18,9 +18,9 @@ export default function PlayerBans({ data, heroes }: Props) {
   );
   return (
     <div className="w-full min-w-fit max-w-[30rem] rounded-large bg-black p-4 xl:max-w-[20rem]">
-      <h1 className="mb-1 text-sm font-semibold text-foreground-500">
+      <h3 className="mb-1 text-sm font-semibold text-foreground-500">
         Player Bans
-      </h1>
+      </h3>
       <div className="grid grid-cols-5 place-items-center gap-4">
         {playerBans?.map((hero) => (
           <BanItem

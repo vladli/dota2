@@ -15,9 +15,9 @@ export default function SystemBans({ data, heroes }: Props) {
   );
   return (
     <section className="w-full max-w-[30rem] rounded-large bg-black p-4">
-      <h1 className="mb-1 text-sm font-semibold text-foreground-500">
+      <h3 className="mb-1 text-sm font-semibold text-foreground-500">
         Auto Bans
-      </h1>
+      </h3>
       <div className="flex flex-wrap gap-4">
         {systemBans?.map((hero) => (
           <BanItem

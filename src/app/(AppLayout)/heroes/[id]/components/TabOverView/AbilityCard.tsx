@@ -67,9 +67,7 @@ const AbilityDescription = ({ ability }: { ability: AbilityType }) => {
             src={IMAGE.urlAbility + ability?.name + ".png"}
           />
           <div className="flex flex-col">
-            <h1 className="text-xl font-bold uppercase">
-              {ability.language?.displayName}
-            </h1>
+            <h2 className="uppercase">{ability.language?.displayName}</h2>
             {ability.language?.description ? (
               <div
                 className="font-medium"
@@ -201,9 +199,9 @@ const AghanimDescription = ({
 }) => {
   return (
     <section className="my-4 flex flex-col gap-1 rounded-medium bg-gradient-to-r from-blue-500/30 to-blue-500/50 p-2">
-      <h1 className="font-semibold uppercase">
+      <h2 className="uppercase">
         {type === "Aghanim" ? "Scepter Upgrade" : "Shard Upgrade"}
-      </h1>
+      </h2>
       <span className="font-medium text-gray-300">{text}</span>
     </section>
   );

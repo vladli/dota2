@@ -2,6 +2,7 @@ import { Card, CardBody, CardHeader } from "@nextui-org/react";
 import { EyeOff } from "lucide-react";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import { z } from "zod";
 
 import { GetPlayerBySteamIdDocument } from "@/graphql/player";
 import { getClient } from "@/lib/client";
@@ -32,12 +33,16 @@ type Props = {
     category?: string[];
   };
 };
+
+const categorySchema = z.union([z.undefined(), z.literal("matches")]);
+
 export default async function page({ params }: Props) {
   const { data } = await getClient().query({
     query: GetPlayerBySteamIdDocument,
     variables: { steamAccountId: Number(params.id) },
   });
-  if (!data) return notFound();
+  const validatedCategories = categorySchema.safeParse(params.category?.[0]);
+  if (!data || !validatedCategories.success) return notFound();
   return (
     <main>
       <div className="relative">

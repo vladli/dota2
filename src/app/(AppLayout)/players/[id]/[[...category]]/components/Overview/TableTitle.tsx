@@ -3,5 +3,5 @@ type Props = {
 };
 
 export default function TableTitle({ children }: Props) {
-  return <h1 className="mb-1 p-2 font-medium">{children}</h1>;
+  return <h3 className="mb-1 p-2 font-medium">{children}</h3>;
 }

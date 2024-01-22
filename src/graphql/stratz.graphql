@@ -38,6 +38,20 @@ query GetSearch($request: FilterSearchRequestType!) {
         id
         avatar
         name
+        proSteamAccount {
+          id
+          name
+          team {
+            id
+            name
+            tag
+          }
+        }
+      }
+      teams {
+        id
+        name
+        tag
       }
     }
   }

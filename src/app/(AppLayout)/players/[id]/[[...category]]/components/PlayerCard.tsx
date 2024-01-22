@@ -1,6 +1,7 @@
 import { FaSteam } from "react-icons/fa";
 import { Button, Image, Link } from "@nextui-org/react";
 import { CheckCircle2 } from "lucide-react";
+import NextLink from "next/link";
 
 import { roboto_mono } from "@/app/fonts";
 import Tooltip from "@/components/Tooltip";
@@ -60,9 +61,12 @@ export default async function PlayerCard({ data }: Props) {
                   }
                   showArrow
                 >
-                  <span className="cursor-help text-foreground-500">
+                  <NextLink
+                    className="text-foreground-500"
+                    href={"/teams/" + proPlayer.team.id}
+                  >
                     {proPlayer.team.tag + "."}
-                  </span>
+                  </NextLink>
                 </Tooltip>
               ) : null}
               {proPlayer?.name || player?.steamAccount?.name}

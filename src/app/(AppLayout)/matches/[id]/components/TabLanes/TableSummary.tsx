@@ -3,11 +3,12 @@ import { Image, Progress } from "@nextui-org/react";
 import { ColumnDef } from "@tanstack/react-table";
 
 import PlayerName from "@/components/PlayerName";
+import RoleImage from "@/components/RoleImage";
 import Table from "@/components/Table/Table";
 import Tooltip from "@/components/Tooltip";
 import { GetMatchLanesQuery } from "@/graphql/match";
 import { IMAGE } from "@/lib/constants";
-import { cn, getRoleInfo } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { MatchPlayerType } from "@/types/types.generated";
 
 type Props = {
@@ -39,23 +40,10 @@ export default function TableSummary({
         }),
         cell: (info: any) => (
           <div className="flex items-center gap-x-2">
-            <Tooltip
-              content={
-                getRoleInfo(info.getValue().role, info.getValue().lane)?.name
-              }
-            >
-              <Image
-                alt=""
-                className="min-w-[14px]"
-                height={14}
-                radius="none"
-                src={
-                  getRoleInfo(info.getValue().role, info.getValue().lane)
-                    ?.image || ""
-                }
-                width={14}
-              />
-            </Tooltip>
+            <RoleImage
+              lane={info.getValue().lane}
+              role={info.getValue().role}
+            />
             <Tooltip content={info.getValue().displayName}>
               <Image
                 alt="Hero"

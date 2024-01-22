@@ -2,6 +2,7 @@ import { Image } from "@nextui-org/react";
 import { Octagon } from "lucide-react";
 import Link from "next/link";
 
+import RoleImage from "@/components/RoleImage";
 import Tooltip from "@/components/Tooltip";
 import { GetLeaderBoardsQuery } from "@/graphql/leaderboard";
 import { IMAGE } from "@/lib/constants";
@@ -44,16 +45,7 @@ export default function Table({ header, data }: Props) {
             </span>
           </div>
 
-          <Image
-            alt="Position"
-            height={15}
-            radius="none"
-            src={
-              player?.position ? `/img/position/${player?.position}.svg` : ""
-            }
-            width={15}
-          />
-
+          <RoleImage position={player?.position} />
           <div className="flex">
             {player?.steamAccount?.proSteamAccount?.team?.tag && (
               <Tooltip
@@ -88,6 +80,7 @@ export default function Table({ header, data }: Props) {
               {player?.steamAccount?.proSteamAccount?.name ||
                 player?.steamAccount?.name}
             </Link>
+            R
           </div>
         </div>
       ))}

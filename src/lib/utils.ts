@@ -124,12 +124,10 @@ export function getRoleInfo(
   if (role === "LIGHT_SUPPORT" || role === "HARD_SUPPORT") {
     return rolePositionMap[role];
   }
-
   const laneMap = rolePositionMap[role as keyof typeof rolePositionMap];
   if (laneMap && laneMap[lane as keyof typeof laneMap]) {
     return laneMap[lane as keyof typeof laneMap];
   }
-
   return null;
 }
 

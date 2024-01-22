@@ -2,11 +2,11 @@ import { Card, CardBody, Image } from "@nextui-org/react";
 import { formatDistanceToNow } from "date-fns";
 import Link from "next/link";
 
-import Tooltip from "@/components/Tooltip";
+import RoleImage from "@/components/RoleImage";
 import { GetAllHeroesQuery } from "@/graphql/constants";
 import { GetTeamByIdQuery } from "@/graphql/team";
 import { IMAGE } from "@/lib/constants";
-import { getPositionInfo } from "@/lib/utils";
+import { MatchPlayerPositionType } from "@/types/types.generated";
 
 type Props = {
   allHeroes: GetAllHeroesQuery;
@@ -99,16 +99,10 @@ export default function Players({ allHeroes, data }: Props) {
                   <div className="flex flex-col gap-y-1 lg:items-center">
                     <span>{proPlayer?.name}</span>
                     <span className="text-sm">{proPlayer?.realName}</span>
-                    <Tooltip
-                      content={getPositionInfo(mostPlayedPosition)?.name}
-                    >
-                      <Image
-                        alt=""
-                        radius="none"
-                        src={getPositionInfo(mostPlayedPosition)?.image}
-                        width={20}
-                      />
-                    </Tooltip>
+                    <RoleImage
+                      position={mostPlayedPosition as MatchPlayerPositionType}
+                      size={20}
+                    />
                   </div>
                   <div className="flex flex-col lg:items-center">
                     <p className="text-sm font-semibold">Joined</p>

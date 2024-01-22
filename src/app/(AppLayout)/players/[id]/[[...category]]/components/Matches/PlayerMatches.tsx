@@ -7,10 +7,10 @@ import Link from "next/link";
 
 import Loading from "@/components/Loading";
 import RankImage from "@/components/RankImage";
-import Tooltip from "@/components/Tooltip";
+import RoleImage from "@/components/RoleImage";
 import { GetPlayerMatchesDocument } from "@/graphql/player";
 import { IMAGE } from "@/lib/constants";
-import { cn, getRoleInfo, secondsToTime } from "@/lib/utils";
+import { cn, secondsToTime } from "@/lib/utils";
 
 type Props = {
   playerId: string;
@@ -51,17 +51,10 @@ export default function PlayerMatches({ playerId, matchCount }: Props) {
               </div>
               <Divider orientation="vertical" />
               <div className="shrink-0">
-                <Tooltip
-                  content={getRoleInfo(player?.role, player?.lane)?.name}
-                >
-                  <Image
-                    alt=""
-                    height={14}
-                    radius="none"
-                    src={getRoleInfo(player?.role, player?.lane)?.image || ""}
-                    width={14}
-                  />
-                </Tooltip>
+                <RoleImage
+                  lane={player?.lane}
+                  role={player?.role}
+                />
               </div>
               <div
                 className={cn(

@@ -243,12 +243,8 @@ const TowerDeathEvent = ({
           size={18}
           stroke="#ef4444"
         />
-        {attackerHero && (
-          <span className="font-semibold text-white">
-            {attackerHero?.steamAccount?.name}
-          </span>
-        )}
-        destroyed{" "}
+        {attackerHero && attackerHero?.hero?.displayName}
+        {" destroyed "}
         <span className="font-semibold text-white">
           {convertToHumanReadable(event.npcId)}
         </span>
@@ -278,7 +274,7 @@ const KillEvent = ({
           size={18}
           stroke="#ef4444"
         />
-        {`${event.playerName} killed `}
+        {`${event.hero.displayName} killed `}
 
         <Image
           alt=""
@@ -300,7 +296,7 @@ const RuneEvent = ({ event }: { event: RuneEventProps }) => (
     time={event.time}
   >
     <p>
-      {`${event.playerName} activated `}
+      {`${event.hero.displayName} activated `}
       <span
         className={cn("capitalize font-semibold", {
           "text-pink-500": event.rune === "ARCANE",

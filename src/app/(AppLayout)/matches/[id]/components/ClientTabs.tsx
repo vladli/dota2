@@ -3,6 +3,7 @@ import { Tab } from "@nextui-org/react";
 import {
   AreaChart,
   LandPlot,
+  MousePointerSquare,
   PercentDiamond,
   ScrollText,
   Trophy,
@@ -14,6 +15,7 @@ import { GetAllHeroesQuery, GetAllItemsQuery } from "@/graphql/constants";
 import { GetMatchByIdQuery } from "@/graphql/match";
 import { cn } from "@/lib/utils";
 
+import Abilities from "../tabs/Abilities";
 import TabLanes from "../tabs/Lanes";
 import TabLogs from "../tabs/Logs";
 import TabOverview from "../tabs/Overview";
@@ -26,7 +28,7 @@ type Props = {
 };
 export default function ClientTabs({ data, items, heroes }: Props) {
   return (
-    <Tabs defaultSelectedKey="overview">
+    <Tabs defaultSelectedKey="abilities">
       <Tab
         key="overview"
         title={
@@ -70,6 +72,19 @@ export default function ClientTabs({ data, items, heroes }: Props) {
           }
         >
           <TabLanes matchId={data.match?.id} />
+        </Tab>
+      )}
+      {data.match?.parsedDateTime && (
+        <Tab
+          key="abilities"
+          title={
+            <TabHeader
+              icon={MousePointerSquare}
+              text="Abilities"
+            />
+          }
+        >
+          <Abilities data={data} />
         </Tab>
       )}
       {data.match?.parsedDateTime && (

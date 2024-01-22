@@ -12,7 +12,7 @@ type Props = {
 export default function PickBan({ data, heroes }: Props) {
   return (
     <section className="mt-4 rounded-large bg-content1 p-4">
-      <h1 className="text-xl font-semibold uppercase">Draft</h1>
+      <h2 className="uppercase">Draft</h2>
       <div className="mt-4 flex w-full flex-col items-center gap-2 lg:flex-row">
         <PlayerBans
           data={data}

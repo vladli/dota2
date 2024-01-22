@@ -104,7 +104,7 @@ export const Header = ({
   const open = (text === "Radiant" && win) || (text === "Dire" && !win);
 
   return (
-    <h1
+    <h2
       className={cn(
         "w-fit text-xl uppercase font-semibold flex gap-2 items-center",
         {
@@ -114,6 +114,6 @@ export const Header = ({
       )}
     >
       {text} {open && showWin ? <Trophy /> : null}
-    </h1>
+    </h2>
   );
 };

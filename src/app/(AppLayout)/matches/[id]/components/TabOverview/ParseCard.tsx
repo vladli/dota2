@@ -30,7 +30,7 @@ export default function ParseCard({ matchId }: Props) {
           size={38}
         />
         <div className="flex flex-col">
-          <h1 className="text-xl font-bold">Not parsed</h1>
+          <h2>Not parsed</h2>
           <span className="font-medium">
             This match is not parsed. To view full statistics, please parse it.
           </span>

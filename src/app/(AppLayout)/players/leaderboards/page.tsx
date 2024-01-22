@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { z } from "zod";
 
 import { GetLeaderBoardsDocument } from "@/graphql/leaderboard";
 import { getClient } from "@/lib/client";
@@ -18,8 +19,18 @@ type Props = {
   };
 };
 
+const regionSchema = z.union([
+  z.undefined(),
+  z.literal("AMERICAS"),
+  z.literal("SE_ASIA"),
+  z.literal("EUROPE"),
+  z.literal("CHINA"),
+]);
+
 export default async function page({ searchParams }: Props) {
-  const region = searchParams.region || "AMERICAS";
+  const validatedRegion = regionSchema.safeParse(searchParams.region);
+
+  const region = validatedRegion.success ? searchParams.region : "AMERICAS";
   const { data } = await getClient().query({
     query: GetLeaderBoardsDocument,
     variables: {

@@ -217,9 +217,9 @@ export default function HeroesTable({ heroes }: Props) {
   return (
     <div>
       <Filters headerGroups={table.getHeaderGroups()} />
-      <h1 className="mb-4 text-lg font-semibold">
+      <h2 className="mb-4">
         Stats for: {formatDate(startDate)} - {formatDate(endDate)}
-      </h1>
+      </h2>
       <div className="overflow-x-auto rounded-large border border-divider bg-black scrollbar-thin scrollbar-thumb-content2">
         <table className="w-full text-left">
           <thead className="whitespace-nowrap bg-content1 text-tiny uppercase text-foreground-500">

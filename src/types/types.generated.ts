@@ -4521,6 +4521,8 @@ export type MatchLiveRequestType = {
   heroId?: InputMaybe<Scalars['Short']['input']>;
   /** Returns only matches that are no longer active and completed but not yet deleted. */
   isCompleted?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Whether the match is a league match or not. */
+  isLeague?: InputMaybe<Scalars['Boolean']['input']>;
   /** Returns only matches that are currently still being updated by the backend. */
   isParsing?: InputMaybe<Scalars['Boolean']['input']>;
   /** Playback Data can contain a lot of information. This will only display the most recent event for each of the fields. */

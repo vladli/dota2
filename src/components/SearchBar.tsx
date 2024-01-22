@@ -2,11 +2,18 @@
 
 import { useEffect, useState } from "react";
 import { useLazyQuery } from "@apollo/client";
-import { Input, Listbox, ListboxItem, ListboxSection } from "@nextui-org/react";
+import {
+  Image,
+  Input,
+  Listbox,
+  ListboxItem,
+  ListboxSection,
+} from "@nextui-org/react";
 import { useDebounce } from "@uidotdev/usehooks";
 import Link from "next/link";
 
 import { GetSearchDocument } from "@/graphql/stratz";
+import { IMAGE } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
 type Props = {
@@ -40,6 +47,7 @@ export default function SearchBar({ className, setIsMenuOpen }: Props) {
   const matches = data?.stratz?.search?.matches || [];
   const players = data?.stratz?.search?.players || [];
   const proPlayers = data?.stratz?.search?.proPlayers || [];
+  const teams = data?.stratz?.search?.teams || [];
   return (
     <div className="relative z-50">
       <Input
@@ -84,7 +92,15 @@ export default function SearchBar({ className, setIsMenuOpen }: Props) {
                   href={`/players/${player?.id}`}
                   key={player?.id}
                 >
-                  {player?.name}
+                  <div className="flex gap-2">
+                    <Image
+                      alt=""
+                      radius="sm"
+                      src={player?.avatar || ""}
+                      width={20}
+                    />
+                    {player?.name}
+                  </div>
                 </ListboxItem>
               ))}
             </ListboxSection>
@@ -98,7 +114,44 @@ export default function SearchBar({ className, setIsMenuOpen }: Props) {
                   href={`/players/${player?.id}`}
                   key={player?.id}
                 >
-                  {player?.name}
+                  <div className="flex gap-2">
+                    <Image
+                      alt=""
+                      radius="sm"
+                      src={player?.avatar || ""}
+                      width={20}
+                    />
+                    <p>
+                      {player?.proSteamAccount?.team?.tag ? (
+                        <span className="text-foreground-500">
+                          {player?.proSteamAccount?.team?.tag}.
+                        </span>
+                      ) : null}
+                      {player?.proSteamAccount?.name || player?.name}
+                    </p>
+                  </div>
+                </ListboxItem>
+              ))}
+            </ListboxSection>
+            <ListboxSection
+              hidden={teams.length === 0}
+              title="Teams"
+            >
+              {teams?.map((team) => (
+                <ListboxItem
+                  as={Link}
+                  href={`/teams/${team?.id}`}
+                  key={team!.id}
+                >
+                  <div className="flex gap-2">
+                    <Image
+                      alt=""
+                      radius="sm"
+                      src={IMAGE.urlTeam + team?.id + ".png"}
+                      width={20}
+                    />
+                    <span>{team?.name}</span>
+                  </div>
                 </ListboxItem>
               ))}
             </ListboxSection>

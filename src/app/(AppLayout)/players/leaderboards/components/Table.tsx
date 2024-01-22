@@ -24,7 +24,7 @@ export default function Table({ header, data }: Props) {
           src={`/img/ranks/8_${isTop10 ? "10" : "100"}.png`}
           width={40}
         />
-        <h1 className="w-fit text-xl font-bold uppercase">{header}</h1>
+        <h2 className="w-fit uppercase">{header}</h2>
       </div>
       {players?.map((player, index) => (
         <div
@@ -76,9 +76,12 @@ export default function Table({ header, data }: Props) {
                 }
                 showArrow
               >
-                <span className="cursor-help font-medium text-foreground-500">
+                <Link
+                  className="font-medium text-foreground-500"
+                  href={`/teams/${player.steamAccount.proSteamAccount.team.id}`}
+                >
                   {player?.steamAccount?.proSteamAccount?.team?.tag}.
-                </span>
+                </Link>
               </Tooltip>
             )}
             <Link href={`/players/${player?.steamAccountId}`}>

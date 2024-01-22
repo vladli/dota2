@@ -218,7 +218,7 @@ export default function PlayersTable({ data, team, items }: Props) {
       },
       {
         header: "LH / DN",
-        minSize: 100,
+        minSize: 120,
         enableSorting: false,
         accessorFn: (row) => ({
           lastHits: row.numLastHits,
@@ -239,7 +239,7 @@ export default function PlayersTable({ data, team, items }: Props) {
       },
       {
         header: "GPM / XPM",
-        minSize: 110,
+        minSize: 120,
         enableSorting: false,
         accessorFn: (row) => ({
           goldPerMinute: row.goldPerMinute,

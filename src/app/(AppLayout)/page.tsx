@@ -2,12 +2,12 @@ import Image from "next/image";
 
 import { cn } from "@/lib/utils";
 
-import { hypatia_font } from "../fonts";
+import { albertus_font } from "../fonts";
 
 export default function page() {
   return (
     <div>
-      <div className="absolute top-0 z-20 flex h-[100dvh] w-full flex-col items-center justify-center opacity-80">
+      <div className="absolute top-0 z-20 flex h-[100dvh] w-full select-none flex-col items-center justify-center opacity-80">
         <Image
           alt="Dota 2"
           height={200}
@@ -16,11 +16,11 @@ export default function page() {
         />
         <h1
           className={cn(
-            hypatia_font.className,
+            albertus_font.className,
             "text-5xl uppercase font-semibold"
           )}
         >
-          Dota 2
+          Dota 2 STATS
         </h1>
       </div>
 

@@ -77,8 +77,21 @@ function HeroesCard({ allHeroes, data, role, lane }: CardProps) {
   const getHero = (id: number) =>
     allHeroes?.constants?.heroes?.find((hero) => hero?.id === id);
   return (
-    <>
-      {data?.slice(0, 1).map((hero, index) => (
+    <div className="relative flex flex-col gap-2">
+      <div className="absolute -top-3 z-10 hidden w-full justify-center gap-x-2 font-medium xl:flex">
+        <Image
+          alt=""
+          className=""
+          draggable={false}
+          height={16}
+          radius="none"
+          removeWrapper
+          src={getRoleInfo(role, lane)?.image || ""}
+          width={16}
+        />
+        {getRoleInfo(role, lane)?.name}
+      </div>
+      {data?.slice(0, 3).map((hero, index) => (
         <CardItem
           heroId={hero?.heroId}
           heroImage={getHero(hero?.heroId)?.shortName}
@@ -89,7 +102,7 @@ function HeroesCard({ allHeroes, data, role, lane }: CardProps) {
           winRate={((hero?.winCount || 0) / (hero?.matchCount || 0)) * 100}
         />
       ))}
-    </>
+    </div>
   );
 }
 
@@ -116,22 +129,9 @@ function CardItem({
       href={`/heroes/${heroId}`}
     >
       <div className="absolute -top-3 z-10 flex w-full justify-center">
-        <div className="hidden gap-x-2 font-medium xl:flex">
-          <Image
-            alt=""
-            className=""
-            draggable={false}
-            height={16}
-            radius="none"
-            removeWrapper
-            src={getRoleInfo(role, lane)?.image || ""}
-            width={16}
-          />
-          {getRoleInfo(role, lane)?.name}
-        </div>
         <Image
           alt=""
-          className="size-6  xl:hidden"
+          className="size-6 xl:hidden"
           draggable={false}
           src={IMAGE.url + heroImage + IMAGE.icon}
           width={24}

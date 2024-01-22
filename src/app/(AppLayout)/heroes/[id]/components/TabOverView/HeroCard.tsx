@@ -37,13 +37,13 @@ export default function HeroCard({ data }: Props) {
           }
         </h2>
         <h1 className="text-3xl">{hero?.displayName}</h1>
-        <h2 className="flex flex-wrap gap-2 font-medium text-foreground-500">
+        <h3 className="flex flex-wrap gap-2 font-medium text-foreground-500">
           {hero?.roles
             ? hero?.roles.map((role, index) => (
                 <div key={index}>{role?.roleId}</div>
               ))
             : null}
-        </h2>
+        </h3>
         <h3 className="flex items-center gap-2 text-lg font-medium">
           <Image
             alt=""

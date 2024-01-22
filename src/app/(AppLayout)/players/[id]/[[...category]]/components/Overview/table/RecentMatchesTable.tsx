@@ -3,10 +3,10 @@ import { formatDistanceToNow } from "date-fns";
 import NextLink from "next/link";
 
 import RankImage from "@/components/RankImage";
-import Tooltip from "@/components/Tooltip";
+import RoleImage from "@/components/RoleImage";
 import { GetPlayerMatchesQuery } from "@/graphql/player";
 import { IMAGE } from "@/lib/constants";
-import { getRoleInfo, secondsToTime } from "@/lib/utils";
+import { secondsToTime } from "@/lib/utils";
 
 import TableTitle from "../TableTitle";
 
@@ -38,19 +38,10 @@ export default function RecentMatchesTable({ data }: Props) {
               <Divider orientation="vertical" />
 
               <div className="shrink-0">
-                <Tooltip
-                  content={
-                    getRoleInfo(player?.role, player?.lane)?.name || "Unknown"
-                  }
-                >
-                  <Image
-                    alt=""
-                    height={14}
-                    radius="none"
-                    src={getRoleInfo(player?.role, player?.lane)?.image || ""}
-                    width={14}
-                  />
-                </Tooltip>
+                <RoleImage
+                  lane={player?.lane}
+                  role={player?.role}
+                />
               </div>
               <div
                 className={cn(

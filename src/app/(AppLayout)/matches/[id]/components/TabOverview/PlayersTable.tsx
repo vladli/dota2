@@ -5,12 +5,13 @@ import { Backpack } from "lucide-react";
 import Link from "next/link";
 
 import PlayerName from "@/components/PlayerName";
+import RoleImage from "@/components/RoleImage";
 import Table from "@/components/Table/Table";
 import Tooltip from "@/components/Tooltip";
 import { GetAllItemsQuery } from "@/graphql/constants";
 import { GetMatchByIdQuery } from "@/graphql/match";
 import { IMAGE } from "@/lib/constants";
-import { formatNumber, getRankName, getRoleInfo } from "@/lib/utils";
+import { formatNumber, getRankName } from "@/lib/utils";
 import { MatchPlayerType } from "@/types/types.generated";
 
 import { Header } from "../ClientTabs";
@@ -144,18 +145,10 @@ export default function PlayersTable({ data, team, items }: Props) {
         }),
         cell: ({ getValue }: any) => (
           <div className="flex items-center gap-x-2">
-            <Tooltip
-              content={getRoleInfo(getValue().role, getValue().lane)?.name}
-            >
-              <Image
-                alt=""
-                className="min-w-[14px]"
-                height={14}
-                radius="none"
-                src={getRoleInfo(getValue().role, getValue().lane)?.image || ""}
-                width={14}
-              />
-            </Tooltip>
+            <RoleImage
+              lane={getValue().lane}
+              role={getValue().role}
+            />
             <Link href={`/heroes/${getValue().heroId}`}>
               <Image
                 alt=""

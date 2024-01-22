@@ -22,6 +22,25 @@ fragment ProSteamAccountFragment on ProSteamAccountType {
   }
 }
 
+fragment InventoryReportItemFragment on MatchPlayerInventoryObjectType {
+  itemId
+  charges
+}
+
+fragment AbilityFragment on PlayerAbilityType {
+  abilityId
+  time
+  level
+  isTalent
+  abilityType {
+    id
+    name
+    language {
+      displayName
+    }
+  }
+}
+
 query GetMatchById($id: Long!) {
   match(id: $id) {
     id
@@ -77,10 +96,14 @@ query GetMatchById($id: Long!) {
         shortName
         displayName
       }
+      abilities {
+        ...AbilityFragment
+      }
       stats {
         allTalks {
           time
           message
+          pausedTick
         }
 
         itemPurchases {
@@ -89,44 +112,34 @@ query GetMatchById($id: Long!) {
         }
         inventoryReport {
           item0 {
-            itemId
-            charges
+            ...InventoryReportItemFragment
           }
           item1 {
-            itemId
-            charges
+            ...InventoryReportItemFragment
           }
           item2 {
-            itemId
-            charges
+            ...InventoryReportItemFragment
           }
           item3 {
-            itemId
-            charges
+            ...InventoryReportItemFragment
           }
           item4 {
-            itemId
-            charges
+            ...InventoryReportItemFragment
           }
           item5 {
-            itemId
-            charges
+            ...InventoryReportItemFragment
           }
           backPack0 {
-            itemId
-            charges
+            ...InventoryReportItemFragment
           }
           backPack1 {
-            itemId
-            charges
+            ...InventoryReportItemFragment
           }
           backPack2 {
-            itemId
-            charges
+            ...InventoryReportItemFragment
           }
           neutral0 {
-            itemId
-            charges
+            ...InventoryReportItemFragment
           }
         }
         killEvents {

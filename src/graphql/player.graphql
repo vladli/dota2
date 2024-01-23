@@ -26,6 +26,10 @@ query GetPlayerBySteamId($steamAccountId: Long!) {
     matches(request: { take: 5 }) {
       id
     }
+    dotaPlus {
+      heroId
+      level
+    }
   }
 }
 

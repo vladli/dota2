@@ -1,3 +1,28 @@
+fragment SteamAccountFragment on SteamAccountType {
+  id
+  name
+  seasonRank
+  isAnonymous
+  isStratzPublic
+  countryCode
+  proSteamAccount {
+    ...ProSteamAccountFragment
+  }
+}
+fragment ProSteamAccountFragment on ProSteamAccountType {
+  id
+  name
+  realName
+  isLocked
+  isPro
+  totalEarnings
+  countries
+  team {
+    id
+    name
+    tag
+  }
+}
 query GetLeaderBoards(
   $leaderboardRequestVariable: FilterSeasonLeaderboardRequestType
   $skip: Long
@@ -13,15 +38,7 @@ query GetLeaderBoards(
         rank
         rankShift
         steamAccount {
-          name
-          proSteamAccount {
-            name
-            team {
-              id
-              tag
-              name
-            }
-          }
+          ...SteamAccountFragment
         }
       }
     }

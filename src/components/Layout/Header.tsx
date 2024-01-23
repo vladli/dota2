@@ -52,6 +52,7 @@ export default function Header() {
               <Image
                 alt=""
                 className="cursor-pointer transition-all group-hover:scale-110"
+                draggable={false}
                 height={32}
                 src="/img/dota2.png"
                 width={32}
@@ -84,6 +85,7 @@ export default function Header() {
             <Image
               alt=""
               className="cursor-pointer transition-all group-hover:scale-110"
+              draggable={false}
               height={32}
               src="/img/dota2.png"
               width={32}

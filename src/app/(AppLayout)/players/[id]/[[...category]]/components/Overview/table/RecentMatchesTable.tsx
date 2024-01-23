@@ -14,16 +14,50 @@ type Props = {
   data: GetPlayerMatchesQuery;
 };
 export default function RecentMatchesTable({ data }: Props) {
-  const matches = data.player?.matches;
+  const matches = data.player?.matches || [];
+  let winStreak = 0;
+  let loseStreak = 0;
+  let currentWinStreak = 0;
+  let currentLoseStreak = 0;
+  for (let i = matches?.length; i >= 0; i--) {
+    const isVictory = matches[i]?.players![0]?.isVictory;
+    if (isVictory) {
+      currentWinStreak++;
+      currentLoseStreak = 0;
+    } else {
+      currentLoseStreak++;
+      currentWinStreak = 0;
+    }
+    if (currentWinStreak > winStreak) {
+      winStreak = currentWinStreak;
+    }
+    if (currentLoseStreak > loseStreak) {
+      loseStreak = currentLoseStreak;
+    }
+  }
   return (
-    <div className="flex flex-col gap-2 rounded-large bg-content1 p-4">
+    <div className="flex grow flex-col gap-2 rounded-large bg-content1 p-4">
       <TableTitle>Recent Matches</TableTitle>
+      <div className="grow p-2 font-medium">
+        Current Streak{" "}
+        <span
+          className={cn(
+            "size-6 inline-flex justify-center items-center rounded-small text-black font-semibold",
+            {
+              "bg-danger-500": currentLoseStreak,
+              "bg-success-400": currentWinStreak,
+            }
+          )}
+        >
+          {currentWinStreak ? currentWinStreak : currentLoseStreak}
+        </span>
+      </div>
       <div className="overflow-hidden hover:overflow-x-auto">
         {matches!.map((match) => {
           const player = match?.players![0];
           return (
             <NextLink
-              className="flex h-14 min-w-max items-center justify-stretch gap-4 px-4 py-2 hover:bg-content2"
+              className="flex min-w-max items-center justify-stretch gap-4 px-4 py-2 hover:bg-content2"
               href={`/matches/${match?.id}`}
               key={match?.id}
             >

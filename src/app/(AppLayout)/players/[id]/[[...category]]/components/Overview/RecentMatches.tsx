@@ -13,8 +13,8 @@ export default async function RecentMatches({ steamId }: Props) {
     variables: { steamAccountId: Number(steamId), take: 20 },
   });
   return (
-    <section className="grow">
+    <>
       <RecentMatchesTable data={data} />
-    </section>
+    </>
   );
 }

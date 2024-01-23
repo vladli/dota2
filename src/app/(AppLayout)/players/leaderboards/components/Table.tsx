@@ -2,6 +2,7 @@ import { Image } from "@nextui-org/react";
 import { Octagon } from "lucide-react";
 import Link from "next/link";
 
+import PlayerCountry from "@/components/PlayerCountry";
 import RoleImage from "@/components/RoleImage";
 import Tooltip from "@/components/Tooltip";
 import { GetLeaderBoardsQuery } from "@/graphql/leaderboard";
@@ -15,6 +16,7 @@ type Props = {
 export default function Table({ header, data }: Props) {
   const isTop10 = header === "Top 10";
   const players = data.leaderboard?.season?.players;
+
   return (
     <div className="mt-4 rounded-large bg-content1">
       <div className="flex items-center gap-2 p-4">
@@ -29,7 +31,7 @@ export default function Table({ header, data }: Props) {
       </div>
       {players?.map((player, index) => (
         <div
-          className={cn("flex items-center gap-2  p-2", {
+          className={cn("flex items-center gap-2 p-2", {
             "border-b-1 border-b-content2": index !== players.length - 1,
           })}
           key={player?.steamAccountId}
@@ -80,7 +82,9 @@ export default function Table({ header, data }: Props) {
               {player?.steamAccount?.proSteamAccount?.name ||
                 player?.steamAccount?.name}
             </Link>
-            R
+          </div>
+          <div className="flex grow justify-end">
+            <PlayerCountry steamAccount={player?.steamAccount} />
           </div>
         </div>
       ))}

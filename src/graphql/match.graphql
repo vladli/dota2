@@ -4,6 +4,7 @@ fragment SteamAccountFragment on SteamAccountType {
   seasonRank
   isAnonymous
   isStratzPublic
+  countryCode
   proSteamAccount {
     ...ProSteamAccountFragment
   }
@@ -15,6 +16,7 @@ fragment ProSteamAccountFragment on ProSteamAccountType {
   isLocked
   isPro
   totalEarnings
+  countries
   team {
     id
     name

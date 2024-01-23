@@ -160,6 +160,50 @@ export function getPositionInfo(position: string | null | undefined) {
   return rolePositionMap[position as keyof typeof rolePositionMap];
 }
 
+export function getHeroTier(level: number | null | undefined) {
+  if (!level) return null;
+  const tierRanges = [
+    {
+      min: 11,
+      max: 11,
+      name: "Silver Tier",
+      image: "/img/hero_badge/hero_badge_2.png",
+    },
+    {
+      min: 12,
+      max: 17,
+      name: "Gold Tier",
+      image: "/img/hero_badge/hero_badge_3.png",
+    },
+    {
+      min: 18,
+      max: 24,
+      name: "Platinum Tier",
+      image: "/img/hero_badge/hero_badge_4.png",
+    },
+    {
+      min: 25,
+      max: 29,
+      name: "Grandmaster Tier",
+      image: "/img/hero_badge/hero_badge_5.png",
+    },
+    {
+      min: 30,
+      max: 30,
+      name: "Grandmaster Tier",
+      image: "/img/hero_badge/hero_badge_6.png",
+    },
+  ];
+
+  const tier = tierRanges.find(
+    (range) => level >= range.min && level <= range.max
+  );
+  if (tier) {
+    return { name: tier.name, image: tier.image };
+  }
+  return null;
+}
+
 export const formatNumber = (num: number) => {
   if (!num) return "-";
   if (num < 1000) {

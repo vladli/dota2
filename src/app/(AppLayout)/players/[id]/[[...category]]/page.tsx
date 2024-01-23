@@ -4,11 +4,13 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { z } from "zod";
 
+import { GetAllHeroesDocument } from "@/graphql/constants";
 import { GetPlayerBySteamIdDocument } from "@/graphql/player";
 import { getClient } from "@/lib/client";
 
 import ClientTabs from "./components/ClientTabs";
 import PlayerMatches from "./components/Matches/PlayerMatches";
+import DotaPlus from "./components/Overview/DotaPlus";
 import FavoriteHeroes from "./components/Overview/FavoriteHeroes";
 import PlayedWith from "./components/Overview/PlayedWith";
 import RecentMatches from "./components/Overview/RecentMatches";
@@ -41,6 +43,9 @@ export default async function page({ params }: Props) {
     query: GetPlayerBySteamIdDocument,
     variables: { steamAccountId: Number(params.id) },
   });
+  const { data: allHeroes } = await getClient().query({
+    query: GetAllHeroesDocument,
+  });
   const validatedCategories = categorySchema.safeParse(params.category?.[0]);
   if (!data || !validatedCategories.success) return notFound();
   return (
@@ -71,13 +76,21 @@ export default async function page({ params }: Props) {
             ) : params.category?.includes("anotherCategory") ? (
               <>a</>
             ) : (
-              <section className="flex w-full flex-col gap-4 xl:flex-row">
-                <RecentMatches steamId={params.id} />
-                <div className="flex flex-col gap-1">
-                  <PlayedWith steamId={params.id} />
-                  <FavoriteHeroes steamId={params.id} />
-                </div>
-              </section>
+              <div className="flex flex-col gap-4">
+                <section className="flex size-full flex-col gap-4 xl:flex-row">
+                  <div className="flex grow">
+                    <RecentMatches steamId={params.id} />
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <PlayedWith steamId={params.id} />
+                    <FavoriteHeroes steamId={params.id} />
+                  </div>
+                </section>
+                <DotaPlus
+                  allHeroes={allHeroes}
+                  data={data}
+                />
+              </div>
             )}
           </section>
         </>

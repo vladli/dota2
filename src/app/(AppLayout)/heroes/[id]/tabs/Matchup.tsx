@@ -1,21 +1,13 @@
 import { useMemo, useState } from "react";
 import { useQuery } from "@apollo/client";
-import {
-  Image,
-  Progress,
-  Select,
-  Selection,
-  SelectItem,
-} from "@nextui-org/react";
+import { Progress, Select, Selection, SelectItem } from "@nextui-org/react";
 import { ColumnDef } from "@tanstack/react-table";
-import Link from "next/link";
 
+import HeroImage from "@/components/HeroImage";
 import Loading from "@/components/Loading";
 import Table from "@/components/Table/Table";
-import Tooltip from "@/components/Tooltip";
 import { GetAllHeroesQuery, GetHeroByIdQuery } from "@/graphql/constants";
 import { GetHeroMatchUpsDocument } from "@/graphql/heroStats";
-import { IMAGE } from "@/lib/constants";
 
 import HeroesCard from "../components/TabMatchup/HeroesCard";
 
@@ -67,17 +59,13 @@ export default function Matchup({ hero, allHeroes }: Props) {
             (hero) => hero?.id === row.getValue()
           );
           return (
-            <Tooltip content={hero?.displayName}>
-              <Link href={`/heroes/${hero?.id}`}>
-                <Image
-                  alt=""
-                  className="min-w-[70px]"
-                  draggable={false}
-                  src={IMAGE.url + hero?.shortName + IMAGE.horizontal}
-                  width={70}
-                />
-              </Link>
-            </Tooltip>
+            <HeroImage
+              displayName={hero?.displayName!}
+              heroId={hero?.id}
+              isLink={true}
+              isTooltip={true}
+              shortName={hero?.shortName}
+            />
           );
         },
       },

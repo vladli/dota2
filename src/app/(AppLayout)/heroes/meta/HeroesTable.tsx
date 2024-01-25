@@ -1,6 +1,6 @@
 "use client";
 import { useMemo, useState } from "react";
-import { Image, Link } from "@nextui-org/react";
+import { Link } from "@nextui-org/react";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -13,8 +13,8 @@ import {
 import { ArrowDownWideNarrow, ArrowUpWideNarrow } from "lucide-react";
 import NextLink from "next/link";
 
+import HeroImage from "@/components/HeroImage";
 import { GetAllHeroesQuery } from "@/graphql/constants";
-import { IMAGE } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
 import Filters from "./Filters";
@@ -42,13 +42,12 @@ export default function HeroesTable({ heroes }: Props) {
         }),
         cell: (info: any) => (
           <div className="flex items-center gap-2">
-            <Image
-              alt="Hero"
-              className="min-w-[70px]"
-              radius="sm"
-              src={IMAGE.url + info.getValue().shortName + IMAGE.horizontal}
-              width={70}
+            <HeroImage
+              heroId={info.getValue().id}
+              isLink={false}
+              shortName={info.getValue().shortName}
             />
+
             <Link
               as={NextLink}
               color="foreground"

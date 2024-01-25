@@ -1,13 +1,12 @@
 import { useMemo } from "react";
-import { Image, Progress } from "@nextui-org/react";
+import { Progress } from "@nextui-org/react";
 import { ColumnDef } from "@tanstack/react-table";
 
+import HeroImage from "@/components/HeroImage";
 import PlayerName from "@/components/PlayerName";
 import RoleImage from "@/components/RoleImage";
 import Table from "@/components/Table/Table";
-import Tooltip from "@/components/Tooltip";
 import { GetMatchLanesQuery } from "@/graphql/match";
-import { IMAGE } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { MatchPlayerType } from "@/types/types.generated";
 
@@ -37,22 +36,20 @@ export default function TableSummary({
           lane: row.lane,
           displayName: row.hero?.displayName,
           shortName: row.hero?.shortName,
+          heroId: row.heroId,
         }),
-        cell: (info: any) => (
+        cell: ({ getValue }: any) => (
           <div className="flex items-center gap-x-2">
             <RoleImage
-              lane={info.getValue().lane}
-              role={info.getValue().role}
+              lane={getValue().lane}
+              role={getValue().role}
             />
-            <Tooltip content={info.getValue().displayName}>
-              <Image
-                alt="Hero"
-                className="min-w-[70px]"
-                radius="sm"
-                src={IMAGE.url + info.getValue().shortName + IMAGE.horizontal}
-                width={70}
-              />
-            </Tooltip>
+            <HeroImage
+              displayName={getValue().displayName}
+              heroId={getValue().heroId}
+              isTooltip
+              shortName={getValue().shortName}
+            />
           </div>
         ),
       },

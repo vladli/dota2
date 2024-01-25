@@ -1,7 +1,8 @@
-import { Card, Image } from "@nextui-org/react";
+import { Card } from "@nextui-org/react";
 import NextImage from "next/image";
 import Link from "next/link";
 
+import HeroImage from "@/components/HeroImage";
 import { GetAllHeroesQuery } from "@/graphql/constants";
 import { IMAGE } from "@/lib/constants";
 type Props = {
@@ -76,12 +77,11 @@ function CardItem({
           <span className="font-semibold">{heroName}</span>
           <span className="text-sm font-medium">{synergy.toFixed(1)}%</span>
         </div>
-        <Image
-          alt=""
-          className="min-w-[70px]"
-          draggable={false}
-          src={IMAGE.url + heroImage + IMAGE.horizontal}
-          width={70}
+
+        <HeroImage
+          heroId={heroId}
+          isLink={false}
+          shortName={heroImage}
         />
       </section>
     </Link>

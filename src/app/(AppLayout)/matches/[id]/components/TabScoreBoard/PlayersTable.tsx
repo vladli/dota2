@@ -2,8 +2,8 @@ import { useMemo } from "react";
 import { Image } from "@nextui-org/react";
 import { ColumnDef } from "@tanstack/react-table";
 import { Backpack } from "lucide-react";
-import Link from "next/link";
 
+import HeroImage from "@/components/HeroImage";
 import PlayerName from "@/components/PlayerName";
 import RoleImage from "@/components/RoleImage";
 import Table from "@/components/Table/Table";
@@ -175,14 +175,12 @@ export default function PlayersTable({
               lane={getValue().lane}
               role={getValue().role}
             />
-            <Link href={`/heroes/${getValue().heroId}`}>
-              <Image
-                alt=""
-                className="min-w-[70px]"
-                src={IMAGE.url + getValue().shortName + IMAGE.horizontal}
-                width={70}
-              />
-            </Link>
+            <HeroImage
+              displayName={getValue().displayName}
+              heroId={getValue().heroId}
+              isTooltip
+              shortName={getValue().shortName}
+            />
           </div>
         ),
       },

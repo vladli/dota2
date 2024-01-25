@@ -1,15 +1,15 @@
 "use client";
 import { useState } from "react";
 import { useQuery } from "@apollo/client";
-import { Divider, Image, Pagination } from "@nextui-org/react";
+import { Divider, Pagination } from "@nextui-org/react";
 import { formatDistanceToNow } from "date-fns";
 import Link from "next/link";
 
+import HeroImage from "@/components/HeroImage";
 import Loading from "@/components/Loading";
 import RankImage from "@/components/RankImage";
 import RoleImage from "@/components/RoleImage";
 import { GetPlayerMatchesDocument } from "@/graphql/player";
-import { IMAGE } from "@/lib/constants";
 import { cn, secondsToTime } from "@/lib/utils";
 
 type Props = {
@@ -42,11 +42,12 @@ export default function PlayerMatches({ playerId, matchCount }: Props) {
               key={match?.id}
             >
               <div className="shrink-0">
-                <Image
-                  alt="Hero"
-                  className="min-w-[60px]"
-                  src={IMAGE.url + player?.hero?.shortName + IMAGE.horizontal}
-                  width={60}
+                <HeroImage
+                  displayName={player?.hero?.displayName!}
+                  heroId={player?.hero?.id}
+                  isLink={false}
+                  isTooltip
+                  shortName={player?.hero?.shortName}
                 />
               </div>
               <Divider orientation="vertical" />

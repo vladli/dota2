@@ -1,11 +1,11 @@
-import { cn, Divider, Image } from "@nextui-org/react";
+import { cn, Divider } from "@nextui-org/react";
 import { formatDistanceToNow } from "date-fns";
 import NextLink from "next/link";
 
+import HeroImage from "@/components/HeroImage";
 import RankImage from "@/components/RankImage";
 import RoleImage from "@/components/RoleImage";
 import { GetPlayerMatchesQuery } from "@/graphql/player";
-import { IMAGE } from "@/lib/constants";
 import { secondsToTime } from "@/lib/utils";
 
 import TableTitle from "../TableTitle";
@@ -62,11 +62,12 @@ export default function RecentMatchesTable({ data }: Props) {
               key={match?.id}
             >
               <div className="shrink-0">
-                <Image
-                  alt="Hero"
-                  className="min-w-[60px]"
-                  src={IMAGE.url + player?.hero?.shortName + IMAGE.horizontal}
-                  width={60}
+                <HeroImage
+                  displayName={player?.hero?.displayName!}
+                  heroId={player?.hero?.id}
+                  isLink={false}
+                  isTooltip
+                  shortName={player?.hero?.shortName}
                 />
               </div>
               <Divider orientation="vertical" />

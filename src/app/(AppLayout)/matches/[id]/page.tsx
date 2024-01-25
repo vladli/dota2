@@ -38,7 +38,7 @@ export default async function page({ params }: Props) {
       <div className="relative h-full p-4">
         <div
           className={cn(
-            "absolute top-0 left-0 h-full w-full opacity-20 blur-[150px] lg:blur-[100px] -z-10",
+            "absolute top-0 left-0 size-full opacity-20 blur-[80px] lg:blur-[100px] -z-10",
             {
               "bg-success-400": data.match?.didRadiantWin,
               "bg-danger-500": !data.match?.didRadiantWin,

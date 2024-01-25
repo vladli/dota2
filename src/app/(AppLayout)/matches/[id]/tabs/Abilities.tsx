@@ -1,5 +1,6 @@
 import { Divider, Image } from "@nextui-org/react";
 
+import HeroImage from "@/components/HeroImage";
 import PlayerName from "@/components/PlayerName";
 import RoleImage from "@/components/RoleImage";
 import Tooltip from "@/components/Tooltip";
@@ -103,13 +104,12 @@ function Table({
                 <RoleImage position={player?.position} />
               </div>
               <div className="w-20 shrink-0 ">
-                <Tooltip content={player?.hero?.displayName}>
-                  <Image
-                    alt=""
-                    src={IMAGE.url + player?.hero?.shortName + IMAGE.horizontal}
-                    width={80}
-                  />
-                </Tooltip>
+                <HeroImage
+                  displayName={player?.hero?.displayName!}
+                  heroId={player?.heroId}
+                  isTooltip
+                  shortName={player?.hero?.shortName}
+                />
               </div>
               <div className="flex w-36 shrink-0">
                 <PlayerName steamAccount={player?.steamAccount} />

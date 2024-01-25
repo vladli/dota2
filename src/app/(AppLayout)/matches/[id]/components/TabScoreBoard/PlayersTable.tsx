@@ -56,8 +56,7 @@ export default function PlayersTable({
     team === "Radiant"
       ? match?.players!.filter((player) => player?.isRadiant)
       : match?.players!.filter((player) => !player?.isRadiant);
-  const getHero = (id: number) =>
-    heroes.constants?.heroes?.find((hero) => hero?.id === id);
+
   const getItem = (id: number) =>
     items.constants?.items?.find((item) => item?.id === id);
   const renderPlayerItems = (player: MatchPlayerType, time: number) => {
@@ -66,14 +65,16 @@ export default function PlayersTable({
 
     for (let i = 0; i < 6; i++) {
       const itemId = //@ts-ignore
-        player?.stats?.inventoryReport?.[time + 1][`item${i}`]?.itemId;
+        player?.stats?.inventoryReport?.[time][`item${i}`]?.itemId;
       playerItems.push(itemId);
     }
     for (let i = 0; i < 3; i++) {
       const itemId = //@ts-ignore
-        player.stats.inventoryReport?.[time + 1][`backPack${i}`]?.itemId;
+        player.stats.inventoryReport?.[time][`backPack${i}`]?.itemId;
       playerBackpack.push(itemId);
     }
+    const IMG_NAME = (name: string | null | undefined) =>
+      name?.includes("recipe") ? "recipe" : name;
     return (
       <div className="flex flex-col gap-1">
         <div className="flex gap-1">
@@ -82,7 +83,11 @@ export default function PlayersTable({
               <Tooltip
                 content={
                   <ToolTipContent
-                    img={IMAGE.urlItem + getItem(item)?.shortName + ".png"}
+                    img={
+                      IMAGE.urlItem +
+                      IMG_NAME(getItem(item)?.shortName) +
+                      ".png"
+                    }
                     name={getItem(item)?.displayName || ""}
                   />
                 }
@@ -92,7 +97,9 @@ export default function PlayersTable({
                   alt="item"
                   className="z-0 min-w-[40px]"
                   radius="none"
-                  src={IMAGE.urlItem + getItem(item)?.shortName + ".png"}
+                  src={
+                    IMAGE.urlItem + IMG_NAME(getItem(item)?.shortName) + ".png"
+                  }
                   width={40}
                 />
               </Tooltip>
@@ -114,7 +121,11 @@ export default function PlayersTable({
               <Tooltip
                 content={
                   <ToolTipContent
-                    img={IMAGE.urlItem + getItem(item)?.shortName + ".png"}
+                    img={
+                      IMAGE.urlItem +
+                      IMG_NAME(getItem(item)?.shortName) +
+                      ".png"
+                    }
                     name={getItem(item)?.displayName || ""}
                   />
                 }
@@ -124,7 +135,9 @@ export default function PlayersTable({
                   alt="item"
                   className="z-0 min-w-[40px] "
                   radius="none"
-                  src={IMAGE.urlItem + getItem(item)?.shortName + ".png"}
+                  src={
+                    IMAGE.urlItem + IMG_NAME(getItem(item)?.shortName) + ".png"
+                  }
                   width={40}
                 />
               </Tooltip>
@@ -291,12 +304,12 @@ export default function PlayersTable({
         header: "",
         enableSorting: false,
         accessorFn: (row) =>
-          row?.stats?.inventoryReport?.[time + 1]?.neutral0?.itemId,
+          row?.stats?.inventoryReport?.[time]?.neutral0?.itemId,
         cell: ({ getValue }: any) => {
           const item = items?.constants?.items!.find(
             (item) => item?.id === getValue()
           );
-          return (
+          return item ? (
             <Tooltip
               content={
                 <ToolTipContent
@@ -316,6 +329,8 @@ export default function PlayersTable({
                 />
               </div>
             </Tooltip>
+          ) : (
+            <div className="size-[35px] rounded-full bg-content1" />
           );
         },
       },

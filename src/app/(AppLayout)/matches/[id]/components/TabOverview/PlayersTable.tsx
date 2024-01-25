@@ -62,6 +62,8 @@ export default function PlayersTable({ data, team, items }: Props) {
       const itemId = player[`backpack${i}Id`];
       playerBackpack.push(itemId);
     }
+    const IMG_NAME = (name: string | null | undefined) =>
+      name?.includes("recipe") ? "recipe" : name;
     return (
       <div className="flex flex-col gap-1">
         <div className="flex gap-1">
@@ -70,7 +72,11 @@ export default function PlayersTable({ data, team, items }: Props) {
               <Tooltip
                 content={
                   <ToolTipContent
-                    img={IMAGE.urlItem + getItem(item)?.shortName + ".png"}
+                    img={
+                      IMAGE.urlItem +
+                      IMG_NAME(getItem(item)?.shortName) +
+                      ".png"
+                    }
                     name={getItem(item)?.displayName || ""}
                   />
                 }
@@ -80,7 +86,9 @@ export default function PlayersTable({ data, team, items }: Props) {
                   alt="item"
                   className="z-0 min-w-[40px]"
                   radius="none"
-                  src={IMAGE.urlItem + getItem(item)?.shortName + ".png"}
+                  src={
+                    IMAGE.urlItem + IMG_NAME(getItem(item)?.shortName) + ".png"
+                  }
                   width={40}
                 />
               </Tooltip>
@@ -102,7 +110,11 @@ export default function PlayersTable({ data, team, items }: Props) {
               <Tooltip
                 content={
                   <ToolTipContent
-                    img={IMAGE.urlItem + getItem(item)?.shortName + ".png"}
+                    img={
+                      IMAGE.urlItem +
+                      IMG_NAME(getItem(item)?.shortName) +
+                      ".png"
+                    }
                     name={getItem(item)?.displayName || ""}
                   />
                 }
@@ -112,7 +124,9 @@ export default function PlayersTable({ data, team, items }: Props) {
                   alt="item"
                   className="z-0 min-w-[40px]"
                   radius="none"
-                  src={IMAGE.urlItem + getItem(item)?.shortName + ".png"}
+                  src={
+                    IMAGE.urlItem + IMG_NAME(getItem(item)?.shortName) + ".png"
+                  }
                   width={40}
                 />
               </Tooltip>

@@ -36,7 +36,7 @@ export default function Abilities({ data }: Props) {
     ?.filter((player) => !player?.isRadiant)
     .toSorted(compareLaneAndRole);
   return (
-    <main className="flex flex-col overflow-x-auto scrollbar-thin scrollbar-thumb-content2">
+    <main className="flex flex-col overflow-x-auto rounded-large border border-divider p-2 scrollbar-thin scrollbar-thumb-content2">
       <section className="flex gap-2">
         <div className="w-5 shrink-0" />
         <div className="w-20 shrink-0" />
@@ -94,7 +94,10 @@ function Table({
           });
         }
         return (
-          <div key={player?.heroId}>
+          <div
+            className="px-2"
+            key={player?.heroId}
+          >
             <div className="flex items-center gap-2 ">
               <div className="w-5 shrink-0 ">
                 <RoleImage position={player?.position} />
@@ -138,7 +141,7 @@ function Table({
                             ability?.abilityType?.name +
                             ".png"
                           }
-                          width={48}
+                          width={40}
                         />
                       </Tooltip>
                     ) : (
@@ -151,7 +154,7 @@ function Table({
                         <Image
                           alt=""
                           src="/img/other/talents.png"
-                          width={48}
+                          width={40}
                         />
                       </Tooltip>
                     )}

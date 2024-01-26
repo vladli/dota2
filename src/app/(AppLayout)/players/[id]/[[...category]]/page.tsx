@@ -77,8 +77,9 @@ export default async function page({ params }: Props) {
               <>a</>
             ) : (
               <div className="flex flex-col gap-4">
+                {/* <Activity /> */}
                 <section className="flex size-full flex-col gap-4 xl:flex-row">
-                  <div className="flex grow">
+                  <div className="grow">
                     <RecentMatches steamId={params.id} />
                   </div>
                   <div className="flex flex-col gap-1">

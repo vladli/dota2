@@ -36,7 +36,7 @@ export default function RecentMatchesTable({ data }: Props) {
     }
   }
   return (
-    <div className="flex grow flex-col gap-2 rounded-large bg-content1 p-4">
+    <div className="flex  flex-col gap-2 rounded-large bg-content1 p-4">
       <TableTitle>Recent Matches</TableTitle>
       <div className="grow p-2 font-medium">
         Current Streak{" "}
@@ -52,7 +52,7 @@ export default function RecentMatchesTable({ data }: Props) {
           {currentWinStreak ? currentWinStreak : currentLoseStreak}
         </span>
       </div>
-      <div className="overflow-hidden hover:overflow-x-auto">
+      <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-content2">
         {matches!.map((match) => {
           const player = match?.players![0];
           return (

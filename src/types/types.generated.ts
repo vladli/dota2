@@ -1496,7 +1496,7 @@ export type FilterMatchReplayUploadRequestType = {
   byGameMode?: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
   byGameVersion?: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
   byHeroId?: InputMaybe<Array<InputMaybe<Scalars['Short']['input']>>>;
-  byLeagueId?: InputMaybe<Scalars['String']['input']>;
+  byLeagueId?: InputMaybe<Scalars['Int']['input']>;
   byLobbyType?: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
   byMatchId?: InputMaybe<Scalars['String']['input']>;
   byMatchIds?: InputMaybe<Array<InputMaybe<Scalars['Long']['input']>>>;
@@ -1504,14 +1504,14 @@ export type FilterMatchReplayUploadRequestType = {
   byMatchUploadUploaderCaptainJackId?: InputMaybe<Scalars['Guid']['input']>;
   bySeriesId?: InputMaybe<Scalars['String']['input']>;
   bySeriesIds?: InputMaybe<Array<InputMaybe<Scalars['Long']['input']>>>;
-  bySteamAccountId?: InputMaybe<Scalars['String']['input']>;
+  bySteamAccountId?: InputMaybe<Scalars['Long']['input']>;
   bySteamAccountIds?: InputMaybe<Array<InputMaybe<Scalars['Long']['input']>>>;
-  byTeamId?: InputMaybe<Scalars['String']['input']>;
+  byTeamId?: InputMaybe<Scalars['Int']['input']>;
   endDateTime?: InputMaybe<Scalars['Long']['input']>;
   filterPosition?: InputMaybe<MatchPlayerPositionType>;
   filterPositionIsUs?: InputMaybe<Scalars['Boolean']['input']>;
   filterPositionOrder?: InputMaybe<Array<InputMaybe<MatchPlayerTeamPickOrderType>>>;
-  firstPick?: InputMaybe<Scalars['String']['input']>;
+  firstPick?: InputMaybe<Scalars['Boolean']['input']>;
   isActive?: InputMaybe<Scalars['Boolean']['input']>;
   isComplete?: InputMaybe<Scalars['Boolean']['input']>;
   isLeague?: InputMaybe<Scalars['Boolean']['input']>;
@@ -1829,6 +1829,11 @@ export type HeroAbilityType = {
   abilityId: Scalars['Short']['output'];
   gameVersionId: Scalars['Short']['output'];
   slot: Scalars['Byte']['output'];
+};
+
+
+export type HeroAbilityTypeAbilityArgs = {
+  language?: InputMaybe<Language>;
 };
 
 export type HeroBanType = {

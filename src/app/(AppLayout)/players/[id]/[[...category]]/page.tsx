@@ -5,11 +5,19 @@ import { notFound } from "next/navigation";
 import { z } from "zod";
 
 import { GetAllHeroesDocument } from "@/graphql/constants";
-import { GetPlayerBySteamIdDocument } from "@/graphql/player";
+import {
+  GetPlayerActivityStatsDocument,
+  GetPlayerBySteamIdDocument,
+} from "@/graphql/player";
 import { getClient } from "@/lib/client";
+import {
+  FindMatchPlayerGroupBy,
+  FindMatchPlayerList,
+} from "@/types/types.generated";
 
 import ClientTabs from "./components/ClientTabs";
 import PlayerMatches from "./components/Matches/PlayerMatches";
+import Activity from "./components/Overview/Activity";
 import DotaPlus from "./components/Overview/DotaPlus";
 import FavoriteHeroes from "./components/Overview/FavoriteHeroes";
 import PlayedWith from "./components/Overview/PlayedWith";
@@ -46,6 +54,22 @@ export default async function page({ params }: Props) {
   const { data: allHeroes } = await getClient().query({
     query: GetAllHeroesDocument,
   });
+  const { data: activity } = await getClient().query({
+    query: GetPlayerActivityStatsDocument,
+    variables: {
+      steamAccountId: Number(params.id),
+      heroStatsByDayRequest: {
+        take: 500,
+        groupBy: FindMatchPlayerGroupBy.DateDayHero,
+        playerList: FindMatchPlayerList.Single,
+      },
+      statsByHourRequest: {
+        take: 10,
+        groupBy: FindMatchPlayerGroupBy.Hour,
+        playerList: FindMatchPlayerList.Single,
+      },
+    },
+  });
   const validatedCategories = categorySchema.safeParse(params.category?.[0]);
   if (!data || !validatedCategories.success) return notFound();
   return (
@@ -77,7 +101,7 @@ export default async function page({ params }: Props) {
               <>a</>
             ) : (
               <div className="flex flex-col gap-4">
-                {/* <Activity /> */}
+                <Activity data={activity} />
                 <section className="flex size-full flex-col gap-4 xl:flex-row">
                   <div className="grow">
                     <RecentMatches steamId={params.id} />

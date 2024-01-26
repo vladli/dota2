@@ -92,3 +92,33 @@ query GetMostPlayedHeroes(
     }
   }
 }
+
+query GetPlayerActivityStats(
+  $steamAccountId: Long!
+  $heroStatsByDayRequest: PlayerMatchesGroupByRequestType!
+  $statsByHourRequest: PlayerMatchesGroupByRequestType!
+) {
+  player(steamAccountId: $steamAccountId) {
+    steamAccountId
+    firstMatchDate
+    matchCount
+    winCount
+    statsByDay: matchesGroupBy(request: $heroStatsByDayRequest) {
+      ... on MatchGroupByDateDayHeroType {
+        dateDay
+        heroId
+        matchCount
+        winCount
+        __typename
+      }
+    }
+    statsByHour: matchesGroupBy(request: $statsByHourRequest) {
+      ... on MatchGroupByHourType {
+        hour
+        matchCount
+        winCount
+        __typename
+      }
+    }
+  }
+}

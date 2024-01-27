@@ -26,10 +26,6 @@ query GetPlayerBySteamId($steamAccountId: Long!) {
     matches(request: { take: 5 }) {
       id
     }
-    dotaPlus {
-      heroId
-      level
-    }
   }
 }
 
@@ -119,6 +115,36 @@ query GetPlayerActivityStats(
         winCount
         __typename
       }
+    }
+  }
+}
+
+query GetPlayerDotaPlus($steamAccountId: Long!) {
+  player(steamAccountId: $steamAccountId) {
+    steamAccountId
+    steamAccount {
+      profileUri
+      timeCreated
+      name
+      avatar
+      isDotaPlusSubscriber
+      isAnonymous
+      seasonRank
+      seasonLeaderboardRank
+      proSteamAccount {
+        id
+        name
+        realName
+        team {
+          id
+          name
+          tag
+        }
+      }
+    }
+    dotaPlus {
+      heroId
+      level
     }
   }
 }

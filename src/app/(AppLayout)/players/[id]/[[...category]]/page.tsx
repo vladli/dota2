@@ -1,9 +1,8 @@
-import { Card, CardBody, CardHeader } from "@nextui-org/react";
-import { EyeOff } from "lucide-react";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { z } from "zod";
 
+import ErrorCard from "@/components/ErrorCard";
 import { GetAllHeroesDocument } from "@/graphql/constants";
 import {
   GetPlayerActivityStatsDocument,
@@ -51,25 +50,30 @@ export default async function page({ params }: Props) {
     query: GetPlayerBySteamIdDocument,
     variables: { steamAccountId: Number(params.id) },
   });
+
   const { data: allHeroes } = await getClient().query({
     query: GetAllHeroesDocument,
   });
-  const { data: activity } = await getClient().query({
-    query: GetPlayerActivityStatsDocument,
-    variables: {
-      steamAccountId: Number(params.id),
-      heroStatsByDayRequest: {
-        take: 500,
-        groupBy: FindMatchPlayerGroupBy.DateDayHero,
-        playerList: FindMatchPlayerList.Single,
+  let activity = null;
+  if (!data?.player?.steamAccount?.isAnonymous) {
+    const activityResponse = await getClient().query({
+      query: GetPlayerActivityStatsDocument,
+      variables: {
+        steamAccountId: Number(params.id),
+        heroStatsByDayRequest: {
+          take: 500,
+          groupBy: FindMatchPlayerGroupBy.DateDayHero,
+          playerList: FindMatchPlayerList.Single,
+        },
+        statsByHourRequest: {
+          take: 10,
+          groupBy: FindMatchPlayerGroupBy.Hour,
+          playerList: FindMatchPlayerList.Single,
+        },
       },
-      statsByHourRequest: {
-        take: 10,
-        groupBy: FindMatchPlayerGroupBy.Hour,
-        playerList: FindMatchPlayerList.Single,
-      },
-    },
-  });
+    });
+    activity = activityResponse.data;
+  }
   const validatedCategories = categorySchema.safeParse(params.category?.[0]);
   if (!data || !validatedCategories.success) return notFound();
   return (
@@ -113,7 +117,7 @@ export default async function page({ params }: Props) {
                 </section>
                 <DotaPlus
                   allHeroes={allHeroes}
-                  data={data}
+                  steamId={params.id}
                 />
               </div>
             )}
@@ -121,14 +125,7 @@ export default async function page({ params }: Props) {
         </>
       ) : (
         <section className="flex justify-center">
-          <Card className="min-w-fit max-w-28 p-4">
-            <CardHeader className="justify-center">
-              <EyeOff />
-            </CardHeader>
-            <CardBody className="font-medium">
-              This is a private profile
-            </CardBody>
-          </Card>
+          <ErrorCard />
         </section>
       )}
     </main>

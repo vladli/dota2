@@ -1,10 +1,12 @@
+"use client";
+import { useQuery } from "@apollo/client";
 import { Card, Image } from "@nextui-org/react";
 import NextImage from "next/image";
 import Link from "next/link";
 
 import Container from "@/components/Container";
 import { GetAllHeroesQuery } from "@/graphql/constants";
-import { GetPlayerBySteamIdQuery } from "@/graphql/player";
+import { GetPlayerDotaPlusDocument } from "@/graphql/player";
 import { IMAGE } from "@/lib/constants";
 import { getHero, getHeroTier } from "@/lib/utils";
 
@@ -12,10 +14,13 @@ import TableTitle from "./TableTitle";
 
 type Props = {
   allHeroes: GetAllHeroesQuery;
-  data: GetPlayerBySteamIdQuery;
+  steamId: string;
 };
 
-export default function DotaPlus({ allHeroes, data }: Props) {
+export default function DotaPlus({ allHeroes, steamId }: Props) {
+  const { data } = useQuery(GetPlayerDotaPlusDocument, {
+    variables: { steamAccountId: Number(steamId) },
+  });
   if (!data?.player?.dotaPlus?.length) return null;
   const topHeroes = data.player?.dotaPlus?.toSorted(
     (a, b) => b?.level - a?.level

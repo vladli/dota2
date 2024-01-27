@@ -15,7 +15,7 @@ import { MatchGroupByDateDayHeroType, Maybe } from "@/types/types.generated";
 import TableTitle from "./TableTitle";
 
 type Props = {
-  data: GetPlayerActivityStatsQuery;
+  data: GetPlayerActivityStatsQuery | null;
 };
 
 interface HeroStat {
@@ -73,7 +73,7 @@ export default function Active({ data }: Props) {
   const heatmapRef = useRef(null);
 
   const result = groupStatsByDate(
-    data.player?.statsByDay as MatchGroupByDateDayHeroType[]
+    data?.player?.statsByDay as MatchGroupByDateDayHeroType[]
   );
   const value = [
     ...result.map((stat, idx) => {
@@ -167,6 +167,7 @@ export default function Active({ data }: Props) {
     };
   }, []);
 
+  if (!data) return null;
   return (
     <Container className="flex flex-col gap-2">
       <TableTitle>Activity</TableTitle>

@@ -1,3 +1,4 @@
+@import "cal-heatmap/cal-heatmap.css";
 @tailwind base;
 
 @layer base {
@@ -14,3 +15,15 @@
 
 @tailwind components;
 @tailwind utilities;
+
+#ch-tooltip {
+  @apply !bg-content2 !text-white;
+}
+
+.ch-container {
+  @apply !bg-transparent;
+}
+
+[data-theme="dark"] .ch-subdomain-bg {
+  @apply fill-content2;
+}

@@ -1,9 +1,12 @@
+"use client";
+import { useQuery } from "@apollo/client";
 import { Card, Image } from "@nextui-org/react";
 import NextImage from "next/image";
 import Link from "next/link";
 
+import Container from "@/components/Container";
 import { GetAllHeroesQuery } from "@/graphql/constants";
-import { GetPlayerBySteamIdQuery } from "@/graphql/player";
+import { GetPlayerDotaPlusDocument } from "@/graphql/player";
 import { IMAGE } from "@/lib/constants";
 import { getHero, getHeroTier } from "@/lib/utils";
 
@@ -11,10 +14,13 @@ import TableTitle from "./TableTitle";
 
 type Props = {
   allHeroes: GetAllHeroesQuery;
-  data: GetPlayerBySteamIdQuery;
+  steamId: string;
 };
 
-export default function DotaPlus({ allHeroes, data }: Props) {
+export default function DotaPlus({ allHeroes, steamId }: Props) {
+  const { data } = useQuery(GetPlayerDotaPlusDocument, {
+    variables: { steamAccountId: Number(steamId) },
+  });
   if (!data?.player?.dotaPlus?.length) return null;
   const topHeroes = data.player?.dotaPlus?.toSorted(
     (a, b) => b?.level - a?.level
@@ -33,7 +39,7 @@ export default function DotaPlus({ allHeroes, data }: Props) {
     });
   }
   return (
-    <div className="flex grow flex-col gap-2 rounded-large bg-content1 p-4">
+    <Container className="flex grow flex-col gap-2">
       <TableTitle>DotaPlus Top Heroes</TableTitle>
       <div className="flex flex-wrap justify-around gap-2">
         {[...highestLevelsMap]?.slice(0, 8)?.map(([heroId, highestLevel]) => (
@@ -45,7 +51,7 @@ export default function DotaPlus({ allHeroes, data }: Props) {
           />
         ))}
       </div>
-    </div>
+    </Container>
   );
 }
 

@@ -2,6 +2,7 @@ import { cn, Divider } from "@nextui-org/react";
 import { formatDistanceToNow } from "date-fns";
 import NextLink from "next/link";
 
+import Container from "@/components/Container";
 import HeroImage from "@/components/HeroImage";
 import RankImage from "@/components/RankImage";
 import RoleImage from "@/components/RoleImage";
@@ -36,7 +37,7 @@ export default function RecentMatchesTable({ data }: Props) {
     }
   }
   return (
-    <div className="flex  flex-col gap-2 rounded-large bg-content1 p-4">
+    <Container className="flex flex-col gap-2">
       <TableTitle>Recent Matches</TableTitle>
       <div className="grow p-2 font-medium">
         Current Streak{" "}
@@ -113,6 +114,6 @@ export default function RecentMatchesTable({ data }: Props) {
           );
         })}
       </div>
-    </div>
+    </Container>
   );
 }

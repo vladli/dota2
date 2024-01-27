@@ -1,15 +1,22 @@
-import { Card, CardBody, CardHeader } from "@nextui-org/react";
-import { EyeOff } from "lucide-react";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { z } from "zod";
 
+import ErrorCard from "@/components/ErrorCard";
 import { GetAllHeroesDocument } from "@/graphql/constants";
-import { GetPlayerBySteamIdDocument } from "@/graphql/player";
+import {
+  GetPlayerActivityStatsDocument,
+  GetPlayerBySteamIdDocument,
+} from "@/graphql/player";
 import { getClient } from "@/lib/client";
+import {
+  FindMatchPlayerGroupBy,
+  FindMatchPlayerList,
+} from "@/types/types.generated";
 
 import ClientTabs from "./components/ClientTabs";
 import PlayerMatches from "./components/Matches/PlayerMatches";
+import Activity from "./components/Overview/Activity";
 import DotaPlus from "./components/Overview/DotaPlus";
 import FavoriteHeroes from "./components/Overview/FavoriteHeroes";
 import PlayedWith from "./components/Overview/PlayedWith";
@@ -43,9 +50,30 @@ export default async function page({ params }: Props) {
     query: GetPlayerBySteamIdDocument,
     variables: { steamAccountId: Number(params.id) },
   });
+
   const { data: allHeroes } = await getClient().query({
     query: GetAllHeroesDocument,
   });
+  let activity = null;
+  if (!data?.player?.steamAccount?.isAnonymous) {
+    const activityResponse = await getClient().query({
+      query: GetPlayerActivityStatsDocument,
+      variables: {
+        steamAccountId: Number(params.id),
+        heroStatsByDayRequest: {
+          take: 500,
+          groupBy: FindMatchPlayerGroupBy.DateDayHero,
+          playerList: FindMatchPlayerList.Single,
+        },
+        statsByHourRequest: {
+          take: 10,
+          groupBy: FindMatchPlayerGroupBy.Hour,
+          playerList: FindMatchPlayerList.Single,
+        },
+      },
+    });
+    activity = activityResponse.data;
+  }
   const validatedCategories = categorySchema.safeParse(params.category?.[0]);
   if (!data || !validatedCategories.success) return notFound();
   return (
@@ -77,7 +105,7 @@ export default async function page({ params }: Props) {
               <>a</>
             ) : (
               <div className="flex flex-col gap-4">
-                {/* <Activity /> */}
+                <Activity data={activity} />
                 <section className="flex size-full flex-col gap-4 xl:flex-row">
                   <div className="grow">
                     <RecentMatches steamId={params.id} />
@@ -89,7 +117,7 @@ export default async function page({ params }: Props) {
                 </section>
                 <DotaPlus
                   allHeroes={allHeroes}
-                  data={data}
+                  steamId={params.id}
                 />
               </div>
             )}
@@ -97,14 +125,7 @@ export default async function page({ params }: Props) {
         </>
       ) : (
         <section className="flex justify-center">
-          <Card className="min-w-fit max-w-28 p-4">
-            <CardHeader className="justify-center">
-              <EyeOff />
-            </CardHeader>
-            <CardBody className="font-medium">
-              This is a private profile
-            </CardBody>
-          </Card>
+          <ErrorCard />
         </section>
       )}
     </main>

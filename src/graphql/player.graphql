@@ -26,10 +26,6 @@ query GetPlayerBySteamId($steamAccountId: Long!) {
     matches(request: { take: 5 }) {
       id
     }
-    dotaPlus {
-      heroId
-      level
-    }
   }
 }
 
@@ -89,6 +85,66 @@ query GetMostPlayedHeroes(
         avgAssists
         lastMatchDateTime
       }
+    }
+  }
+}
+
+query GetPlayerActivityStats(
+  $steamAccountId: Long!
+  $heroStatsByDayRequest: PlayerMatchesGroupByRequestType!
+  $statsByHourRequest: PlayerMatchesGroupByRequestType!
+) {
+  player(steamAccountId: $steamAccountId) {
+    steamAccountId
+    firstMatchDate
+    matchCount
+    winCount
+    statsByDay: matchesGroupBy(request: $heroStatsByDayRequest) {
+      ... on MatchGroupByDateDayHeroType {
+        dateDay
+        heroId
+        matchCount
+        winCount
+        __typename
+      }
+    }
+    statsByHour: matchesGroupBy(request: $statsByHourRequest) {
+      ... on MatchGroupByHourType {
+        hour
+        matchCount
+        winCount
+        __typename
+      }
+    }
+  }
+}
+
+query GetPlayerDotaPlus($steamAccountId: Long!) {
+  player(steamAccountId: $steamAccountId) {
+    steamAccountId
+    steamAccount {
+      profileUri
+      timeCreated
+      name
+      avatar
+      isDotaPlusSubscriber
+      isAnonymous
+      seasonRank
+      seasonLeaderboardRank
+      proSteamAccount {
+        id
+        name
+        realName
+        team {
+          id
+          name
+          tag
+        }
+      }
+    }
+    dotaPlus {
+      heroId
+      level
     }
   }
 }

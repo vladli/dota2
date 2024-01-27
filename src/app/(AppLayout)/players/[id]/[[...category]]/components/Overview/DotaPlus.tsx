@@ -2,6 +2,7 @@ import { Card, Image } from "@nextui-org/react";
 import NextImage from "next/image";
 import Link from "next/link";
 
+import Container from "@/components/Container";
 import { GetAllHeroesQuery } from "@/graphql/constants";
 import { GetPlayerBySteamIdQuery } from "@/graphql/player";
 import { IMAGE } from "@/lib/constants";
@@ -33,7 +34,7 @@ export default function DotaPlus({ allHeroes, data }: Props) {
     });
   }
   return (
-    <div className="flex grow flex-col gap-2 rounded-large bg-content1 p-4">
+    <Container className="flex grow flex-col gap-2">
       <TableTitle>DotaPlus Top Heroes</TableTitle>
       <div className="flex flex-wrap justify-around gap-2">
         {[...highestLevelsMap]?.slice(0, 8)?.map(([heroId, highestLevel]) => (
@@ -45,7 +46,7 @@ export default function DotaPlus({ allHeroes, data }: Props) {
           />
         ))}
       </div>
-    </div>
+    </Container>
   );
 }
 

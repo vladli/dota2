@@ -1,7 +1,14 @@
 "use client";
-import { Tooltip } from "@nextui-org/react";
-import HeatMap from "@uiw/react-heat-map";
+import { useEffect, useRef } from "react";
+//@ts-expect-error
+import CalHeatMap from "cal-heatmap";
+//@ts-expect-error
+import CalendarLabel from "cal-heatmap/plugins/CalendarLabel";
+//@ts-expect-error
+import Tooltip from "cal-heatmap/plugins/Tooltip";
+import { format } from "date-fns";
 
+import Container from "@/components/Container";
 import { GetPlayerActivityStatsQuery } from "@/graphql/player";
 import { MatchGroupByDateDayHeroType, Maybe } from "@/types/types.generated";
 
@@ -20,22 +27,6 @@ interface HeroStat {
 interface GroupedStats {
   dateDay: number;
   heroes: HeroStat[];
-}
-
-function getPastDate(daysAgo: number) {
-  const today = new Date();
-  const pastDate = new Date(today);
-  pastDate.setDate(today.getDate() - daysAgo);
-  return pastDate;
-}
-
-function convertUnixToDate(unixTimestamp: number): string {
-  const date = new Date(unixTimestamp * 1000); // Convert seconds to milliseconds
-  const year = date.getFullYear();
-  const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Months are zero-indexed
-  const day = date.getDate().toString().padStart(2, "0");
-
-  return `${year}/${month}/${day}`;
 }
 
 const groupStatsByDate = (
@@ -62,7 +53,25 @@ const groupStatsByDate = (
   return Object.values(groupedStats);
 };
 
-export default function Activity({ data }: Props) {
+function getPastDate(daysAgo: number) {
+  const today = new Date();
+  const pastDate = new Date(today);
+  pastDate.setDate(today.getDate() + daysAgo);
+  return pastDate;
+}
+
+function convertUnixToDate(unixTimestamp: number): string {
+  const date = new Date(unixTimestamp * 1000); // Convert seconds to milliseconds
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Months are zero-indexed
+  const day = date.getDate().toString().padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+}
+
+export default function Active({ data }: Props) {
+  const heatmapRef = useRef(null);
+
   const result = groupStatsByDate(
     data.player?.statsByDay as MatchGroupByDateDayHeroType[]
   );
@@ -79,43 +88,94 @@ export default function Activity({ data }: Props) {
       );
       return {
         date: date,
-        count: matchCount,
-        content: (
-          <div className="flex gap-1">
-            <span className="text-success-400">{winCount}</span> -{" "}
-            <span className="text-danger-500">{matchCount - winCount}</span>
-          </div>
-        ),
+        value: matchCount,
       };
     }),
   ];
 
+  const calOptions = {
+    data: {
+      source: value,
+      type: "json",
+      x: "date",
+      y: "value",
+    },
+    itemSelector: "#calendar",
+    date: {
+      start: getPastDate(-60),
+      highlight: [
+        new Date(), // Highlight today
+      ],
+    },
+    range: 4,
+    scale: {
+      color: {
+        type: "threshold",
+        range: ["#14432a", "#166b34", "#37a446", "#4dd05a"],
+        domain: [3, 5, 8],
+      },
+    },
+    domain: {
+      type: "month",
+      gutter: 12,
+      label: {
+        text: "MMM",
+        textAlign: "middle",
+        position: "top",
+      },
+    },
+    subDomain: {
+      type: "day",
+      label: "DD",
+      radius: 1,
+      width: 24,
+      height: 24,
+      gutter: 4,
+    },
+    theme: "dark",
+  };
+
+  useEffect(() => {
+    if (!heatmapRef.current) {
+      const cal = new CalHeatMap();
+      cal.paint(calOptions, [
+        [
+          Tooltip,
+          {
+            text: function (date: Date, value: number) {
+              const val = value ? value : 0;
+              return `${val} matches on ${format(date, "iii, MMMM dd, yyyy")}`;
+            },
+          },
+        ],
+        [
+          CalendarLabel,
+          {
+            width: 30,
+            textAlign: "start",
+            text: () => ["S", "M", "T", "W", "T", "F", "S"].map((d) => d),
+            padding: [25, 0, 0, 0],
+          },
+        ],
+      ]);
+      heatmapRef.current = cal;
+    }
+    return () => {
+      if (heatmapRef.current) {
+        (heatmapRef.current as CalHeatMap | null)?.destroy();
+      }
+    };
+  }, []);
+
   return (
-    <div className="flex grow flex-col gap-2 rounded-large bg-content1 p-4">
+    <Container className="flex flex-col gap-2">
       <TableTitle>Activity</TableTitle>
-      <div className="flex">
-        <HeatMap
-          className="h-[14rem] w-full"
-          legendCellSize={0}
-          rectRender={(props, data) => {
-            if (!data.count) return <rect {...props} />;
-            return (
-              <Tooltip content={data.content}>
-                <rect {...props} />
-              </Tooltip>
-            );
-          }}
-          rectSize={25}
-          startDate={new Date(getPastDate(90))}
-          style={{
-            color: "#d4d4d8",
-            fontSize: "1rem",
-            // "--rhm-rect": "#52525b",
-          }}
-          value={value}
-          weekLabels={["S", "M", "T", "W", "T", "F", "S"]}
-        />
-      </div>
-    </div>
+      <section className="flex justify-center">
+        <div
+          className="w-fit overflow-x-auto rounded-large border border-divider p-3 scrollbar-thin scrollbar-thumb-content2"
+          id="calendar"
+        ></div>
+      </section>
+    </Container>
   );
 }

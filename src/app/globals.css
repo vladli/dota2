@@ -1,4 +1,4 @@
-@import "react-calendar-heatmap/dist/styles.css";
+@import "cal-heatmap/cal-heatmap.css";
 @tailwind base;
 
 @layer base {
@@ -16,18 +16,14 @@
 @tailwind components;
 @tailwind utilities;
 
-.react-calendar-heatmap-weekday-label {
-  @apply px-2;
+#ch-tooltip {
+  @apply !bg-content2 !text-white;
 }
 
-.color-empty {
-  fill: #ebedf0;
+.ch-container {
+  @apply !bg-transparent;
 }
 
-.color-scale-1 {
-  fill: #9be9a8;
-}
-
-.color-scale-2 {
-  fill: #40c463;
+[data-theme="dark"] .ch-subdomain-bg {
+  @apply fill-content2;
 }

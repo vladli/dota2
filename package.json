@@ -16,7 +16,7 @@
     "@tanstack/react-table": "^8.11.7",
     "@uidotdev/usehooks": "^2.4.1",
     "cal-heatmap": "^4.2.4",
-    "date-fns": "^3.3.1",
+    "dayjs": "^1.11.10",
     "framer-motion": "^11.0.3",
     "graphql": "^16.8.1",
     "lucide-react": "^0.316.0",

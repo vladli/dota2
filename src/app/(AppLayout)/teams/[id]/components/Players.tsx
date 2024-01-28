@@ -1,11 +1,11 @@
 import { Card, CardBody, Image } from "@nextui-org/react";
-import { formatDistanceToNow } from "date-fns";
 import Link from "next/link";
 
 import RoleImage from "@/components/RoleImage";
 import { GetAllHeroesQuery } from "@/graphql/constants";
 import { GetTeamByIdQuery } from "@/graphql/team";
 import { IMAGE } from "@/lib/constants";
+import dayjs from "@/lib/dayjs";
 import { MatchPlayerPositionType } from "@/types/types.generated";
 
 type Props = {
@@ -107,9 +107,7 @@ export default function Players({ allHeroes, data }: Props) {
                   <div className="flex flex-col lg:items-center">
                     <p className="text-sm font-semibold">Joined</p>
                     <span className="text-sm font-medium text-foreground-500">
-                      {formatDistanceToNow(player?.firstMatchDateTime * 1000, {
-                        addSuffix: true,
-                      })}
+                      {dayjs(player?.firstMatchDateTime * 1000).fromNow()}
                     </span>
                   </div>
                 </section>

@@ -187,7 +187,10 @@ export default function PlayersTable({ data, team, items }: Props) {
           );
           return (
             <div className="flex flex-col">
-              <PlayerName steamAccount={getValue().steamAccount} />
+              <PlayerName
+                showTeamTag={false}
+                steamAccount={getValue().steamAccount}
+              />
               <span className="text-sm text-foreground-400">
                 {rank} {getValue()?.steamAccount?.seasonRank?.toString()[1]}
               </span>

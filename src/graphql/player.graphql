@@ -8,12 +8,16 @@ query GetPlayerBySteamId($steamAccountId: Long!) {
       avatar
       isDotaPlusSubscriber
       isAnonymous
+      isStratzPublic
       seasonRank
       seasonLeaderboardRank
       proSteamAccount {
         id
         name
         realName
+        isLocked
+        isPro
+        totalEarnings
         team {
           id
           name

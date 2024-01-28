@@ -1,5 +1,4 @@
 import { cn, Divider } from "@nextui-org/react";
-import { formatDistanceToNow } from "date-fns";
 import NextLink from "next/link";
 
 import Container from "@/components/Container";
@@ -7,6 +6,7 @@ import HeroImage from "@/components/HeroImage";
 import RankImage from "@/components/RankImage";
 import RoleImage from "@/components/RoleImage";
 import { GetPlayerMatchesQuery } from "@/graphql/player";
+import dayjs from "@/lib/dayjs";
 import { secondsToTime } from "@/lib/utils";
 
 import TableTitle from "../TableTitle";
@@ -104,9 +104,7 @@ export default function RecentMatchesTable({ data }: Props) {
                 <div className="flex w-28 flex-initial flex-col items-end ">
                   <span>{secondsToTime(match?.durationSeconds!)}</span>
                   <span className="text-xs text-foreground-500">
-                    {formatDistanceToNow(match?.endDateTime * 1000, {
-                      addSuffix: true,
-                    })}
+                    {dayjs(match?.endDateTime * 1000).fromNow()}
                   </span>
                 </div>
               </div>

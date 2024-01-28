@@ -2,7 +2,6 @@
 import { useState } from "react";
 import { useQuery } from "@apollo/client";
 import { Divider, Pagination } from "@nextui-org/react";
-import { formatDistanceToNow } from "date-fns";
 import Link from "next/link";
 
 import HeroImage from "@/components/HeroImage";
@@ -10,6 +9,7 @@ import Loading from "@/components/Loading";
 import RankImage from "@/components/RankImage";
 import RoleImage from "@/components/RoleImage";
 import { GetPlayerMatchesDocument } from "@/graphql/player";
+import dayjs from "@/lib/dayjs";
 import { cn, secondsToTime } from "@/lib/utils";
 
 type Props = {
@@ -83,9 +83,7 @@ export default function PlayerMatches({ playerId, matchCount }: Props) {
                   <div className="flex w-28 flex-initial flex-col items-end ">
                     <span>{secondsToTime(match?.durationSeconds!)}</span>
                     <span className="text-xs text-foreground-500">
-                      {formatDistanceToNow(match?.endDateTime * 1000, {
-                        addSuffix: true,
-                      })}
+                      {dayjs(match?.endDateTime * 1000).fromNow()}
                     </span>
                   </div>
                 </div>

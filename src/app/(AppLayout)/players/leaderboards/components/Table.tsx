@@ -1,5 +1,5 @@
 import { Image } from "@nextui-org/react";
-import { Octagon } from "lucide-react";
+import { EyeOff, Octagon } from "lucide-react";
 import Link from "next/link";
 
 import PlayerCountry from "@/components/PlayerCountry";
@@ -48,7 +48,7 @@ export default function Table({ header, data }: Props) {
           </div>
 
           <RoleImage position={player?.position} />
-          <div className="flex">
+          <div className="flex items-center">
             {player?.steamAccount?.proSteamAccount?.team?.tag && (
               <Tooltip
                 content={
@@ -82,6 +82,19 @@ export default function Table({ header, data }: Props) {
               {player?.steamAccount?.proSteamAccount?.name ||
                 player?.steamAccount?.name}
             </Link>
+            {player?.steamAccount?.isAnonymous && (
+              <Tooltip
+                content="Anonymous"
+                showArrow
+              >
+                <div className="ml-2 flex items-center">
+                  <EyeOff
+                    color="#52525b"
+                    size={14}
+                  />
+                </div>
+              </Tooltip>
+            )}
           </div>
           <div className="flex grow justify-end">
             <PlayerCountry steamAccount={player?.steamAccount} />

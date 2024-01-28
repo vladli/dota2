@@ -61,7 +61,7 @@ export default async function page({ params }: Props) {
       variables: {
         steamAccountId: Number(params.id),
         heroStatsByDayRequest: {
-          take: 500,
+          take: 1000,
           groupBy: FindMatchPlayerGroupBy.DateDayHero,
           playerList: FindMatchPlayerList.Single,
         },
@@ -75,7 +75,8 @@ export default async function page({ params }: Props) {
     activity = activityResponse.data;
   }
   const validatedCategories = categorySchema.safeParse(params.category?.[0]);
-  if (!data || !validatedCategories.success) return notFound();
+  if (!data.player?.steamAccount || !validatedCategories.success)
+    return notFound();
   return (
     <main>
       <div className="relative">

@@ -1,7 +1,7 @@
 import { Image } from "@nextui-org/react";
-import { formatDistanceToNow } from "date-fns";
 
 import { GetMatchByIdQuery } from "@/graphql/match";
+import dayjs from "@/lib/dayjs";
 import { cn, secondsToTime } from "@/lib/utils";
 
 type Props = {
@@ -32,9 +32,7 @@ export default function MatchCard({ data }: Props) {
         <div className="flex flex-col items-center">
           <span>{secondsToTime(match?.durationSeconds!)}</span>
           <span className="text-center text-base font-medium text-gray-400">
-            {formatDistanceToNow(match?.endDateTime * 1000, {
-              addSuffix: true,
-            })}
+            {dayjs(match?.endDateTime * 1000).fromNow()}
           </span>
         </div>
         <Score

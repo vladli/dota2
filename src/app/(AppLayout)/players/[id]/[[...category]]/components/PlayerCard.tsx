@@ -1,12 +1,10 @@
 import { FaSteam } from "react-icons/fa";
 import { Button, Image, Link } from "@nextui-org/react";
-import { CheckCircle2 } from "lucide-react";
-import NextLink from "next/link";
 
 import { roboto_mono } from "@/app/fonts";
+import PlayerName from "@/components/PlayerName";
 import Tooltip from "@/components/Tooltip";
 import { GetPlayerBySteamIdQuery } from "@/graphql/player";
-import { IMAGE } from "@/lib/constants";
 import { cn, getAvatarLink, getRankName } from "@/lib/utils";
 
 type Props = {
@@ -32,44 +30,12 @@ export default async function PlayerCard({ data }: Props) {
       <div className="flex w-full flex-col items-center md:items-start">
         <div className="flex w-full flex-col items-center md:items-start">
           <div className="flex items-center justify-center gap-2 md:justify-start">
-            {proPlayer && (
-              <Tooltip
-                content="Pro Player"
-                showArrow
-              >
-                <div className="flex items-center">
-                  <CheckCircle2 color="#0284c7" />
-                </div>
-              </Tooltip>
-            )}
             <div className="flex text-4xl">
-              {proPlayer?.team?.tag ? (
-                <Tooltip
-                  content={
-                    <div className="flex items-center gap-2">
-                      <Image
-                        alt="Team Logo"
-                        draggable={false}
-                        height={40}
-                        src={IMAGE.urlTeam + proPlayer.team.id + ".png"}
-                        width={40}
-                      />
-                      <span className="text-large font-medium">
-                        {proPlayer.team.name}
-                      </span>
-                    </div>
-                  }
-                  showArrow
-                >
-                  <NextLink
-                    className="text-foreground-500"
-                    href={"/teams/" + proPlayer.team.id}
-                  >
-                    {proPlayer.team.tag + "."}
-                  </NextLink>
-                </Tooltip>
-              ) : null}
-              {proPlayer?.name || player?.steamAccount?.name}
+              <PlayerName
+                iconSize={24}
+                isLink={false}
+                steamAccount={player?.steamAccount}
+              />
             </div>
             <Button
               as={Link}

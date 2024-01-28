@@ -55,6 +55,7 @@ export default function PickPhase({ phase, data, heroes }: Props) {
                   <PlayerName
                     isLink={false}
                     showProIcon={false}
+                    showTeamTag={false}
                     steamAccount={
                       data?.match?.players?.[hero?.playerIndex || 0]
                         ?.steamAccount

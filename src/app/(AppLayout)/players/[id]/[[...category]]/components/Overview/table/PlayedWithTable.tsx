@@ -10,9 +10,11 @@ import {
   TableHeader,
   TableRow,
 } from "@nextui-org/react";
-import { formatDistanceToNow } from "date-fns";
+import { EyeOff } from "lucide-react";
 
+import Tooltip from "@/components/Tooltip";
 import { GetPlayerPeersQuery } from "@/graphql/stratz";
+import dayjs from "@/lib/dayjs";
 import { getAvatarLink } from "@/lib/utils";
 
 import TableTitle from "../TableTitle";
@@ -46,19 +48,29 @@ export default function PlayedWithTable({ data }: Props) {
                   width={40}
                 />
                 <div className="flex flex-col">
-                  <Link
-                    className="w-fit"
-                    href={`/players/${peer?.steamAccount?.id}`}
-                  >
-                    {peer?.steamAccount?.name}
-                  </Link>
-                  <span className="text-foreground-500">
-                    {formatDistanceToNow(
-                      new Date(peer?.lastMatchDateTime * 1000),
-                      {
-                        addSuffix: true,
-                      }
+                  <div className="flex items-center gap-1">
+                    <Link
+                      className="w-fit"
+                      href={`/players/${peer?.steamAccount?.id}`}
+                    >
+                      {peer?.steamAccount?.name}
+                    </Link>
+                    {peer?.steamAccount?.isAnonymous && (
+                      <Tooltip
+                        content="Anonymous"
+                        showArrow
+                      >
+                        <div className="flex items-center">
+                          <EyeOff
+                            color="#52525b"
+                            size={14}
+                          />
+                        </div>
+                      </Tooltip>
                     )}
+                  </div>
+                  <span className="text-foreground-500">
+                    {dayjs(new Date(peer?.lastMatchDateTime * 1000)).fromNow()}
                   </span>
                 </div>
               </div>

@@ -195,7 +195,10 @@ export default function PlayersTable({
           steamAccountId: row.steamAccountId,
         }),
         cell: ({ getValue }: any) => (
-          <PlayerName steamAccount={getValue().steamAccount} />
+          <PlayerName
+            showTeamTag={false}
+            steamAccount={getValue().steamAccount}
+          />
         ),
       },
       {

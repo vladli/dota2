@@ -9,10 +9,10 @@ import {
   TableHeader,
   TableRow,
 } from "@nextui-org/react";
-import { formatDistanceToNow } from "date-fns";
 
 import { GetMostPlayedHeroesQuery } from "@/graphql/player";
 import { IMAGE } from "@/lib/constants";
+import dayjs from "@/lib/dayjs";
 
 import TableTitle from "../TableTitle";
 
@@ -61,12 +61,9 @@ export default function FavoriteHeroesTable({ data }: Props) {
                       {hero.hero?.displayName}
                     </Link>
                     <span className="text-foreground-500">
-                      {formatDistanceToNow(
-                        new Date(hero.lastMatchDateTime! * 1000),
-                        {
-                          addSuffix: true,
-                        }
-                      )}
+                      {dayjs(
+                        new Date(hero.lastMatchDateTime! * 1000)
+                      ).fromNow()}
                     </span>
                   </div>
                 </div>

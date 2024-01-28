@@ -1,11 +1,11 @@
 "use client";
 import toast from "react-hot-toast";
 import { Button } from "@nextui-org/react";
-import { format } from "date-fns";
 import { icons } from "lucide-react";
 
 import RankImage from "@/components/RankImage";
 import { GetMatchByIdQuery } from "@/graphql/match";
+import dayjs from "@/lib/dayjs";
 import { cn, getRankName, getRegionName } from "@/lib/utils";
 
 type Props = {
@@ -52,7 +52,7 @@ export default function MatchInfo({ data }: Props) {
       </div>
       <Item
         icon="CalendarDays"
-        text={format(match?.endDateTime * 1000, "MMM d, HH:mm")}
+        text={dayjs(match?.endDateTime * 1000).format("MMM D, HH:mm")}
       />
     </div>
   );

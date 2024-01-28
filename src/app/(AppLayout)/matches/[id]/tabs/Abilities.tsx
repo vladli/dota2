@@ -112,7 +112,10 @@ function Table({
                 />
               </div>
               <div className="flex w-36 shrink-0">
-                <PlayerName steamAccount={player?.steamAccount} />
+                <PlayerName
+                  showTeamTag={false}
+                  steamAccount={player?.steamAccount}
+                />
               </div>
               <div className="flex size-8 shrink-0 items-center justify-center rounded-full border-2 border-divider">
                 {player?.level}

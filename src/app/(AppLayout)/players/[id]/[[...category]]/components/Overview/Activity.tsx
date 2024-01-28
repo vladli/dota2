@@ -6,10 +6,10 @@ import CalHeatMap from "cal-heatmap";
 import CalendarLabel from "cal-heatmap/plugins/CalendarLabel";
 //@ts-expect-error
 import Tooltip from "cal-heatmap/plugins/Tooltip";
-import { format } from "date-fns";
 
 import Container from "@/components/Container";
 import { GetPlayerActivityStatsQuery } from "@/graphql/player";
+import dayjs from "@/lib/dayjs";
 import { MatchGroupByDateDayHeroType, Maybe } from "@/types/types.generated";
 
 import TableTitle from "./TableTitle";
@@ -102,7 +102,10 @@ export default function Active({ data }: Props) {
     },
     itemSelector: "#calendar",
     date: {
-      start: getPastDate(-60),
+      start: getPastDate(-90),
+      locale: {
+        weekStart: 1,
+      },
       highlight: [
         new Date(), // Highlight today
       ],
@@ -144,7 +147,9 @@ export default function Active({ data }: Props) {
           {
             text: function (date: Date, value: number) {
               const val = value ? value : 0;
-              return `${val} matches on ${format(date, "iii, MMMM dd, yyyy")}`;
+              return `${val} matches on ${dayjs(date).format(
+                "dddd, MMMM D, YYYY"
+              )}`;
             },
           },
         ],
@@ -153,7 +158,7 @@ export default function Active({ data }: Props) {
           {
             width: 30,
             textAlign: "start",
-            text: () => ["S", "M", "T", "W", "T", "F", "S"].map((d) => d),
+            text: () => ["M", "T", "W", "T", "F", "S", "S"].map((d) => d),
             padding: [25, 0, 0, 0],
           },
         ],

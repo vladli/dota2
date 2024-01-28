@@ -62,7 +62,10 @@ export default function TableSummary({
           steamAccountId: row.steamAccountId,
         }),
         cell: ({ getValue }) => (
-          <PlayerName steamAccount={getValue()?.steamAccount} />
+          <PlayerName
+            showTeamTag={false}
+            steamAccount={getValue()?.steamAccount}
+          />
         ),
       },
       {

@@ -27,3 +27,16 @@
 [data-theme="dark"] .ch-subdomain-bg {
   @apply fill-content2;
 }
+
+.ch-subdomain-text {
+  @apply fill-foreground-500;
+  font-size: 10px;
+}
+
+.ch-domain-text {
+  @apply text-xs font-semibold;
+}
+
+.ch-plugin-calendar-label-text {
+  @apply text-xs font-semibold;
+}

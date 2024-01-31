@@ -69,7 +69,7 @@ function convertUnixToDate(unixTimestamp: number): string {
   return `${year}-${month}-${day}`;
 }
 
-export default function Active({ data }: Props) {
+export default function Activity({ data }: Props) {
   const heatmapRef = useRef(null);
 
   const result = groupStatsByDate(

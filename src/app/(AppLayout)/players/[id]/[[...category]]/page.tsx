@@ -14,7 +14,9 @@ import {
   FindMatchPlayerList,
 } from "@/types/types.generated";
 
+import PlayerActivity from "./components/Activity/PlayerActivity";
 import ClientTabs from "./components/ClientTabs";
+import PlayerFriends from "./components/Friends/PlayerFriends";
 import PlayerMatches from "./components/Matches/PlayerMatches";
 import Activity from "./components/Overview/Activity";
 import DotaPlus from "./components/Overview/DotaPlus";
@@ -43,7 +45,12 @@ type Props = {
   };
 };
 
-const categorySchema = z.union([z.undefined(), z.literal("matches")]);
+const categorySchema = z.union([
+  z.undefined(),
+  z.literal("matches"),
+  z.literal("friends"),
+  z.literal("activity"),
+]);
 
 export default async function page({ params }: Props) {
   const { data } = await getClient().query({
@@ -102,8 +109,10 @@ export default async function page({ params }: Props) {
                 matchCount={data.player.matchCount}
                 playerId={params.id}
               />
-            ) : params.category?.includes("anotherCategory") ? (
-              <>a</>
+            ) : params.category?.includes("friends") ? (
+              <PlayerFriends playerId={params.id} />
+            ) : params.category?.includes("activity") ? (
+              <PlayerActivity data={activity} />
             ) : (
               <div className="flex flex-col gap-4">
                 <Activity data={activity} />

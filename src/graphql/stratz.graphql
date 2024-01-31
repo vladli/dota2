@@ -19,6 +19,19 @@ query GetPlayerPeers(
             isDotaPlusSubscriber
             isAnonymous
             isStratzPublic
+            proSteamAccount {
+              id
+              name
+              realName
+              isLocked
+              isPro
+              totalEarnings
+              team {
+                id
+                name
+                tag
+              }
+            }
           }
         }
       }

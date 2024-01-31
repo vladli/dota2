@@ -68,7 +68,7 @@ export default async function page({ params }: Props) {
       variables: {
         steamAccountId: Number(params.id),
         heroStatsByDayRequest: {
-          take: 1000,
+          take: 10000,
           groupBy: FindMatchPlayerGroupBy.DateDayHero,
           playerList: FindMatchPlayerList.Single,
         },

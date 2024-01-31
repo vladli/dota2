@@ -13,6 +13,7 @@ import {
 import { ArrowDownWideNarrow, ArrowUpWideNarrow } from "lucide-react";
 import NextLink from "next/link";
 
+import HeaderValue from "@/components/HeaderValue";
 import HeroImage from "@/components/HeroImage";
 import { GetAllHeroesQuery } from "@/graphql/constants";
 import { cn } from "@/lib/utils";
@@ -216,9 +217,11 @@ export default function HeroesTable({ heroes }: Props) {
   return (
     <div>
       <Filters headerGroups={table.getHeaderGroups()} />
-      <h2 className="mb-4">
-        Stats for: {formatDate(startDate)} - {formatDate(endDate)}
-      </h2>
+      <HeaderValue
+        className="mb-4"
+        header="Stats for"
+        value={`${formatDate(startDate)} - ${formatDate(endDate)}`}
+      />
       <div className="overflow-x-auto rounded-large border border-divider bg-black scrollbar-thin scrollbar-thumb-content2">
         <table className="w-full text-left">
           <thead className="whitespace-nowrap bg-content1 text-tiny uppercase text-foreground-500">
@@ -286,6 +289,7 @@ export default function HeroesTable({ heroes }: Props) {
             ))}
           </tbody>
         </table>
+        H H
       </div>
     </div>
   );

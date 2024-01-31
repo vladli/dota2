@@ -4,6 +4,7 @@ import { Image } from "@nextui-org/react";
 import { ColumnDef } from "@tanstack/react-table";
 import dayjs from "dayjs";
 
+import HeaderValue from "@/components/HeaderValue";
 import PlayerName from "@/components/PlayerName";
 import Table from "@/components/Table/Table";
 import { GetPlayerPeersQuery } from "@/graphql/stratz";
@@ -67,14 +68,21 @@ export default function FriendsTable({ data }: Props) {
     []
   );
   return (
-    <div className="flex flex-col gap-2 rounded-large bg-content1 ">
-      <div className="overflow-hidden hover:overflow-x-auto">
-        <Table
-          columns={columns}
-          data={peers as object[]}
-          defaultSorting={[{ id: "matches", desc: true }]}
-        />
+    <>
+      <HeaderValue
+        className="mb-4"
+        header="Friends"
+        value={peers?.length || 0}
+      />
+      <div className="flex flex-col gap-2 rounded-large bg-content1 ">
+        <div className="overflow-hidden hover:overflow-x-auto">
+          <Table
+            columns={columns}
+            data={peers as object[]}
+            defaultSorting={[{ id: "matches", desc: true }]}
+          />
+        </div>
       </div>
-    </div>
+    </>
   );
 }

@@ -12,10 +12,11 @@ import { GetPlayerActivityStatsQuery } from "@/graphql/player";
 import dayjs from "@/lib/dayjs";
 import { MatchGroupByDateDayHeroType, Maybe } from "@/types/types.generated";
 
-import TableTitle from "./TableTitle";
+import TableTitle from "../Overview/TableTitle";
 
 type Props = {
   data: GetPlayerActivityStatsQuery | null;
+  year: number;
 };
 
 interface HeroStat {
@@ -53,30 +54,20 @@ const groupStatsByDate = (
   return Object.values(groupedStats);
 };
 
-function getPastDate(daysAgo: number) {
-  const today = new Date();
-  const pastDate = new Date(today);
-  pastDate.setDate(today.getDate() + daysAgo);
-  return pastDate;
-}
-
-export default function Activity({ data }: Props) {
+export default function ActivityItem({ data, year }: Props) {
   const heatmapRef = useRef(null);
 
   const result = groupStatsByDate(
     data?.player?.statsByDay as MatchGroupByDateDayHeroType[]
   );
   const value = [
-    ...result.map((stat, idx) => {
+    ...result.map((stat) => {
       const date = dayjs(stat.dateDay * 1000).format("YYYY-MM-DD");
       const matchCount = stat?.heroes?.reduce(
         (acc, b) => acc + (b?.matchCount || 0),
         0
       );
-      const winCount = stat?.heroes?.reduce(
-        (acc, b) => acc + (b?.winCount || 0),
-        0
-      );
+
       return {
         date: date,
         value: matchCount,
@@ -91,9 +82,9 @@ export default function Activity({ data }: Props) {
       x: "date",
       y: "value",
     },
-    itemSelector: "#calendar",
+    itemSelector: `#calendar-${year}`,
     date: {
-      start: getPastDate(-90),
+      start: new Date(`${year}-01-01`),
       locale: {
         weekStart: 1,
       },
@@ -101,7 +92,7 @@ export default function Activity({ data }: Props) {
         new Date(), // Highlight today
       ],
     },
-    range: 4,
+    range: 12,
     scale: {
       color: {
         type: "threshold",
@@ -166,11 +157,11 @@ export default function Activity({ data }: Props) {
   if (!data) return null;
   return (
     <Container className="flex flex-col gap-2">
-      <TableTitle>Activity</TableTitle>
+      <TableTitle>{year}</TableTitle>
       <section className="flex justify-center">
         <div
           className="w-fit overflow-x-auto rounded-large border border-divider p-3 scrollbar-thin scrollbar-thumb-content2"
-          id="calendar"
+          id={`calendar-${year}`}
         ></div>
       </section>
     </Container>

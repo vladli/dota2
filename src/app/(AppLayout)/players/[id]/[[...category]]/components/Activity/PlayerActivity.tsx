@@ -1,15 +1,16 @@
 import { GetPlayerActivityStatsQuery } from "@/graphql/player";
 
 import HeaderCard from "./HeaderCard";
+import SeasonTable from "./SeasonTable";
 
 type Props = {
   data: GetPlayerActivityStatsQuery | null;
 };
 export default function PlayerActivity({ data }: Props) {
-  const player = data?.player;
   return (
-    <div>
+    <main className="flex flex-col gap-y-4">
       <HeaderCard data={data} />
-    </div>
+      <SeasonTable data={data} />
+    </main>
   );
 }

@@ -4,6 +4,7 @@ import { useQuery } from "@apollo/client";
 import { Divider, Pagination } from "@nextui-org/react";
 import Link from "next/link";
 
+import HeaderValue from "@/components/HeaderValue";
 import HeroImage from "@/components/HeroImage";
 import Loading from "@/components/Loading";
 import RankImage from "@/components/RankImage";
@@ -32,7 +33,12 @@ export default function PlayerMatches({ playerId, matchCount }: Props) {
   if (!data || loading) return <Loading />;
   return (
     <>
-      <div className="flex flex-col gap-2 rounded-large bg-content1 ">
+      <HeaderValue
+        className="mb-4"
+        header="Matches"
+        value={matchCount}
+      />
+      <div className="flex flex-col gap-2 rounded-large bg-content1">
         <div className="overflow-hidden hover:overflow-x-auto">
           {matches!.map((match) => {
             const player = match?.players![0];

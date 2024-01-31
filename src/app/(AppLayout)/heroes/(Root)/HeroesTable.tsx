@@ -46,7 +46,7 @@ export default function HeroesTable({ header, data }: Props) {
             href={`/heroes/${hero?.id}`}
             key={hero?.id}
           >
-            <span className="absolute -bottom-6 left-[-17.5px] z-20 w-[105px] rounded-b-large bg-gradient-to-r from-black to-black/30 px-[1px] opacity-0 transition-opacity group-hover:opacity-100">
+            <span className="absolute -bottom-6 left-[-17.5px] z-20 w-[105px] rounded-b-large bg-gradient-to-r from-black to-black/30 px-[1px] font-medium opacity-0 transition-opacity group-hover:opacity-100">
               {hero?.displayName}
             </span>
             <Image

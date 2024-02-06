@@ -17,7 +17,7 @@ type Props = {
   playerId: string;
   matchCount: number | null | undefined;
 };
-export default function PlayerMatches({ playerId, matchCount }: Props) {
+export default function Matches({ playerId, matchCount }: Props) {
   const [currentPage, setCurrentPage] = useState(1);
   const { data, loading } = useQuery(GetPlayerMatchesDocument, {
     fetchPolicy: "no-cache",

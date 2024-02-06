@@ -199,6 +199,8 @@ export default function HeroesTable({ heroes }: Props) {
     initialState: {
       sorting: [{ id: "winEnd", desc: true }],
     },
+
+    enableSortingRemoval: false,
   });
   const stats = (heroes.constants?.heroes?.[0] as { statistic: any })
     ?.statistic;

@@ -79,16 +79,26 @@ query GetMostPlayedHeroes(
       ... on MatchGroupByHeroType {
         heroId
         hero(gameVersionId: $gameVersionId) {
+          id
           displayName
           shortName
         }
         winCount
         matchCount
+        avgGoldPerMinute
+        avgExperiencePerMinute
+        lastMatchDateTime
+        avgAssists
         avgKills
         avgDeaths
-        avgAssists
-        lastMatchDateTime
+        __typename
       }
+      __typename
+    }
+    dotaPlus {
+      heroId
+      level
+      __typename
     }
   }
 }

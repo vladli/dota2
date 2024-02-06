@@ -6,7 +6,7 @@ import SeasonTable from "./SeasonTable";
 type Props = {
   data: GetPlayerActivityStatsQuery | null;
 };
-export default function PlayerActivity({ data }: Props) {
+export default function Activity({ data }: Props) {
   return (
     <main className="flex flex-col gap-y-4">
       <HeaderCard data={data} />

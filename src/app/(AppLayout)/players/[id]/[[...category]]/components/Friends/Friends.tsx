@@ -11,7 +11,7 @@ import FriendsTable from "./FriendsTable";
 type Props = {
   playerId: string;
 };
-export default async function PlayerFriends({ playerId }: Props) {
+export default async function Friends({ playerId }: Props) {
   const { data } = await getClient().query({
     query: GetPlayerPeersDocument,
     variables: {

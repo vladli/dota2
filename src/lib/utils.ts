@@ -2,6 +2,7 @@ import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
 import { GetAllHeroesQuery } from "@/graphql/constants";
+import { HeroDotaPlusLeaderboardRankType } from "@/types/types.generated";
 
 import { CONST_TOWERS, REGION_NAME, STEAM_AVATAR } from "./constants";
 
@@ -238,4 +239,27 @@ export function convertToHumanReadable(id: number) {
 
 export function getHero(heroId: number | string, heroes: GetAllHeroesQuery) {
   return heroes?.constants?.heroes?.find((hero) => hero?.id == heroId);
+}
+
+export function getDotaPlus(
+  dotaPlus: (HeroDotaPlusLeaderboardRankType | null)[] | undefined | null,
+  heroId?: number
+) {
+  if (!dotaPlus?.length) return null;
+  const topHeroes = dotaPlus?.toSorted((a, b) => b?.level - a?.level);
+  const highestLevelsMap = new Map();
+  if (topHeroes && topHeroes.length > 0) {
+    topHeroes.forEach((hero) => {
+      const heroId = hero?.heroId;
+      const heroLevel = hero?.level;
+      if (
+        !highestLevelsMap.has(heroId) ||
+        heroLevel > highestLevelsMap.get(heroId)
+      ) {
+        highestLevelsMap.set(heroId, heroLevel);
+      }
+    });
+  }
+  if (heroId !== undefined) return highestLevelsMap.get(heroId);
+  return [...highestLevelsMap];
 }

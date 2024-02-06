@@ -5,10 +5,11 @@ import NextImage from "next/image";
 import Link from "next/link";
 
 import Container from "@/components/Container";
+import DotaPlusImage from "@/components/DotaPlusImage";
 import { GetAllHeroesQuery } from "@/graphql/constants";
 import { GetPlayerDotaPlusDocument } from "@/graphql/player";
 import { IMAGE } from "@/lib/constants";
-import { getHero, getHeroTier } from "@/lib/utils";
+import { getDotaPlus, getHero, getHeroTier } from "@/lib/utils";
 
 import TableTitle from "./TableTitle";
 
@@ -22,34 +23,21 @@ export default function DotaPlus({ allHeroes, steamId }: Props) {
     variables: { steamAccountId: Number(steamId) },
   });
   if (!data?.player?.dotaPlus?.length) return null;
-  const topHeroes = data.player?.dotaPlus?.toSorted(
-    (a, b) => b?.level - a?.level
-  );
-  const highestLevelsMap = new Map();
-  if (topHeroes && topHeroes.length > 0) {
-    topHeroes.forEach((hero) => {
-      const heroId = hero?.heroId;
-      const heroLevel = hero?.level;
-      if (
-        !highestLevelsMap.has(heroId) ||
-        heroLevel > highestLevelsMap.get(heroId)
-      ) {
-        highestLevelsMap.set(heroId, heroLevel);
-      }
-    });
-  }
+
   return (
     <Container className="flex grow flex-col gap-2">
       <TableTitle>DotaPlus Top Heroes</TableTitle>
       <div className="flex flex-wrap justify-around gap-2">
-        {[...highestLevelsMap]?.slice(0, 8)?.map(([heroId, highestLevel]) => (
-          <HeroCard
-            allHeroes={allHeroes}
-            heroId={heroId}
-            key={heroId}
-            level={highestLevel}
-          />
-        ))}
+        {getDotaPlus(data?.player?.dotaPlus)
+          ?.slice(0, 8)
+          ?.map(([heroId, highestLevel]: [number, number]) => (
+            <HeroCard
+              allHeroes={allHeroes}
+              heroId={heroId}
+              key={heroId}
+              level={highestLevel}
+            />
+          ))}
       </div>
     </Container>
   );
@@ -86,16 +74,7 @@ function HeroCard({ allHeroes, heroId, level }: CardProps) {
         src={IMAGE.url + hero?.shortName + IMAGE.model}
         width={200}
       />
-      <div className="relative flex justify-center">
-        <Image
-          alt=""
-          src={getHeroTier(level)?.image}
-          width={50}
-        />
-        <span className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 rounded-full bg-black/80 font-black ">
-          {level}
-        </span>
-      </div>
+      <DotaPlusImage level={level} />
       <p className="text-center text-large font-semibold">
         {hero?.displayName}
       </p>

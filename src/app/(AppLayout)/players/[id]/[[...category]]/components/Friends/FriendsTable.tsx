@@ -38,6 +38,11 @@ export default function FriendsTable({ data }: Props) {
             <PlayerName steamAccount={getValue()?.steamAccount} />
           </div>
         ),
+        sortingFn: (rowA: any, rowB: any, columnId) => {
+          const heroA = rowA.getValue(columnId)?.steamAccount?.name;
+          const heroB = rowB.getValue(columnId)?.steamAccount?.name;
+          return heroA < heroB ? 1 : heroA > heroB ? -1 : 0;
+        },
       },
       {
         id: "matches",
@@ -54,13 +59,28 @@ export default function FriendsTable({ data }: Props) {
           const winRate = matches && wins ? (wins / matches) * 100 : 0;
           return <>{winRate.toFixed(1)}%</>;
         },
+        sortingFn: (rowA: any, rowB: any, columnId) => {
+          const winRateA =
+            rowA.getValue(columnId)?.matches && rowA.getValue(columnId)?.wins
+              ? (rowA.getValue(columnId)?.wins /
+                  rowA.getValue(columnId)?.matches) *
+                100
+              : 0;
+          const winRateB =
+            rowB.getValue(columnId)?.matches && rowB.getValue(columnId)?.wins
+              ? (rowB.getValue(columnId)?.wins /
+                  rowB.getValue(columnId)?.matches) *
+                100
+              : 0;
+
+          return winRateA < winRateB ? -1 : winRateA > winRateB ? 1 : 0;
+        },
       },
       {
         header: "Last Match",
-        accessorFn: (row) => ({ lastMatch: row.lastMatchDateTime }),
+        accessorFn: (row) => row.lastMatchDateTime,
         cell: ({ getValue }) => {
-          const lastMatch = getValue()?.lastMatch;
-
+          const lastMatch = getValue();
           return <>{dayjs(lastMatch * 1000).fromNow()}</>;
         },
       },

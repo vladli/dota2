@@ -1,5 +1,6 @@
 import { Progress } from "@nextui-org/react";
 
+import Container from "@/components/Container";
 import { GetPlayerActivityStatsQuery } from "@/graphql/player";
 import dayjs from "@/lib/dayjs";
 
@@ -10,8 +11,8 @@ export default function HeaderCard({ data }: Props) {
   const player = data?.player;
   return (
     <div className="flex w-full gap-1 text-medium font-medium">
-      <div className="w-1/2 rounded-large border border-divider p-2">
-        <div className="flex flex-col md:flex-row md:justify-between">
+      <Container className="w-1/2">
+        <div className="flex flex-col bg-content1 md:flex-row md:justify-between">
           <p>
             <span>{player?.matchCount}</span> matches
           </p>
@@ -25,8 +26,8 @@ export default function HeaderCard({ data }: Props) {
           aria-label="Matches"
           value={100}
         />
-      </div>
-      <div className="w-1/2 rounded-large border border-divider p-2">
+      </Container>
+      <Container className="w-1/2">
         Win Rate:{" "}
         {(((player?.winCount || 0) / (player?.matchCount || 0)) * 100).toFixed(
           1
@@ -37,7 +38,7 @@ export default function HeaderCard({ data }: Props) {
           color="success"
           value={((player?.winCount || 0) / (player?.matchCount || 0)) * 100}
         />
-      </div>
+      </Container>
     </div>
   );
 }

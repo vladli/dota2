@@ -22,7 +22,7 @@ type Props = {
 
 export default function FavoriteHeroesTable({ data }: Props) {
   const player = data.player;
-  const heroes = player?.heroesGroupBy?.sort(
+  const heroes = player?.heroesGroupBy?.toSorted(
     (a: any, b: any) => b.matchCount - a.matchCount
   );
   return (

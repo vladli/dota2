@@ -25,6 +25,10 @@ export default function ClientTabs({ playerId }: Props) {
         title: "Matches",
       },
       {
+        href: `/players/${playerId}/heroes`,
+        title: "Heroes",
+      },
+      {
         href: `/players/${playerId}/friends`,
         title: "Friends",
       },

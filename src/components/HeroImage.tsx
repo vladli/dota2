@@ -7,8 +7,8 @@ import Tooltip from "./Tooltip";
 
 type BaseProps = {
   isLink?: boolean;
-  heroId?: number | undefined | null;
-  shortName?: string | undefined | null;
+  heroId: number | undefined | null;
+  shortName: string | undefined | null;
   size?: number;
 };
 

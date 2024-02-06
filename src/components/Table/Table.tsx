@@ -7,7 +7,11 @@ import {
   SortingState,
   useReactTable,
 } from "@tanstack/react-table";
-import { ArrowDownWideNarrow, ArrowUpWideNarrow } from "lucide-react";
+import {
+  ArrowDownUp,
+  ArrowDownWideNarrow,
+  ArrowUpWideNarrow,
+} from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
@@ -15,11 +19,13 @@ type Props<T> = {
   data: T[];
   columns: ColumnDef<T>[];
   defaultSorting?: SortingState;
+  showCount?: boolean;
 };
 export default function Table<T extends object>({
   data,
   columns,
   defaultSorting,
+  showCount = false,
 }: Props<T>) {
   const [sorting, setSorting] = useState<SortingState>(defaultSorting || []);
   const table = useReactTable({
@@ -28,9 +34,13 @@ export default function Table<T extends object>({
     state: {
       sorting,
     },
+
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
+
+    enableSortingRemoval: false,
+    sortDescFirst: true,
   });
   const getLeftStickyPos = (index: number) => {
     if (!index) return 0;
@@ -48,6 +58,15 @@ export default function Table<T extends object>({
         <thead className="whitespace-nowrap bg-content1 text-tiny uppercase text-foreground-500">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
+              {showCount && (
+                <th
+                  className="px-4 py-3 text-center"
+                  style={{ width: `5px` }}
+                >
+                  #
+                </th>
+              )}
+
               {headerGroup.headers.map((header, i) => (
                 <th
                   className={cn("px-4 py-3", {
@@ -76,6 +95,10 @@ export default function Table<T extends object>({
                         header.column.columnDef.header,
                         header.getContext()
                       )}
+                      {header.column.getCanSort() &&
+                        !header.column.getIsSorted() && (
+                          <ArrowDownUp size={16} />
+                        )}
                       {{
                         asc: <ArrowUpWideNarrow size={16} />,
                         desc: <ArrowDownWideNarrow size={16} />,
@@ -95,6 +118,18 @@ export default function Table<T extends object>({
               })}
               key={row.id}
             >
+              {showCount && (
+                <td
+                  className="px-4 py-3 text-center"
+                  style={{
+                    width: `5px`,
+                    maxWidth: `5px`,
+                  }}
+                >
+                  {index + 1}
+                </td>
+              )}
+
               {row.getVisibleCells().map((cell, i) => (
                 <td
                   className={cn("px-4 py-2", {

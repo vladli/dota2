@@ -2,8 +2,8 @@ import { cn } from "@/lib/utils";
 
 type Props = {
   className?: string;
-  header: string;
-  value: string | number | null | undefined;
+  header: string | React.ReactNode;
+  value: string | number | React.ReactNode | null | undefined;
 };
 export default function HeaderValue({ className, header, value }: Props) {
   return (

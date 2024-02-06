@@ -14,10 +14,11 @@ import {
   FindMatchPlayerList,
 } from "@/types/types.generated";
 
-import PlayerActivity from "./components/Activity/PlayerActivity";
+import PlayerActivity from "./components/Activity/Activity";
 import ClientTabs from "./components/ClientTabs";
-import PlayerFriends from "./components/Friends/PlayerFriends";
-import PlayerMatches from "./components/Matches/PlayerMatches";
+import Friends from "./components/Friends/Friends";
+import Heroes from "./components/Heroes/Heroes";
+import Matches from "./components/Matches/Matches";
 import Activity from "./components/Overview/Activity";
 import DotaPlus from "./components/Overview/DotaPlus";
 import FavoriteHeroes from "./components/Overview/FavoriteHeroes";
@@ -48,6 +49,7 @@ type Props = {
 const categorySchema = z.union([
   z.undefined(),
   z.literal("matches"),
+  z.literal("heroes"),
   z.literal("friends"),
   z.literal("activity"),
 ]);
@@ -105,12 +107,14 @@ export default async function page({ params }: Props) {
           <ClientTabs playerId={params.id} />
           <section className="flex w-full flex-col p-4">
             {params.category?.includes("matches") ? (
-              <PlayerMatches
+              <Matches
                 matchCount={data.player.matchCount}
                 playerId={params.id}
               />
+            ) : params.category?.includes("heroes") ? (
+              <Heroes playerId={params.id} />
             ) : params.category?.includes("friends") ? (
-              <PlayerFriends playerId={params.id} />
+              <Friends playerId={params.id} />
             ) : params.category?.includes("activity") ? (
               <PlayerActivity data={activity} />
             ) : (

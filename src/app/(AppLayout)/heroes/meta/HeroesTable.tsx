@@ -291,7 +291,6 @@ export default function HeroesTable({ heroes }: Props) {
             ))}
           </tbody>
         </table>
-        H H
       </div>
     </div>
   );

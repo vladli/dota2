@@ -35,7 +35,7 @@ const config: Config = {
         },
       },
     }),
-    require("tailwind-scrollbar"),
+    require("tailwind-scrollbar")({ preferredStrategy: "pseudoelements" }),
   ],
   darkMode: "class",
 };

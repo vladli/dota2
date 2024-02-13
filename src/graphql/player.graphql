@@ -27,8 +27,19 @@ query GetPlayerBySteamId($steamAccountId: Long!) {
     }
     matchCount
     winCount
-    matches(request: { take: 5 }) {
+    matches(request: { take: 25 }) {
       id
+      players(steamAccountId: $steamAccountId) {
+        isVictory
+        heroId
+        hero {
+          displayName
+          shortName
+        }
+        lane
+        position
+        role
+      }
     }
   }
 }

@@ -74,7 +74,9 @@ function HeroCard({ allHeroes, heroId, level }: CardProps) {
         src={IMAGE.url + hero?.shortName + IMAGE.model}
         width={200}
       />
-      <DotaPlusImage level={level} />
+      <div className="flex justify-center">
+        <DotaPlusImage level={level} />
+      </div>
       <p className="text-center text-large font-semibold">
         {hero?.displayName}
       </p>

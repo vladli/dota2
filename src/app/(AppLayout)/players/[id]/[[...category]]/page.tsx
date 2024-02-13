@@ -119,7 +119,10 @@ export default async function page({ params }: Props) {
               <PlayerActivity data={activity} />
             ) : (
               <div className="flex flex-col gap-4">
-                <Activity data={activity} />
+                <Activity
+                  data={activity}
+                  trends={data}
+                />
                 <section className="flex size-full flex-col gap-4 xl:flex-row">
                   <div className="grow">
                     <RecentMatches steamId={params.id} />

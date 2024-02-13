@@ -8,14 +8,19 @@ import CalendarLabel from "cal-heatmap/plugins/CalendarLabel";
 import Tooltip from "cal-heatmap/plugins/Tooltip";
 
 import Container from "@/components/Container";
-import { GetPlayerActivityStatsQuery } from "@/graphql/player";
+import {
+  GetPlayerActivityStatsQuery,
+  GetPlayerBySteamIdQuery,
+} from "@/graphql/player";
 import dayjs from "@/lib/dayjs";
 import { MatchGroupByDateDayHeroType, Maybe } from "@/types/types.generated";
 
 import TableTitle from "./TableTitle";
+import Trends from "./Trends";
 
 type Props = {
   data: GetPlayerActivityStatsQuery | null;
+  trends: GetPlayerBySteamIdQuery;
 };
 
 interface HeroStat {
@@ -60,14 +65,14 @@ function getPastDate(daysAgo: number) {
   return pastDate;
 }
 
-export default function Activity({ data }: Props) {
+export default function Activity({ data, trends }: Props) {
   const heatmapRef = useRef(null);
 
   const result = groupStatsByDate(
     data?.player?.statsByDay as MatchGroupByDateDayHeroType[]
   );
   const value = [
-    ...result.map((stat, idx) => {
+    ...result.map((stat) => {
       const date = dayjs(stat.dateDay * 1000).format("YYYY-MM-DD");
       const matchCount = stat?.heroes?.reduce(
         (acc, b) => acc + (b?.matchCount || 0),
@@ -167,11 +172,19 @@ export default function Activity({ data }: Props) {
   return (
     <Container className="flex flex-col gap-2">
       <TableTitle>Activity</TableTitle>
-      <section className="flex justify-center">
-        <div
-          className="w-fit overflow-x-auto rounded-large border border-divider p-3 scrollbar-thin scrollbar-thumb-content2"
-          id="calendar"
-        ></div>
+      <section className="flex flex-col justify-around gap-2 lg:flex-row">
+        <div className="my-auto flex justify-center">
+          <div
+            className="overflow-x-auto rounded-large border border-divider p-3 scrollbar-thin scrollbar-thumb-content2"
+            id="calendar"
+          />
+        </div>
+        <div className="flex justify-center">
+          <div className="flex flex-col items-center rounded-large border border-divider  ">
+            <h3 className="pt-2">Last 25 matches</h3>
+            <Trends data={trends} />
+          </div>
+        </div>
       </section>
     </Container>
   );

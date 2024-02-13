@@ -100,6 +100,7 @@ export default function FriendsTable({ data }: Props) {
             columns={columns}
             data={peers as object[]}
             defaultSorting={[{ id: "matches", desc: true }]}
+            showCount
           />
         </div>
       </div>

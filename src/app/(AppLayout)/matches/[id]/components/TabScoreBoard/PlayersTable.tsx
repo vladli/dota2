@@ -499,7 +499,7 @@ export default function PlayersTable({
     [time]
   );
   return (
-    <section className="flex flex-col gap-y-4 rounded-large border border-divider p-4">
+    <section className="flex flex-col gap-y-4 rounded-large bg-content1 p-4">
       <Header
         showWin
         text={team}

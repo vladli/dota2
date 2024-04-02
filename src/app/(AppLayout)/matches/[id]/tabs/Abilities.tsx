@@ -37,7 +37,7 @@ export default function Abilities({ data }: Props) {
     ?.filter((player) => !player?.isRadiant)
     .toSorted(compareLaneAndRole);
   return (
-    <main className="flex flex-col overflow-x-auto rounded-large border border-divider p-2 scrollbar-thin scrollbar-thumb-content2">
+    <main className="flex flex-col overflow-x-auto rounded-large bg-content1 p-2 scrollbar-thin scrollbar-thumb-content2">
       <section className="flex gap-2">
         <div className="w-5 shrink-0" />
         <div className="w-20 shrink-0" />

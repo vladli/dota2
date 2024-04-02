@@ -29,7 +29,7 @@ export default function Header() {
 
   return (
     <Navbar
-      className="relative z-50 select-none"
+      className="relative z-50 h-16 select-none"
       classNames={{
         base: pathname !== "/" ? "border-b border-content2" : "",
       }}
@@ -103,7 +103,7 @@ export default function Header() {
       </NavbarContent>
       <NavbarContent justify="end">
         <SearchBar
-          className="hidden max-w-[12rem] lg:flex"
+          className="hidden max-w-48 lg:flex"
           {...{ setIsMenuOpen }}
         />
         <UserMenu />

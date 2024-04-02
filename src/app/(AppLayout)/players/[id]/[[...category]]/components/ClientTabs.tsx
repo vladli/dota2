@@ -43,7 +43,7 @@ export default function ClientTabs({ playerId }: Props) {
   return (
     <Tabs
       aria-label="Options"
-      className="mx-4 mt-4"
+      className="mx-4 bg-content1"
       selectedKey={pathname}
     >
       {tabs.map((tab) => (

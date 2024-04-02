@@ -3,9 +3,9 @@ import { Tab } from "@nextui-org/react";
 import {
   AreaChart,
   LandPlot,
-  MousePointerSquare,
   PercentDiamond,
   ScrollText,
+  SquareMousePointer,
   Trophy,
 } from "lucide-react";
 
@@ -79,7 +79,7 @@ export default function ClientTabs({ data, items, heroes }: Props) {
           key="abilities"
           title={
             <TabHeader
-              icon={MousePointerSquare}
+              icon={SquareMousePointer}
               text="Abilities"
             />
           }

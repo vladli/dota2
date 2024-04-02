@@ -6,8 +6,8 @@ import { albertus_font } from "../fonts";
 
 export default function page() {
   return (
-    <div>
-      <div className="absolute top-0 z-20 flex h-[100dvh] w-full select-none flex-col items-center justify-center opacity-80">
+    <div className="absolute h-[calc(100dvh-4rem)] w-full">
+      <div className="absolute z-20 flex size-full select-none flex-col items-center justify-center opacity-80">
         <Image
           alt="Dota 2"
           draggable={false}
@@ -25,10 +25,10 @@ export default function page() {
         </h1>
       </div>
 
-      <div className="absolute top-0 z-10 h-[100dvh] w-full bg-black/40" />
+      <div className="absolute size-full bg-black/40" />
       <video
         autoPlay
-        className="absolute top-0 h-[100dvh] object-cover"
+        className="size-full object-cover"
         loop
         playsInline
         preload="auto"

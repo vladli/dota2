@@ -88,7 +88,7 @@ export default async function page({ params }: Props) {
     return notFound();
   return (
     <main>
-      <div className="relative">
+      <div className="relative pb-4">
         <div className="absolute -z-10 size-full">
           <Image
             alt="Background"

@@ -36,6 +36,7 @@ export default async function page({ params }: Props) {
   return (
     <main>
       <div className="relative h-full p-4">
+        <div className="absolute left-0 top-0 -z-10 size-full bg-black" />
         <div
           className={cn(
             "absolute top-0 left-0 size-full opacity-20 blur-[80px] lg:blur-[100px] -z-10",

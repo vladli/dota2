@@ -93,6 +93,7 @@ function Score({
   type: "Radiant" | "Dire";
   victory: "Radiant" | "Dire";
 }) {
+  if (score === undefined) return null;
   return (
     <div
       className={cn(

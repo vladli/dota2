@@ -15,6 +15,6 @@ export const menu = [
   {
     name: "Players",
     url: "/players",
-    submenu: [{ name: "Leaderboards", url: "/players/leaderboards" }],
+    submenu: [{ name: "Leaderboard", url: "/players/leaderboard" }],
   },
 ];

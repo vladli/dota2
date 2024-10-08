@@ -30,6 +30,7 @@ export default function page() {
         autoPlay
         className="size-full object-cover"
         loop
+        muted
         playsInline
         preload="auto"
       >

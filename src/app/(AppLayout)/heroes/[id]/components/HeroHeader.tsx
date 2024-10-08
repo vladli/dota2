@@ -10,8 +10,8 @@ type Props = {
 };
 export default function HeroHeader({ data }: Props) {
   return (
-    <section className="relative flex h-[15rem] justify-around ">
-      <div className="absolute -z-10 h-full w-full">
+    <section className="relative flex h-60 justify-around ">
+      <div className="absolute -z-10 size-full">
         <Image
           alt="Background"
           className="object-fill opacity-80 blur-[120px]"
@@ -23,13 +23,14 @@ export default function HeroHeader({ data }: Props) {
           unoptimized
         />
       </div>
-      <div className="relative flex h-full w-full items-center justify-center md:justify-start">
+      <div className="relative flex size-full items-center justify-center md:justify-start">
         <HeroCard data={data} />
       </div>
-      <div className="hidden w-[20rem] md:flex">
+      <div className="hidden w-80 md:flex">
         <video
           autoPlay
           loop
+          muted
         >
           <source
             src={HERO_VIDEO + data.constants?.hero?.shortName + ".webm"}

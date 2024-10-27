@@ -27,7 +27,7 @@ export function steamID64ToSteamID3(steamID64: string) {
 
   const result = steamID64BigInt - baseID;
 
-  // Add "U" to the beginning and return the result as a string
+  // Add "U" to the beginning and return the result as a string a
   return result.toString();
 }
 

@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { useLazyQuery } from "@apollo/client";
-<<<<<<< HEAD
 import {
   Image,
   Input,
@@ -10,31 +9,19 @@ import {
   ListboxItem,
   ListboxSection,
 } from "@nextui-org/react";
-=======
-import { Input, Listbox, ListboxItem, ListboxSection } from "@nextui-org/react";
->>>>>>> 3895627 (Refactor search functionality and add SearchBar component)
 import { useDebounce } from "@uidotdev/usehooks";
 import Link from "next/link";
 
 import { GetSearchDocument } from "@/graphql/stratz";
-<<<<<<< HEAD
 import { IMAGE } from "@/lib/constants";
-=======
->>>>>>> 3895627 (Refactor search functionality and add SearchBar component)
 import { cn } from "@/lib/utils";
 
 type Props = {
   className?: string;
-<<<<<<< HEAD
   setIsMenuOpen: (isOpen: boolean) => void;
 };
 
 export default function SearchBar({ className, setIsMenuOpen }: Props) {
-=======
-};
-
-export default function SearchBar({ className }: Props) {
->>>>>>> 3895627 (Refactor search functionality and add SearchBar component)
   const [search, setSearch] = useState<string>("");
   const debounceSearch = useDebounce(search, 500);
 
@@ -52,7 +39,6 @@ export default function SearchBar({ className }: Props) {
     if (search) getSearch();
   }, [debounceSearch]);
 
-<<<<<<< HEAD
   const handleClick = () => {
     setSearch("");
     setIsMenuOpen(false);
@@ -62,11 +48,6 @@ export default function SearchBar({ className }: Props) {
   const players = data?.stratz?.search?.players || [];
   const proPlayers = data?.stratz?.search?.proPlayers || [];
   const teams = data?.stratz?.search?.teams || [];
-=======
-  const matches = data?.stratz?.search?.matches || [];
-  const players = data?.stratz?.search?.players || [];
-
->>>>>>> 3895627 (Refactor search functionality and add SearchBar component)
   return (
     <div className="relative z-50">
       <Input
@@ -78,7 +59,6 @@ export default function SearchBar({ className }: Props) {
         placeholder="Search"
         size="sm"
         value={search}
-<<<<<<< HEAD
         variant="bordered"
       />
       {search && data && !loading && (
@@ -87,14 +67,6 @@ export default function SearchBar({ className }: Props) {
             aria-label="Search results"
             onAction={handleClick}
             onClick={(e) => e.stopPropagation()}
-=======
-      />
-      {search && !loading && (
-        <div className="absolute top-10 w-full rounded-small bg-content1">
-          <Listbox
-            aria-label="Search results"
-            onAction={() => setSearch("")}
->>>>>>> 3895627 (Refactor search functionality and add SearchBar component)
           >
             <ListboxSection
               hidden={matches.length === 0}
@@ -120,7 +92,6 @@ export default function SearchBar({ className }: Props) {
                   href={`/players/${player?.id}`}
                   key={player?.id}
                 >
-<<<<<<< HEAD
                   <div className="flex gap-2">
                     <Image
                       alt=""
@@ -181,9 +152,6 @@ export default function SearchBar({ className }: Props) {
                     />
                     <span>{team?.name}</span>
                   </div>
-=======
-                  {player?.name}
->>>>>>> 3895627 (Refactor search functionality and add SearchBar component)
                 </ListboxItem>
               ))}
             </ListboxSection>

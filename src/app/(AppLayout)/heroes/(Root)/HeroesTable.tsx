@@ -53,7 +53,7 @@ export default function HeroesTable({ header, data }: Props) {
               alt="Hero"
               className="z-0 grayscale-[0.2] group-hover:z-10 group-hover:scale-150"
               draggable={false}
-              height={70}
+              height={85}
               removeWrapper
               src={IMAGE.url + hero?.shortName + IMAGE.vertical}
               width={70}

@@ -16,13 +16,7 @@ type Props = {
   position?: MatchPlayerPositionType | undefined | null;
   size?: number;
 };
-export default function RoleImage({
-  isTooltip,
-  role,
-  lane,
-  position,
-  size = 16,
-}: Props) {
+export default function RoleImage({ role, lane, position, size = 16 }: Props) {
   const getRole = position
     ? getPositionInfo(position)
     : getRoleInfo(role, lane);

@@ -17,11 +17,8 @@ export default function TabLanes({ matchId }: Props) {
   });
   if (loading || !data)
     return (
-      <div className="flex h-full w-full justify-center ">
-        <Spinner
-          color="primary"
-          label="Loading..."
-        />
+      <div className="flex size-full justify-center">
+        <Spinner color="primary" label="Loading..." />
       </div>
     );
   if (data?.match?.players?.[0]?.stats?.experiencePerMinute === null)
@@ -34,16 +31,10 @@ export default function TabLanes({ matchId }: Props) {
         defaultSelectedKey="Summary"
         variant="underlined"
       >
-        <Tab
-          key="Summary"
-          title="Summary"
-        >
+        <Tab key="Summary" title="Summary">
           <LanesSummary data={data} />
         </Tab>
-        <Tab
-          key="Positions"
-          title="Positions"
-        >
+        <Tab key="Positions" title="Positions">
           <LanesPositions data={data} />
         </Tab>
       </Tabs>

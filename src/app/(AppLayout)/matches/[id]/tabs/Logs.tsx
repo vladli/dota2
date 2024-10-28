@@ -89,9 +89,9 @@ export default function TabLogs({ data, heroes }: Props) {
           playerName: player?.steamAccount?.name ?? null,
           type: "kill",
           time: killEvent?.time ?? 0,
-        }))
+        })),
       ),
-    []
+    [],
   );
   const runeEvents: RuneEventProps[] = (data.match?.players || []).reduce<
     RuneEventProps[]
@@ -109,9 +109,9 @@ export default function TabLogs({ data, heroes }: Props) {
           playerName: player?.steamAccount?.name ?? null,
           type: "runes",
           time: runeEvent?.time ?? 0,
-        }))
+        })),
       ),
-    []
+    [],
   );
   const talkEvents: TalkEventProps[] = (data.match?.players || []).reduce<
     TalkEventProps[]
@@ -129,9 +129,9 @@ export default function TabLogs({ data, heroes }: Props) {
           playerName: player?.steamAccount?.name ?? null,
           type: "talk",
           time: talkEvent?.time ?? 0,
-        }))
+        })),
       ),
-    []
+    [],
   );
   const allEvents: AllEvent[] = [
     ...(towerDeaths.map((event) => ({
@@ -167,16 +167,10 @@ export default function TabLogs({ data, heroes }: Props) {
               />
               <div className="p-4">
                 {event.type === "towerDeath" && (
-                  <TowerDeathEvent
-                    data={data}
-                    event={event}
-                  />
+                  <TowerDeathEvent data={data} event={event} />
                 )}
                 {event.type === "kill" && (
-                  <KillEvent
-                    event={event}
-                    heroes={heroes}
-                  />
+                  <KillEvent event={event} heroes={heroes} />
                 )}
                 {event.type === "runes" && <RuneEvent event={event} />}
                 {event.type === "talk" && <TalkEvent event={event} />}
@@ -187,21 +181,12 @@ export default function TabLogs({ data, heroes }: Props) {
           return dividerComponent;
         }
         return (
-          <div
-            className="p-4"
-            key={i}
-          >
+          <div className="p-4" key={i}>
             {event.type === "towerDeath" && (
-              <TowerDeathEvent
-                data={data}
-                event={event}
-              />
+              <TowerDeathEvent data={data} event={event} />
             )}
             {event.type === "kill" && (
-              <KillEvent
-                event={event}
-                heroes={heroes}
-              />
+              <KillEvent event={event} heroes={heroes} />
             )}
             {event.type === "runes" && <RuneEvent event={event} />}
             {event.type === "talk" && <TalkEvent event={event} />}
@@ -214,11 +199,11 @@ export default function TabLogs({ data, heroes }: Props) {
 
 const DividerComponent = ({ currentInterval }: { currentInterval: number }) => (
   <div className="flex items-center gap-2">
-    <div className="ml-14 h-[1px] w-full bg-divider" />
+    <div className="ml-14 h-px w-full bg-divider" />
     <span className="text-foreground-400">{`${secondsToTime(
-      Math.floor(currentInterval)
+      Math.floor(currentInterval),
     )}`}</span>
-    <div className="mr-14 h-[1px] w-full bg-divider" />
+    <div className="mr-14 h-px w-full bg-divider" />
   </div>
 );
 
@@ -230,7 +215,7 @@ const TowerDeathEvent = ({
   data: GetMatchByIdQuery;
 }) => {
   const attackerHero = data.match?.players?.find(
-    (player) => player?.heroId === event.attacker
+    (player) => player?.heroId === event.attacker,
   );
   return (
     <LogWrapper
@@ -239,10 +224,7 @@ const TowerDeathEvent = ({
       time={event.time}
     >
       <div className="flex items-center gap-1">
-        <Swords
-          size={18}
-          stroke="#ef4444"
-        />
+        <Swords size={18} stroke="#ef4444" />
         {attackerHero && attackerHero?.hero?.displayName}
         {" destroyed "}
         <span className="font-semibold text-white">
@@ -261,7 +243,7 @@ const KillEvent = ({
   heroes: GetAllHeroesQuery;
 }) => {
   const targetHero = heroes?.constants?.heroes?.find(
-    (hero) => hero?.id === event.target
+    (hero) => hero?.id === event.target,
   );
   return (
     <LogWrapper
@@ -270,10 +252,7 @@ const KillEvent = ({
       time={event.time}
     >
       <div className="flex items-center gap-1">
-        <Sword
-          size={18}
-          stroke="#ef4444"
-        />
+        <Sword size={18} stroke="#ef4444" />
         {`${event.hero.displayName} killed `}
 
         <Image
@@ -298,7 +277,7 @@ const RuneEvent = ({ event }: { event: RuneEventProps }) => (
     <p>
       {`${event.hero.displayName} activated `}
       <span
-        className={cn("capitalize font-semibold", {
+        className={cn("font-semibold capitalize", {
           "text-pink-500": event.rune === "ARCANE",
           "text-yellow-500": event.rune === "BOUNTY",
           "text-blue-800": event.rune === "DOUBLE_DAMAGE",
@@ -325,10 +304,7 @@ const TalkEvent = ({ event }: { event: TalkEventProps }) => (
     time={event.time}
   >
     <div className="flex items-center gap-1">
-      <MessageSquareQuote
-        size={18}
-        stroke="#60a5fa"
-      />
+      <MessageSquareQuote size={18} stroke="#60a5fa" />
       {`${event.playerName}: `}
       <span className="font-semibold text-white">{event.message} </span>
     </div>
@@ -347,19 +323,15 @@ const LogWrapper = ({
   time: number;
 }) => (
   <div
-    className={cn("flex justify-start items-center gap-2 text-foreground-600", {
+    className={cn("flex items-center justify-start gap-2 text-foreground-600", {
       "flex-row-reverse": !isRadiant,
     })}
   >
     {shortName && (
-      <Image
-        alt=""
-        src={IMAGE.url + shortName + IMAGE.horizontal}
-        width={80}
-      />
+      <Image alt="" src={IMAGE.url + shortName + IMAGE.horizontal} width={80} />
     )}
     <div
-      className={cn("flex gap-4 items-center", {
+      className={cn("flex items-center gap-4", {
         "flex-row-reverse": !isRadiant,
       })}
     >

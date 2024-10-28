@@ -39,6 +39,11 @@ export default [
       "unused-imports": unUsedImports,
     },
     rules: {
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-empty-object-type": "off",
+      "@typescript-eslint/ban-ts-comment": "off",
+      "@typescript-eslint/no-unused-vars": "warn",
+      "@typescript-eslint/no-non-null-asserted-optional-chain": "off",
       "unused-imports/no-unused-imports": "error",
       "simple-import-sort/imports": [
         "error",

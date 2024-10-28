@@ -59,7 +59,7 @@ export default async function PlayerCard({ data }: Props) {
           <div className="flex flex-col items-center">
             Losses{" "}
             <span className="text-danger-500">
-              {player?.matchCount! - player?.winCount!}
+              {player!.matchCount! - player!.winCount!}
             </span>
           </div>
           <div className="flex flex-col items-center">
@@ -70,7 +70,7 @@ export default async function PlayerCard({ data }: Props) {
       <div
         className={cn(
           roboto_mono.className,
-          "flex w-full flex-col items-center md:flex-row gap-4 md:place-content-end"
+          "flex w-full flex-col items-center gap-4 md:flex-row md:place-content-end",
         )}
       >
         {player?.steamAccount?.isDotaPlusSubscriber && (

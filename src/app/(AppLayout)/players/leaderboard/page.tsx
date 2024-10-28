@@ -14,9 +14,9 @@ export const metadata: Metadata = {
 };
 
 type Props = {
-  searchParams: {
+  searchParams: Promise<{
     region: string;
-  };
+  }>;
 };
 
 const regionSchema = z.union([
@@ -27,7 +27,8 @@ const regionSchema = z.union([
   z.literal("CHINA"),
 ]);
 
-export default async function page({ searchParams }: Props) {
+export default async function page(props: Props) {
+  const searchParams = await props.searchParams;
   const validatedRegion = regionSchema.safeParse(searchParams.region);
 
   const region = validatedRegion.success ? searchParams.region : "AMERICAS";

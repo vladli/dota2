@@ -8,7 +8,8 @@ import { IMAGE } from "@/lib/constants";
 
 import Players from "./components/Players";
 
-export async function generateMetadata({ params }: Props) {
+export async function generateMetadata(props: Props) {
+  const params = await props.params;
   const { data } = await getClient().query({
     query: GetTeamByIdDocument,
     variables: { id: Number(params.id) },
@@ -19,11 +20,12 @@ export async function generateMetadata({ params }: Props) {
 }
 
 type Props = {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 };
-export default async function page({ params }: Props) {
+export default async function page(props: Props) {
+  const params = await props.params;
   const { data } = await getClient().query({
     query: GetTeamByIdDocument,
     variables: { id: +params.id },

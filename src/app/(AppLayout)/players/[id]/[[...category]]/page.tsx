@@ -28,7 +28,8 @@ import PlayerCard from "./components/PlayerCard";
 
 export const dynamic = "force-dynamic";
 
-export async function generateMetadata({ params }: Props) {
+export async function generateMetadata(props: Props) {
+  const params = await props.params;
   const { data } = await getClient().query({
     query: GetPlayerBySteamIdDocument,
     variables: { steamAccountId: Number(params.id) },
@@ -40,10 +41,10 @@ export async function generateMetadata({ params }: Props) {
 }
 
 type Props = {
-  params: {
+  params: Promise<{
     id: string;
     category?: string[];
-  };
+  }>;
 };
 
 const categorySchema = z.union([
@@ -54,7 +55,8 @@ const categorySchema = z.union([
   z.literal("activity"),
 ]);
 
-export default async function page({ params }: Props) {
+export default async function page(props: Props) {
+  const params = await props.params;
   const { data } = await getClient().query({
     query: GetPlayerBySteamIdDocument,
     variables: { steamAccountId: Number(params.id) },

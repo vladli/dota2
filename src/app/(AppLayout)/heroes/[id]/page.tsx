@@ -10,7 +10,8 @@ import { getClient } from "@/lib/client";
 import ClientTabs from "./components/ClientTabs";
 import HeroHeader from "./components/HeroHeader";
 
-export async function generateMetadata({ params }: Props) {
+export async function generateMetadata(props: Props) {
+  const params = await props.params;
   if (isNaN(+params.id)) return;
   const { data } = await getClient().query({
     query: GetHeroByIdDocument,
@@ -22,12 +23,13 @@ export async function generateMetadata({ params }: Props) {
 }
 
 type Props = {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 };
 
-export default async function page({ params }: Props) {
+export default async function page(props: Props) {
+  const params = await props.params;
   if (isNaN(+params.id)) return notFound();
   const { data } = await getClient().query({
     query: GetHeroByIdDocument,

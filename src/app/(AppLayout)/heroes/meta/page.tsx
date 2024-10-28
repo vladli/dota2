@@ -14,14 +14,15 @@ export const metadata: Metadata = {
 };
 
 type Props = {
-  searchParams: {
+  searchParams: Promise<{
     days?: string;
     rank?: string;
     position?: string;
-  };
+  }>;
 };
 
-export default async function page({ searchParams }: Props) {
+export default async function page(props: Props) {
+  const searchParams = await props.searchParams;
   const isRankValid = Object.values(RankBracket).includes(
     searchParams.rank?.toUpperCase() as RankBracket
   );

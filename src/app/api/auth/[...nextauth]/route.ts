@@ -5,6 +5,7 @@ import { getAuthOptions } from "@/lib/authOptions";
 
 async function handler(req: NextRequest, res: NextResponse) {
   //@ts-ignore
+  //asd
   return NextAuth(req, res, getAuthOptions(req));
 }
 

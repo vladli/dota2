@@ -27,7 +27,6 @@ type Props = {
     id: string;
   }>;
 };
-
 export default async function page(props: Props) {
   const params = await props.params;
   if (isNaN(+params.id)) return notFound();
@@ -43,10 +42,9 @@ export default async function page(props: Props) {
   const { data: allHeroes } = await getClient().query({
     query: GetAllHeroesDocument,
   });
-
   if (!data.constants?.hero) return notFound();
   return (
-    <main className="p-4">
+    <main className="m-2 bg-black p-2">
       <HeroHeader data={data} />
       <ClientTabs
         abilities={abilities}

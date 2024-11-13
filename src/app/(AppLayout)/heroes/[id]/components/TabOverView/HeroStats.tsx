@@ -34,7 +34,7 @@ export default function HeroStats({ data }: Props) {
   const Defense = [
     {
       name: "Armor",
-      value: hero?.stats?.startingArmor!.toFixed(1),
+      value: (hero?.stats?.startingArmor || 0).toFixed(1),
       img: "/img/hero_stats/icon_armor.png",
     },
     {

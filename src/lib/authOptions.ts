@@ -3,6 +3,7 @@ import { AuthOptions } from "next-auth";
 import SteamProvider from "next-auth-steam";
 
 import { steamID64ToSteamID3 } from "@/lib/utils";
+
 export function getAuthOptions(req?: NextApiRequest): AuthOptions {
   return {
     callbacks: {
@@ -30,7 +31,9 @@ export function getAuthOptions(req?: NextApiRequest): AuthOptions {
       SteamProvider(req!, {
         // @ts-ignore
         clientSecret: process.env.STEAM_SECRET!,
-        callbackUrl: process.env.NEXTAUTH_URL + "/api/auth/callback",
+        callbackUrl: process.env.NEXTAUTH_URL
+          ? process.env.NEXTAUTH_URL + "/api/auth/callback"
+          : "http://localhost:3000/api/auth/callback",
       }),
     ],
   };

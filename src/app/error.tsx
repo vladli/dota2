@@ -4,6 +4,8 @@ import { Button } from "@heroui/react";
 import { RotateCcw } from "lucide-react";
 import Link from "next/link";
 
+export const dynamic = "force-dynamic";
+
 type Props = {
   reset: () => void;
 };

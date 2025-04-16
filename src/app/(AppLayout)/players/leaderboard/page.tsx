@@ -8,7 +8,6 @@ import { InputMaybe, LeaderboardDivision } from "@/types/types.generated";
 import Table from "./components/Table";
 import CountryFilter from "./filters/CountryFilter";
 
-export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Leaderboards",
 };
@@ -42,10 +41,10 @@ export default async function page(props: Props) {
     },
   });
   const top10 = data.leaderboard?.season?.players?.filter(
-    (player) => player?.rank && player?.rank <= 10
+    (player) => player?.rank && player?.rank <= 10,
   );
   const top100 = data.leaderboard?.season?.players?.filter(
-    (player) => player?.rank >= 11 && player?.rank <= 100
+    (player) => player?.rank >= 11 && player?.rank <= 100,
   );
   const newData = (top: 10 | 100) => {
     return {
@@ -62,14 +61,8 @@ export default async function page(props: Props) {
   return (
     <main className="p-4">
       <CountryFilter />
-      <Table
-        data={newData(10)}
-        header="Top 10"
-      />
-      <Table
-        data={newData(100)}
-        header="Top 100"
-      />
+      <Table data={newData(10)} header="Top 10" />
+      <Table data={newData(100)} header="Top 100" />
     </main>
   );
 }

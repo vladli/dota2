@@ -26,8 +26,6 @@ import PlayedWith from "./components/Overview/PlayedWith";
 import RecentMatches from "./components/Overview/RecentMatches";
 import PlayerCard from "./components/PlayerCard";
 
-export const dynamic = "force-dynamic";
-
 export async function generateMetadata(props: Props) {
   const params = await props.params;
   const { data } = await getClient().query({
@@ -121,10 +119,7 @@ export default async function page(props: Props) {
               <PlayerActivity data={activity} />
             ) : (
               <div className="flex flex-col gap-4">
-                <Activity
-                  data={activity}
-                  trends={data}
-                />
+                <Activity data={activity} trends={data} />
                 <section className="flex size-full flex-col gap-4 xl:flex-row">
                   <div className="grow">
                     <RecentMatches steamId={params.id} />
@@ -134,10 +129,7 @@ export default async function page(props: Props) {
                     <FavoriteHeroes steamId={params.id} />
                   </div>
                 </section>
-                <DotaPlus
-                  allHeroes={allHeroes}
-                  steamId={params.id}
-                />
+                <DotaPlus allHeroes={allHeroes} steamId={params.id} />
               </div>
             )}
           </section>

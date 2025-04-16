@@ -21,6 +21,12 @@ RUN \
 # Rebuild the source code only when needed
 FROM base AS builder
 WORKDIR /app
+
+ARG NEXTAUTH_URL
+ARG STEAM_SECRET
+ENV NEXTAUTH_URL=${NEXTAUTH_URL}
+ENV STEAM_SECRET=${STEAM_SECRET}
+
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 

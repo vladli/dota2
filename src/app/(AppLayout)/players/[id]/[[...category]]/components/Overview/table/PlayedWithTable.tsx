@@ -9,7 +9,7 @@ import {
   TableColumn,
   TableHeader,
   TableRow,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { EyeOff } from "lucide-react";
 
 import Tooltip from "@/components/Tooltip";
@@ -56,15 +56,9 @@ export default function PlayedWithTable({ data }: Props) {
                       {peer?.steamAccount?.name}
                     </Link>
                     {peer?.steamAccount?.isAnonymous && (
-                      <Tooltip
-                        content="Anonymous"
-                        showArrow
-                      >
+                      <Tooltip content="Anonymous" showArrow>
                         <div className="flex items-center">
-                          <EyeOff
-                            color="#52525b"
-                            size={14}
-                          />
+                          <EyeOff color="#52525b" size={14} />
                         </div>
                       </Tooltip>
                     )}

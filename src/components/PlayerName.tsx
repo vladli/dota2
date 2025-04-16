@@ -1,4 +1,4 @@
-import { Image } from "@nextui-org/react";
+import { Image } from "@heroui/react";
 import { CheckCircle2, EyeOff } from "lucide-react";
 import Link from "next/link";
 
@@ -36,14 +36,8 @@ export default function PlayerName({
         steamAccount={steamAccount}
       />
       <div className="flex">
-        <TeamTag
-          show={showTeamTag}
-          steamAccount={steamAccount}
-        />
-        <Name
-          isLink={isLink}
-          steamAccount={steamAccount}
-        />
+        <TeamTag show={showTeamTag} steamAccount={steamAccount} />
+        <Name isLink={isLink} steamAccount={steamAccount} />
       </div>
     </div>
   );
@@ -59,15 +53,9 @@ type BlockProps = {
 function AnonymousIcon({ show, steamAccount, iconSize }: BlockProps) {
   if (!show || !steamAccount?.isAnonymous) return null;
   return (
-    <Tooltip
-      content="Anonymous"
-      showArrow
-    >
+    <Tooltip content="Anonymous" showArrow>
       <div className="flex items-center">
-        <EyeOff
-          color="#52525b"
-          size={iconSize}
-        />
+        <EyeOff color="#52525b" size={iconSize} />
       </div>
     </Tooltip>
   );
@@ -76,15 +64,9 @@ function AnonymousIcon({ show, steamAccount, iconSize }: BlockProps) {
 function ProPlayerIcon({ show, steamAccount, iconSize }: BlockProps) {
   if (!show || !steamAccount?.proSteamAccount) return null;
   return (
-    <Tooltip
-      content="Pro Player"
-      showArrow
-    >
+    <Tooltip content="Pro Player" showArrow>
       <div className="flex items-center">
-        <CheckCircle2
-          color="#0284c7"
-          size={iconSize}
-        />
+        <CheckCircle2 color="#0284c7" size={iconSize} />
       </div>
     </Tooltip>
   );
@@ -126,20 +108,14 @@ function Name({ isLink, steamAccount }: BlockProps) {
   const proPlayer = steamAccount.proSteamAccount;
   if (proPlayer)
     return isLink ? (
-      <Link
-        className="text-foreground-500"
-        href={"/players/" + proPlayer.id}
-      >
+      <Link className="text-foreground-500" href={"/players/" + proPlayer.id}>
         {proPlayer.name}
       </Link>
     ) : (
       <span>{proPlayer.name}</span>
     );
   return isLink ? (
-    <Link
-      className="text-foreground-700"
-      href={"/players/" + steamAccount.id}
-    >
+    <Link className="text-foreground-700" href={"/players/" + steamAccount.id}>
       {steamAccount.name}
     </Link>
   ) : (

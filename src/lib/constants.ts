@@ -1,4 +1,4 @@
-export const GAME_VERSION = 169;
+export const GAME_VERSION = 179;
 
 export const STEAM_IMAGE = "https://cdn.cloudflare.steamstatic.com";
 export const STEAM_AVATAR = "https://avatars.steamstatic.com/";

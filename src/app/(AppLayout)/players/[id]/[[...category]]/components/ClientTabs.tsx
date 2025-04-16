@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { Tab } from "@nextui-org/react";
+import { Tab } from "@heroui/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -37,7 +37,7 @@ export default function ClientTabs({ playerId }: Props) {
         title: "Activity",
       },
     ],
-    []
+    [],
   );
 
   return (
@@ -47,12 +47,7 @@ export default function ClientTabs({ playerId }: Props) {
       selectedKey={pathname}
     >
       {tabs.map((tab) => (
-        <Tab
-          as={Link}
-          href={tab.href}
-          key={tab.href}
-          title={tab.title}
-        />
+        <Tab as={Link} href={tab.href} key={tab.href} title={tab.title} />
       ))}
     </Tabs>
   );

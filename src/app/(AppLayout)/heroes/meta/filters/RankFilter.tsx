@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Image, Select, Selection, SelectItem } from "@nextui-org/react";
+import { Image, Select, Selection, SelectItem } from "@heroui/react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { createQueryString, deleteQueryString } from "@/lib/router";
@@ -29,7 +29,7 @@ export default function RankFilter() {
       router.push(
         pathname +
           "?" +
-          createQueryString("rank", selectedValue.toString(), searchParams)
+          createQueryString("rank", selectedValue.toString(), searchParams),
       );
     }
     if (selectedValue === "All") {
@@ -38,7 +38,7 @@ export default function RankFilter() {
   }, [value]);
   return (
     <Select
-      className="max-w-[10rem]"
+      className="max-w-40"
       label="Select rank"
       onSelectionChange={setValue}
       selectedKeys={value}

@@ -1,5 +1,5 @@
 "use client";
-import { Button, Card, CardBody, CardHeader } from "@nextui-org/react";
+import { Button, Card, CardBody, CardHeader } from "@heroui/react";
 import { EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
 

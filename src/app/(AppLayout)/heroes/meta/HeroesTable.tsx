@@ -1,6 +1,6 @@
 "use client";
 import { useMemo, useState } from "react";
-import { Link } from "@nextui-org/react";
+import { Link } from "@heroui/react";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -131,7 +131,7 @@ export default function HeroesTable({ heroes }: Props) {
         id: "spacer",
         header: "",
         size: 50,
-        cell: () => <div className="h-10 w-[1px] bg-divider" />,
+        cell: () => <div className="h-10 w-px bg-divider" />,
       },
       {
         header: "Matches",
@@ -182,7 +182,7 @@ export default function HeroesTable({ heroes }: Props) {
         ],
       },
     ],
-    []
+    [],
   );
 
   const table = useReactTable({
@@ -232,7 +232,7 @@ export default function HeroesTable({ heroes }: Props) {
                 {headerGroup.headers.map((header) => (
                   <th
                     className={cn("px-4 py-3 text-center", {
-                      "sticky bg-content1 z-10 left-0":
+                      "sticky left-0 z-10 bg-content1":
                         header.column.columnDef.meta?.isSticky,
                     })}
                     colSpan={header.colSpan}
@@ -252,7 +252,7 @@ export default function HeroesTable({ heroes }: Props) {
                       >
                         {flexRender(
                           header.column.columnDef.header,
-                          header.getContext()
+                          header.getContext(),
                         )}
                         {{
                           asc: <ArrowUpWideNarrow size={16} />,
@@ -276,7 +276,7 @@ export default function HeroesTable({ heroes }: Props) {
                 {row.getVisibleCells().map((cell) => (
                   <td
                     className={cn("px-4 py-2", {
-                      "sticky bg-black z-10 left-0":
+                      "sticky left-0 z-10 bg-black":
                         cell.column.columnDef.meta?.isSticky,
                     })}
                     key={cell.id}

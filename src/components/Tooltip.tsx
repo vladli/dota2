@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Tooltip as NextUITooltip } from "@nextui-org/react";
+import { Tooltip as NextUITooltip } from "@heroui/react";
 
 type Props = {
   children: React.ReactNode;
@@ -26,11 +26,7 @@ export default function Tooltip({
     }, closeDelay);
   };
   return (
-    <NextUITooltip
-      content={content}
-      isOpen={open}
-      {...rest}
-    >
+    <NextUITooltip content={content} isOpen={open} {...rest}>
       <div
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}

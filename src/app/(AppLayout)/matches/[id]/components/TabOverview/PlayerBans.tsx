@@ -1,4 +1,4 @@
-import { cn } from "@nextui-org/react";
+import { cn } from "@heroui/react";
 
 import PlayerName from "@/components/PlayerName";
 import { GetAllHeroesQuery } from "@/graphql/constants";
@@ -14,7 +14,7 @@ export default function PlayerBans({ data, heroes }: Props) {
   const getHeroById = (id: number) =>
     heroes?.constants?.heroes?.find((hero) => hero?.id === id);
   const playerBans = data?.match?.pickBans?.filter(
-    (hero) => hero?.playerIndex !== null && hero?.bannedHeroId !== null
+    (hero) => hero?.playerIndex !== null && hero?.bannedHeroId !== null,
   );
   return (
     <div className="w-full min-w-fit max-w-[30rem] rounded-large bg-black p-4 xl:max-w-[20rem]">
@@ -33,7 +33,7 @@ export default function PlayerBans({ data, heroes }: Props) {
                 </span>{" "}
                 was nominated for ban by{" "}
                 <span
-                  className={cn("text-danger-500 font-semibold", {
+                  className={cn("font-semibold text-danger-500", {
                     "text-success-400":
                       data.match?.players?.[hero?.playerIndex || 0]?.isRadiant,
                   })}

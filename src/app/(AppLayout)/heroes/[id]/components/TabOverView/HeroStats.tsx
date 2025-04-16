@@ -1,4 +1,4 @@
-import { Image } from "@nextui-org/react";
+import { Image } from "@heroui/react";
 
 import Tooltip from "@/components/Tooltip";
 import { GetHeroByIdQuery } from "@/graphql/constants";
@@ -66,28 +66,19 @@ export default function HeroStats({ data }: Props) {
         <div className="flex flex-col items-center">
           <Heading value="Attack" />
           {Attack.map((stat, index) => (
-            <Stat
-              key={index}
-              {...stat}
-            />
+            <Stat key={index} {...stat} />
           ))}
         </div>
         <div className="flex flex-col items-center">
           <Heading value="Defense" />
           {Defense.map((stat, index) => (
-            <Stat
-              key={index}
-              {...stat}
-            />
+            <Stat key={index} {...stat} />
           ))}
         </div>
         <div className="flex flex-col items-center">
           <Heading value="Mobility" />
           {Mobility.map((stat, index) => (
-            <Stat
-              key={index}
-              {...stat}
-            />
+            <Stat key={index} {...stat} />
           ))}
         </div>
       </section>
@@ -105,19 +96,9 @@ const Stat = ({
   img: string;
 }) => {
   return (
-    <Tooltip
-      color="primary"
-      content={name}
-      placement="left"
-      showArrow
-    >
+    <Tooltip color="primary" content={name} placement="left" showArrow>
       <div className="flex cursor-help items-center gap-1 place-self-start font-medium">
-        <Image
-          alt=""
-          radius="none"
-          src={img}
-          width={24}
-        />
+        <Image alt="" radius="none" src={img} width={24} />
         <span>{value}</span>
       </div>
     </Tooltip>

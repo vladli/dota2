@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Slider, SliderValue } from "@nextui-org/react";
+import { Slider, SliderValue } from "@heroui/react";
 
 import Alert from "@/components/Alert";
 import { GetAllHeroesQuery, GetAllItemsQuery } from "@/graphql/constants";

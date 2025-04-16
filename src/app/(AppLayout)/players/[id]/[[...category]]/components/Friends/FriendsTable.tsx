@@ -1,6 +1,6 @@
 "use client";
 import { useMemo } from "react";
-import { Image } from "@nextui-org/react";
+import { Image } from "@heroui/react";
 import { ColumnDef } from "@tanstack/react-table";
 import dayjs from "dayjs";
 
@@ -17,7 +17,7 @@ type Props = {
 
 export default function FriendsTable({ data }: Props) {
   const peers = data?.stratz?.page?.player?.peers?.filter(
-    (peer) => peer?.steamAccount !== null
+    (peer) => peer?.steamAccount !== null,
   );
 
   const columns = useMemo<ColumnDef<PlayerTeammateType, any>[]>(
@@ -85,7 +85,7 @@ export default function FriendsTable({ data }: Props) {
         },
       },
     ],
-    []
+    [],
   );
   return (
     <>
@@ -94,7 +94,7 @@ export default function FriendsTable({ data }: Props) {
         header="Friends"
         value={peers?.length || 0}
       />
-      <div className="flex flex-col gap-2 rounded-large bg-content1 ">
+      <div className="flex flex-col gap-2 rounded-large bg-content1">
         <div className="overflow-hidden hover:overflow-x-auto">
           <Table
             columns={columns}

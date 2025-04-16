@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useQuery } from "@apollo/client";
-import { Divider, Pagination } from "@nextui-org/react";
+import { Divider, Pagination } from "@heroui/react";
 import Link from "next/link";
 
 import HeaderValue from "@/components/HeaderValue";
@@ -33,11 +33,7 @@ export default function Matches({ playerId, matchCount }: Props) {
   if (!data || loading) return <Loading />;
   return (
     <>
-      <HeaderValue
-        className="mb-4"
-        header="Matches"
-        value={matchCount}
-      />
+      <HeaderValue className="mb-4" header="Matches" value={matchCount} />
       <div className="flex flex-col gap-2 rounded-large bg-content1">
         <div className="overflow-hidden hover:overflow-x-auto">
           {matches!.map((match) => {
@@ -59,18 +55,15 @@ export default function Matches({ playerId, matchCount }: Props) {
                 </div>
                 <Divider orientation="vertical" />
                 <div className="shrink-0">
-                  <RoleImage
-                    lane={player?.lane}
-                    role={player?.role}
-                  />
+                  <RoleImage lane={player?.lane} role={player?.role} />
                 </div>
                 <div
                   className={cn(
-                    "flex-initial shrink-0 w-6 h-6 flex items-center justify-center rounded-small text-black font-semibold",
+                    "flex h-6 w-6 flex-initial shrink-0 items-center justify-center rounded-small font-semibold text-black",
                     {
                       "bg-success-400": match?.players![0]?.isVictory,
                       "bg-danger-500": !match?.players![0]?.isVictory,
-                    }
+                    },
                   )}
                 >
                   {match?.players![0]?.isVictory ? "W" : "L"}
@@ -86,7 +79,7 @@ export default function Matches({ playerId, matchCount }: Props) {
                   <div>
                     <Divider orientation="vertical" />
                   </div>
-                  <div className="flex w-28 flex-initial flex-col items-end ">
+                  <div className="flex w-28 flex-initial flex-col items-end">
                     <span>{secondsToTime(match?.durationSeconds!)}</span>
                     <span className="text-xs text-foreground-500">
                       {dayjs(match?.endDateTime * 1000).fromNow()}

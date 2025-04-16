@@ -1,5 +1,5 @@
 "use client";
-import { Tab } from "@nextui-org/react";
+import { Tab } from "@heroui/react";
 import {
   AreaChart,
   LandPlot,
@@ -31,76 +31,34 @@ export default function ClientTabs({ data, items, heroes }: Props) {
     <Tabs defaultSelectedKey="overview">
       <Tab
         key="overview"
-        title={
-          <TabHeader
-            icon={AreaChart}
-            text="Overview"
-          />
-        }
+        title={<TabHeader icon={AreaChart} text="Overview" />}
       >
-        <TabOverview
-          data={data}
-          heroes={heroes}
-          items={items}
-        />
+        <TabOverview data={data} heroes={heroes} items={items} />
       </Tab>
       {data.match?.parsedDateTime && (
         <Tab
           key="scoreboard"
-          title={
-            <TabHeader
-              icon={PercentDiamond}
-              text="Scoreboard"
-            />
-          }
+          title={<TabHeader icon={PercentDiamond} text="Scoreboard" />}
         >
-          <ScoreBoard
-            data={data}
-            heroes={heroes}
-            items={items}
-          />
+          <ScoreBoard data={data} heroes={heroes} items={items} />
         </Tab>
       )}
       {data.match?.parsedDateTime && (
-        <Tab
-          key="lanes"
-          title={
-            <TabHeader
-              icon={LandPlot}
-              text="Lanes"
-            />
-          }
-        >
+        <Tab key="lanes" title={<TabHeader icon={LandPlot} text="Lanes" />}>
           <TabLanes matchId={data.match?.id} />
         </Tab>
       )}
       {data.match?.parsedDateTime && (
         <Tab
           key="abilities"
-          title={
-            <TabHeader
-              icon={SquareMousePointer}
-              text="Abilities"
-            />
-          }
+          title={<TabHeader icon={SquareMousePointer} text="Abilities" />}
         >
           <Abilities data={data} />
         </Tab>
       )}
       {data.match?.parsedDateTime && (
-        <Tab
-          key="logs"
-          title={
-            <TabHeader
-              icon={ScrollText}
-              text="Logs"
-            />
-          }
-        >
-          <TabLogs
-            data={data}
-            heroes={heroes}
-          />
+        <Tab key="logs" title={<TabHeader icon={ScrollText} text="Logs" />}>
+          <TabLogs data={data} heroes={heroes} />
         </Tab>
       )}
     </Tabs>
@@ -121,11 +79,11 @@ export const Header = ({
   return (
     <h2
       className={cn(
-        "w-fit text-xl uppercase font-semibold flex gap-2 items-center",
+        "flex w-fit items-center gap-2 text-xl font-semibold uppercase",
         {
           "text-success-400": text === "Radiant",
           "text-danger-500": text === "Dire",
-        }
+        },
       )}
     >
       {text} {open && showWin ? <Trophy /> : null}

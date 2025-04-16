@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Image } from "@nextui-org/react";
+import { Image } from "@heroui/react";
 import { ColumnDef } from "@tanstack/react-table";
 import { Backpack } from "lucide-react";
 
@@ -93,18 +93,12 @@ export default function PlayersTable({ data, team, items }: Props) {
                 />
               </Tooltip>
             ) : (
-              <div
-                className="h-[29.09px] w-[40px] bg-content2"
-                key={i}
-              />
-            )
+              <div className="h-[29.09px] w-[40px] bg-content2" key={i} />
+            ),
           )}
         </div>
         <div className="flex items-center gap-1">
-          <Backpack
-            className="text-neutral-500"
-            size={20}
-          />
+          <Backpack className="text-neutral-500" size={20} />
           {playerBackpack.map((item, i) =>
             item ? (
               <Tooltip
@@ -131,11 +125,8 @@ export default function PlayersTable({ data, team, items }: Props) {
                 />
               </Tooltip>
             ) : (
-              <div
-                className="h-[29.09px] w-[40px] bg-content2"
-                key={i}
-              />
-            )
+              <div className="h-[29.09px] w-[40px] bg-content2" key={i} />
+            ),
           )}
         </div>
       </div>
@@ -159,10 +150,7 @@ export default function PlayersTable({ data, team, items }: Props) {
         }),
         cell: ({ getValue }: any) => (
           <div className="flex items-center gap-x-2">
-            <RoleImage
-              lane={getValue().lane}
-              role={getValue().role}
-            />
+            <RoleImage lane={getValue().lane} role={getValue().role} />
             <HeroImage
               displayName={getValue().displayName}
               heroId={getValue().heroId}
@@ -183,7 +171,7 @@ export default function PlayersTable({ data, team, items }: Props) {
         }),
         cell: ({ getValue }: any) => {
           const rank = getRankName(
-            getValue().steamAccount?.seasonRank?.toString()[0]
+            getValue().steamAccount?.seasonRank?.toString()[0],
           );
           return (
             <div className="flex flex-col">
@@ -290,7 +278,7 @@ export default function PlayersTable({ data, team, items }: Props) {
         accessorKey: "neutral0Id",
         cell: ({ getValue }: any) => {
           const item = items?.constants?.items!.find(
-            (item) => item?.id === getValue()
+            (item) => item?.id === getValue(),
           );
           return (
             <Tooltip
@@ -316,15 +304,11 @@ export default function PlayersTable({ data, team, items }: Props) {
         },
       },
     ],
-    []
+    [],
   );
   return (
     <section className="flex flex-col gap-y-4 rounded-large bg-content1 p-4">
-      <Header
-        showWin
-        text={team}
-        win={match?.didRadiantWin!}
-      />
+      <Header showWin text={team} win={match?.didRadiantWin!} />
       <Table
         columns={columns}
         data={players?.sort(compareLaneAndRole) as object[]}
@@ -336,11 +320,7 @@ export default function PlayersTable({ data, team, items }: Props) {
 function ToolTipContent({ img, name }: { img: string; name: string }) {
   return (
     <div className="flex items-center gap-2">
-      <Image
-        alt=""
-        src={img}
-        width={60}
-      />
+      <Image alt="" src={img} width={60} />
       <span className="font-medium">{name}</span>
     </div>
   );

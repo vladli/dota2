@@ -1,4 +1,4 @@
-import { Card, CardBody, Image } from "@nextui-org/react";
+import { Card, CardBody, Image } from "@heroui/react";
 import Link from "next/link";
 
 import RoleImage from "@/components/RoleImage";
@@ -19,12 +19,12 @@ export default function Players({ allHeroes, data }: Props) {
     const positionsA = a?.player?.matches?.flatMap((match) =>
       match?.players
         ?.filter((pl) => pl?.steamAccountId === a.steamAccountId)
-        .map((pl) => pl?.position)
+        .map((pl) => pl?.position),
     );
     const positionsB = b?.player?.matches?.flatMap((match) =>
       match?.players
         ?.filter((pl) => pl?.steamAccountId === b.steamAccountId)
-        .map((pl) => pl?.position)
+        .map((pl) => pl?.position),
     );
     const positionCountsA = positionsA?.reduce((acc: any, position) => {
       if (position) {
@@ -42,13 +42,13 @@ export default function Players({ allHeroes, data }: Props) {
       ? Object.keys(positionCountsA).reduce(
           (prev, curr) =>
             positionCountsA[prev] > positionCountsA[curr] ? prev : curr,
-          Object.keys(positionCountsA)[0]
+          Object.keys(positionCountsA)[0],
         )
       : "";
 
     const mostPlayedPositionB = Object.keys(positionCountsB)?.reduce(
       (prev, curr) =>
-        positionCountsB[prev] > positionCountsB[curr] ? prev : curr
+        positionCountsB[prev] > positionCountsB[curr] ? prev : curr,
     );
     return mostPlayedPositionA?.localeCompare(mostPlayedPositionB);
   });
@@ -60,7 +60,7 @@ export default function Players({ allHeroes, data }: Props) {
         const positions = player?.player?.matches?.flatMap((match) =>
           match?.players
             ?.filter((pl) => pl?.steamAccountId === player.steamAccountId)
-            .map((pl) => pl?.position)
+            .map((pl) => pl?.position),
         );
         const positionCounts = positions?.reduce((acc: any, position) => {
           if (position) {
@@ -71,7 +71,7 @@ export default function Players({ allHeroes, data }: Props) {
         const mostPlayedPosition =
           positionCounts && Object.keys(positionCounts).length > 0
             ? Object.keys(positionCounts).reduce((a, b) =>
-                positionCounts[a] > positionCounts[b] ? a : b
+                positionCounts[a] > positionCounts[b] ? a : b,
               )
             : null;
 

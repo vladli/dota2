@@ -1,4 +1,4 @@
-import { Image } from "@nextui-org/react";
+import { Image } from "@heroui/react";
 
 import { GetHeroByIdQuery } from "@/graphql/constants";
 import { HERO_STATS, IMAGE } from "@/lib/constants";
@@ -64,10 +64,7 @@ export default function HeroAttributes({ data }: Props) {
         </div>
         <div className="my-auto flex flex-col gap-4">
           {HeroAttr.map(({ attr, img, gainPerLevel }, i) => (
-            <div
-              className="flex items-center gap-2"
-              key={i}
-            >
+            <div className="flex items-center gap-2" key={i}>
               <Image
                 alt=""
                 className="min-w-[18px]"

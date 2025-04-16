@@ -8,7 +8,7 @@ import {
   Listbox,
   ListboxItem,
   ListboxSection,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { useDebounce } from "@uidotdev/usehooks";
 import Link from "next/link";
 
@@ -68,10 +68,7 @@ export default function SearchBar({ className, setIsMenuOpen }: Props) {
             onAction={handleClick}
             onClick={(e) => e.stopPropagation()}
           >
-            <ListboxSection
-              hidden={matches.length === 0}
-              title="Matches"
-            >
+            <ListboxSection hidden={matches.length === 0} title="Matches">
               {matches?.map((match) => (
                 <ListboxItem
                   as={Link}
@@ -82,10 +79,7 @@ export default function SearchBar({ className, setIsMenuOpen }: Props) {
                 </ListboxItem>
               ))}
             </ListboxSection>
-            <ListboxSection
-              hidden={players.length === 0}
-              title="Players"
-            >
+            <ListboxSection hidden={players.length === 0} title="Players">
               {players?.map((player) => (
                 <ListboxItem
                   as={Link}
@@ -133,10 +127,7 @@ export default function SearchBar({ className, setIsMenuOpen }: Props) {
                 </ListboxItem>
               ))}
             </ListboxSection>
-            <ListboxSection
-              hidden={teams.length === 0}
-              title="Teams"
-            >
+            <ListboxSection hidden={teams.length === 0} title="Teams">
               {teams?.map((team) => (
                 <ListboxItem
                   as={Link}

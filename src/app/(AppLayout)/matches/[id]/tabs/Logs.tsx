@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import { Image } from "@nextui-org/react";
+import { Image } from "@heroui/react";
 import { MessageSquareQuote, Sword, Swords } from "lucide-react";
 
 import Alert from "@/components/Alert";

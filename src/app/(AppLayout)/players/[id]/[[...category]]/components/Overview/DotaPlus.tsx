@@ -1,6 +1,6 @@
 "use client";
 import { useQuery } from "@apollo/client";
-import { Card, Image } from "@nextui-org/react";
+import { Card, Image } from "@heroui/react";
 import NextImage from "next/image";
 import Link from "next/link";
 

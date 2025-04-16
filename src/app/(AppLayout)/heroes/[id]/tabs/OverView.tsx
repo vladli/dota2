@@ -1,4 +1,4 @@
-import { Divider } from "@nextui-org/react";
+import { Divider } from "@heroui/react";
 
 import { GetAbilitiesQuery, GetHeroByIdQuery } from "@/graphql/constants";
 
@@ -26,17 +26,11 @@ export default function OverView({ data, abilities }: Props) {
       </section>
       <Divider />
       <section className="flex justify-center">
-        <HeroTalents
-          abilities={abilities}
-          data={data}
-        />
+        <HeroTalents abilities={abilities} data={data} />
       </section>
       <Divider />
       <section className="flex flex-col items-center justify-around">
-        <HeroAbilities
-          abilities={abilities}
-          data={data}
-        />
+        <HeroAbilities abilities={abilities} data={data} />
       </section>
     </main>
   );

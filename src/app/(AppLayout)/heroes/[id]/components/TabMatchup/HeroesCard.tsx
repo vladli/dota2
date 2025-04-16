@@ -1,10 +1,11 @@
-import { Card } from "@nextui-org/react";
+import { Card } from "@heroui/react";
 import NextImage from "next/image";
 import Link from "next/link";
 
 import HeroImage from "@/components/HeroImage";
 import { GetAllHeroesQuery } from "@/graphql/constants";
 import { IMAGE } from "@/lib/constants";
+
 type Props = {
   allHeroes: GetAllHeroesQuery;
   header: string;
@@ -25,16 +26,18 @@ export default function HeroesCard({ allHeroes, data, header }: Props) {
   return (
     <Card className="flex flex-col gap-4 p-4">
       <h2>{header}</h2>
-      {data?.slice(0, 4).map((hero, index) => (
-        <CardItem
-          heroId={hero?.heroId2}
-          heroImage={getHero(hero?.heroId2)?.shortName}
-          heroName={getHero(hero?.heroId2)?.displayName}
-          index={index + 1}
-          key={hero?.heroId2}
-          synergy={hero?.synergy}
-        />
-      ))}
+      {data
+        ?.slice(0, 4)
+        .map((hero, index) => (
+          <CardItem
+            heroId={hero?.heroId2}
+            heroImage={getHero(hero?.heroId2)?.shortName}
+            heroName={getHero(hero?.heroId2)?.displayName}
+            index={index + 1}
+            key={hero?.heroId2}
+            synergy={hero?.synergy}
+          />
+        ))}
     </Card>
   );
 }
@@ -78,11 +81,7 @@ function CardItem({
           <span className="text-sm font-medium">{synergy.toFixed(1)}%</span>
         </div>
 
-        <HeroImage
-          heroId={heroId}
-          isLink={false}
-          shortName={heroImage}
-        />
+        <HeroImage heroId={heroId} isLink={false} shortName={heroImage} />
       </section>
     </Link>
   );

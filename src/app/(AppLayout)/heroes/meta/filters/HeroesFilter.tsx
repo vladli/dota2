@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Input } from "@nextui-org/react";
+import { Input } from "@heroui/react";
 import { Column } from "@tanstack/react-table";
 import { useDebounce } from "@uidotdev/usehooks";
 
@@ -19,7 +19,7 @@ export default function HeroesFilter({ column }: Props) {
 
   return (
     <Input
-      className="max-w-[10rem]"
+      className="max-w-40"
       isClearable
       onChange={(value) => setValue(value.target.value)}
       onClear={() => setValue("")}

@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Select, Selection, SelectItem } from "@nextui-org/react";
+import { Select, Selection, SelectItem } from "@heroui/react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { createQueryString, deleteQueryString } from "@/lib/router";
@@ -22,7 +22,7 @@ export default function DaysFilter() {
       router.push(
         pathname +
           "?" +
-          createQueryString("days", selectedValue.toString(), searchParams)
+          createQueryString("days", selectedValue.toString(), searchParams),
       );
     }
     if (
@@ -36,7 +36,7 @@ export default function DaysFilter() {
 
   return (
     <Select
-      className="max-w-[10rem]"
+      className="max-w-40"
       label="Select days"
       onSelectionChange={setValue}
       selectedKeys={value}

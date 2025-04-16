@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import { Spinner, Tab, Tabs } from "@nextui-org/react";
+import { Spinner, Tab, Tabs } from "@heroui/react";
 
 import Alert from "@/components/Alert";
 import { GetMatchLanesDocument } from "@/graphql/match";

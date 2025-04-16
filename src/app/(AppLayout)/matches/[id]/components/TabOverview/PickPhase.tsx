@@ -1,4 +1,4 @@
-import { cn } from "@nextui-org/react";
+import { cn } from "@heroui/react";
 
 import PlayerName from "@/components/PlayerName";
 import { GetAllHeroesQuery } from "@/graphql/constants";
@@ -15,7 +15,7 @@ export default function PickPhase({ phase, data, heroes }: Props) {
   const getHeroById = (id: number) =>
     heroes?.constants?.heroes?.find((hero) => hero?.id === id);
   const playerPicks = data?.match?.pickBans?.filter(
-    (hero) => hero?.isPick && hero?.playerIndex !== null
+    (hero) => hero?.isPick && hero?.playerIndex !== null,
   );
   let phasePicks: typeof playerPicks = [];
 
@@ -27,7 +27,7 @@ export default function PickPhase({ phase, data, heroes }: Props) {
     phasePicks = playerPicks!.slice(8, 10);
   }
   return (
-    <div className="w-full max-w-[30rem] rounded-large bg-black p-4 lg:max-w-[8rem]">
+    <div className="w-full max-w-[30rem] rounded-large bg-black p-4 lg:max-w-32">
       <h3 className="mb-1 text-sm font-semibold text-foreground-500">
         Pick Phase {phase}
       </h3>
@@ -47,7 +47,7 @@ export default function PickPhase({ phase, data, heroes }: Props) {
                 </span>{" "}
                 was picked by{" "}
                 <span
-                  className={cn("text-danger-500 font-semibold", {
+                  className={cn("font-semibold text-danger-500", {
                     "text-success-400":
                       data.match?.players?.[hero?.playerIndex || 0]?.isRadiant,
                   })}

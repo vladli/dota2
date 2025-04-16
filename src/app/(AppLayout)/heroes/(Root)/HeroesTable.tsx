@@ -1,4 +1,4 @@
-import { Image } from "@nextui-org/react";
+import { Image } from "@heroui/react";
 import Link from "next/link";
 
 import { IMAGE } from "@/lib/constants";
@@ -42,11 +42,11 @@ export default function HeroesTable({ header, data }: Props) {
       <div className="grid grid-cols-auto-fill gap-1 xl:flex xl:flex-wrap">
         {data?.map((hero) => (
           <Link
-            className="group relative cursor-pointer "
+            className="group relative cursor-pointer"
             href={`/heroes/${hero?.id}`}
             key={hero?.id}
           >
-            <span className="absolute -bottom-6 left-[-17.5px] z-20 w-[105px] rounded-b-large bg-gradient-to-r from-black to-black/30 px-[1px] font-medium opacity-0 transition-opacity group-hover:opacity-100">
+            <span className="absolute -bottom-6 left-[-17.5px] z-20 w-[105px] rounded-b-large bg-gradient-to-r from-black to-black/30 px-px font-medium opacity-0 transition-opacity group-hover:opacity-100">
               {hero?.displayName}
             </span>
             <Image

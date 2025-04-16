@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Image } from "@nextui-org/react";
+import { Image } from "@heroui/react";
 import { ColumnDef } from "@tanstack/react-table";
 import { Backpack } from "lucide-react";
 
@@ -104,18 +104,12 @@ export default function PlayersTable({
                 />
               </Tooltip>
             ) : (
-              <div
-                className="h-[29.09px] w-[40px] bg-content2"
-                key={i}
-              />
-            )
+              <div className="h-[29.09px] w-[40px] bg-content2" key={i} />
+            ),
           )}
         </div>
         <div className="flex items-center gap-1">
-          <Backpack
-            className="text-neutral-500"
-            size={20}
-          />
+          <Backpack className="text-neutral-500" size={20} />
           {playerBackpack.map((item, i) =>
             item ? (
               <Tooltip
@@ -133,7 +127,7 @@ export default function PlayersTable({
               >
                 <Image
                   alt="item"
-                  className="z-0 min-w-[40px] "
+                  className="z-0 min-w-[40px]"
                   radius="none"
                   src={
                     IMAGE.urlItem + IMG_NAME(getItem(item)?.shortName) + ".png"
@@ -142,11 +136,8 @@ export default function PlayersTable({
                 />
               </Tooltip>
             ) : (
-              <div
-                className="h-[29.09px] w-[40px] bg-content2"
-                key={i}
-              />
-            )
+              <div className="h-[29.09px] w-[40px] bg-content2" key={i} />
+            ),
           )}
         </div>
       </div>
@@ -171,10 +162,7 @@ export default function PlayersTable({
         }),
         cell: ({ getValue }: any) => (
           <div className="flex items-center gap-x-2">
-            <RoleImage
-              lane={getValue().lane}
-              role={getValue().role}
-            />
+            <RoleImage lane={getValue().lane} role={getValue().role} />
             <HeroImage
               displayName={getValue().displayName}
               heroId={getValue().heroId}
@@ -220,13 +208,13 @@ export default function PlayersTable({
         enableSorting: false,
         accessorFn: (row) => ({
           kills: row.stats?.killEvents?.filter(
-            (kill) => (kill?.time ?? 0) / 60 <= time
+            (kill) => (kill?.time ?? 0) / 60 <= time,
           ).length,
           deaths: row.stats?.deathEvents?.filter(
-            (death) => (death?.time ?? 0) / 60 <= time
+            (death) => (death?.time ?? 0) / 60 <= time,
           ).length,
           assists: row.stats?.assistEvents?.filter(
-            (assist) => (assist?.time ?? 0) / 60 <= time
+            (assist) => (assist?.time ?? 0) / 60 <= time,
           ).length,
         }),
         cell: ({ getValue }: any) => (
@@ -283,7 +271,7 @@ export default function PlayersTable({
               ? Math.round(
                   row?.stats
                     ?.experiencePerMinute!.slice(0, time)!
-                    .reduce((a, b) => a! + (b || 0), 0)! / time
+                    .reduce((a, b) => a! + (b || 0), 0)! / time,
                 )
               : row.experiencePerMinute,
         }),
@@ -308,7 +296,7 @@ export default function PlayersTable({
           row?.stats?.inventoryReport?.[time]?.neutral0?.itemId,
         cell: ({ getValue }: any) => {
           const item = items?.constants?.items!.find(
-            (item) => item?.id === getValue()
+            (item) => item?.id === getValue(),
           );
           return item ? (
             <Tooltip
@@ -322,7 +310,7 @@ export default function PlayersTable({
               <div className="size-[35px]">
                 <Image
                   alt="item"
-                  className="z-0 size-full object-cover "
+                  className="z-0 size-full object-cover"
                   radius="full"
                   removeWrapper
                   src={IMAGE.urlItem + item?.shortName + ".png"}
@@ -395,7 +383,7 @@ export default function PlayersTable({
         enableSorting: false,
         accessorFn: (row) => ({
           killEvents: row.stats?.killEvents?.filter(
-            (death) => (death?.time ?? 0) / 60 <= time
+            (death) => (death?.time ?? 0) / 60 <= time,
           ),
           playerTeam: row.isRadiant,
         }),
@@ -404,7 +392,7 @@ export default function PlayersTable({
             getValue().killEvents?.filter((kill: any) => kill.target == heroId)
               .length;
           const enemyHeroes = data?.match?.players?.filter(
-            (player) => player?.isRadiant !== getValue().playerTeam
+            (player) => player?.isRadiant !== getValue().playerTeam,
           );
           return (
             <div className="flex gap-x-2">
@@ -415,7 +403,7 @@ export default function PlayersTable({
                 >
                   <Image
                     alt=""
-                    className={cn("min-w-[30px] z-0", {
+                    className={cn("z-0 min-w-[30px]", {
                       grayscale: getKills(hero?.heroId) === 0,
                     })}
                     height={30}
@@ -434,21 +422,21 @@ export default function PlayersTable({
         enableSorting: false,
         accessorFn: (row) => ({
           itemPurchases: row.stats?.itemPurchases?.filter(
-            (item) => item?.time ?? 0 / 60 <= time
+            (item) => item?.time ?? 0 / 60 <= time,
           ),
         }),
         cell: ({ getValue }: any) => {
           const observerWards = getValue().itemPurchases?.filter(
-            (item: any) => item.itemId == 42
+            (item: any) => item.itemId == 42,
           );
           const sentryWards = getValue().itemPurchases?.filter(
-            (item: any) => item.itemId == 43
+            (item: any) => item.itemId == 43,
           );
           const dusts = getValue().itemPurchases?.filter(
-            (item: any) => item.itemId == 40
+            (item: any) => item.itemId == 40,
           );
           const sod = getValue().itemPurchases?.filter(
-            (item: any) => item.itemId == 188
+            (item: any) => item.itemId == 188,
           );
           const renderItem = (itemId: number, count: number) => {
             return (
@@ -496,15 +484,11 @@ export default function PlayersTable({
         cell: ({ getValue }: any) => <>{getValue()}</>,
       },
     ],
-    [time]
+    [time],
   );
   return (
     <section className="flex flex-col gap-y-4 rounded-large bg-content1 p-4">
-      <Header
-        showWin
-        text={team}
-        win={match?.didRadiantWin!}
-      />
+      <Header showWin text={team} win={match?.didRadiantWin!} />
       <Table
         columns={columns}
         data={players?.sort(compareLaneAndRole) as object[]}
@@ -516,11 +500,7 @@ export default function PlayersTable({
 function ToolTipContent({ img, name }: { img: string; name: string }) {
   return (
     <div className="flex items-center gap-2">
-      <Image
-        alt=""
-        src={img}
-        width={60}
-      />
+      <Image alt="" src={img} width={60} />
       <span className="font-medium">{name}</span>
     </div>
   );

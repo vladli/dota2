@@ -8,7 +8,7 @@ import {
   NavbarMenu,
   NavbarMenuItem,
   NavbarMenuToggle,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -45,10 +45,7 @@ export default function Header() {
         />
         <div className="flex gap-4">
           <NavbarBrand className="hidden lg:flex">
-            <Link
-              className="group flex items-center gap-2"
-              href="/"
-            >
+            <Link className="group flex items-center gap-2" href="/">
               <Image
                 alt=""
                 className="cursor-pointer transition-all group-hover:scale-110"
@@ -60,7 +57,7 @@ export default function Header() {
               <span
                 className={cn(
                   albertus_font.className,
-                  "text-xl font-semibold uppercase"
+                  "text-xl font-semibold uppercase",
                 )}
               >
                 Dota 2 Stats
@@ -73,15 +70,9 @@ export default function Header() {
           <MenuItem />
         </div>
       </NavbarContent>
-      <NavbarContent
-        className="lg:hidden"
-        justify="center"
-      >
+      <NavbarContent className="lg:hidden" justify="center">
         <NavbarBrand>
-          <Link
-            className="group flex items-center gap-2"
-            href="/"
-          >
+          <Link className="group flex items-center gap-2" href="/">
             <Image
               alt=""
               className="cursor-pointer transition-all group-hover:scale-110"
@@ -93,7 +84,7 @@ export default function Header() {
             <span
               className={cn(
                 albertus_font.className,
-                "text-xl font-semibold uppercase"
+                "text-xl font-semibold uppercase",
               )}
             >
               Dota 2 Stats
@@ -102,10 +93,7 @@ export default function Header() {
         </NavbarBrand>
       </NavbarContent>
       <NavbarContent justify="end">
-        <SearchBar
-          className="hidden max-w-48 lg:flex"
-          {...{ setIsMenuOpen }}
-        />
+        <SearchBar className="hidden max-w-48 lg:flex" {...{ setIsMenuOpen }} />
         <UserMenu />
       </NavbarContent>
       <NavbarMenu className="select-none">

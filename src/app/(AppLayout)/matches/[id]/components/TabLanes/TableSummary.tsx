@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Progress } from "@nextui-org/react";
+import { Progress } from "@heroui/react";
 import { ColumnDef } from "@tanstack/react-table";
 
 import HeroImage from "@/components/HeroImage";
@@ -40,10 +40,7 @@ export default function TableSummary({
         }),
         cell: ({ getValue }: any) => (
           <div className="flex items-center gap-x-2">
-            <RoleImage
-              lane={getValue().lane}
-              role={getValue().role}
-            />
+            <RoleImage lane={getValue().lane} role={getValue().role} />
             <HeroImage
               displayName={getValue().displayName}
               heroId={getValue().heroId}
@@ -84,7 +81,7 @@ export default function TableSummary({
         size: 10,
         accessorFn: (row) => {
           const kills = row.stats?.killEvents?.filter(
-            (kill) => (kill?.time ?? 0) <= 600
+            (kill) => (kill?.time ?? 0) <= 600,
           );
           return kills?.length || 0;
         },
@@ -94,7 +91,7 @@ export default function TableSummary({
         size: 10,
         accessorFn: (row) => {
           const deaths = row.stats?.deathEvents?.filter(
-            (death) => (death?.time ?? 0) <= 600
+            (death) => (death?.time ?? 0) <= 600,
           );
           return deaths?.length || 0;
         },
@@ -105,7 +102,7 @@ export default function TableSummary({
         size: 10,
         accessorFn: (row) => {
           const assists = row.stats?.assistEvents?.filter(
-            (assist) => (assist?.time ?? 0) <= 600
+            (assist) => (assist?.time ?? 0) <= 600,
           );
           return assists?.length || 0;
         },
@@ -213,7 +210,7 @@ export default function TableSummary({
         },
       },
     ],
-    []
+    [],
   );
 
   return (

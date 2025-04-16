@@ -1,4 +1,4 @@
-import { Progress } from "@nextui-org/react";
+import { Progress } from "@heroui/react";
 
 import Container from "@/components/Container";
 import { GetPlayerActivityStatsQuery } from "@/graphql/player";
@@ -22,15 +22,12 @@ export default function HeaderCard({ data }: Props) {
           </p>
         </div>
 
-        <Progress
-          aria-label="Matches"
-          value={100}
-        />
+        <Progress aria-label="Matches" value={100} />
       </Container>
       <Container className="w-1/2">
         Win Rate:{" "}
         {(((player?.winCount || 0) / (player?.matchCount || 0)) * 100).toFixed(
-          1
+          1,
         )}
         %
         <Progress

@@ -1,4 +1,4 @@
-import { Image } from "@nextui-org/react";
+import { Image } from "@heroui/react";
 
 import { getPositionInfo, getRoleInfo } from "@/lib/utils";
 import {
@@ -20,6 +20,7 @@ export default function RoleImage({ role, lane, position, size = 16 }: Props) {
   const getRole = position
     ? getPositionInfo(position)
     : getRoleInfo(role, lane);
+  if (!getRole?.image) return null;
   return (
     <Tooltip content={getRole?.name}>
       <Image
@@ -27,7 +28,7 @@ export default function RoleImage({ role, lane, position, size = 16 }: Props) {
         className="min-w-[14px]"
         height={14}
         radius="none"
-        src={getRole?.image || ""}
+        src={getRole?.image}
         width={size}
       />
     </Tooltip>

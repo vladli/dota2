@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Select, Selection, SelectItem } from "@nextui-org/react";
+import { Select, Selection, SelectItem } from "@heroui/react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { createQueryString, deleteQueryString } from "@/lib/router";
@@ -25,7 +25,7 @@ export default function CountryFilter() {
       router.push(
         pathname +
           "?" +
-          createQueryString("region", selectedValue.toString(), searchParams)
+          createQueryString("region", selectedValue.toString(), searchParams),
       );
     }
     if (selectedValue === "AMERICAS") {
@@ -34,7 +34,7 @@ export default function CountryFilter() {
   }, [value]);
   return (
     <Select
-      className="max-w-[10rem]"
+      className="max-w-40"
       label="Select region"
       onSelectionChange={setValue}
       selectedKeys={value}

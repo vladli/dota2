@@ -7,8 +7,8 @@ import {
   ApolloNextAppProvider,
   InMemoryCache,
   SSRMultipartLink,
-} from "@apollo/experimental-nextjs-app-support";
-import { NextUIProvider } from "@nextui-org/react";
+} from "@apollo/client-integration-nextjs";
+import { HeroUIProvider } from "@heroui/react";
 import { SessionProvider } from "next-auth/react";
 
 loadDevMessages();
@@ -45,7 +45,7 @@ export default function Providers({ children, session }: Props) {
     <>
       <ApolloNextAppProvider makeClient={makeClient}>
         <SessionProvider session={session}>
-          <NextUIProvider>{children}</NextUIProvider>
+          <HeroUIProvider>{children}</HeroUIProvider>
         </SessionProvider>
       </ApolloNextAppProvider>
     </>

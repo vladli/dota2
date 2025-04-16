@@ -1,4 +1,4 @@
-import { Image } from "@nextui-org/react";
+import { Image } from "@heroui/react";
 
 import { cn, getHeroTier } from "@/lib/utils";
 
@@ -28,11 +28,11 @@ export default function DotaPlusImage({ level, className, size = 50 }: Props) {
     <div className={cn("relative w-fit", className)}>
       <span
         className={cn(
-          "absolute z-10 left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 rounded-full bg-black/80 font-black",
+          "absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 rounded-full bg-black/80 font-black",
           {
             "text-xs": size < 35,
             "text-sm": size < 50 && size >= 35,
-          }
+          },
         )}
       >
         {level}

@@ -1,4 +1,4 @@
-import { Image } from "@nextui-org/react";
+import { Image } from "@heroui/react";
 import { EyeOff, Octagon } from "lucide-react";
 import Link from "next/link";
 
@@ -83,15 +83,9 @@ export default function Table({ header, data }: Props) {
                 player?.steamAccount?.name}
             </Link>
             {player?.steamAccount?.isAnonymous && (
-              <Tooltip
-                content="Anonymous"
-                showArrow
-              >
+              <Tooltip content="Anonymous" showArrow>
                 <div className="ml-2 flex items-center">
-                  <EyeOff
-                    color="#52525b"
-                    size={14}
-                  />
+                  <EyeOff color="#52525b" size={14} />
                 </div>
               </Tooltip>
             )}

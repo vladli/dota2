@@ -1,4 +1,4 @@
-import { Divider } from "@nextui-org/react";
+import { Divider } from "@heroui/react";
 import { CircleDollarSign, Minus } from "lucide-react";
 import {
   Area,
@@ -28,20 +28,20 @@ export default function MatchGraph({ data, heroes }: Props) {
     experienceLead: radiantExperienceLeads[index],
   }));
   const radiantNetworthNumbers = radiantNetworthLeads.filter(
-    (value) => typeof value === "number"
+    (value) => typeof value === "number",
   ) as number[];
   const radiantExperienceNumbers = radiantExperienceLeads.filter(
-    (value) => typeof value === "number"
+    (value) => typeof value === "number",
   ) as number[];
   const minValue = Math.min(
     ...radiantNetworthNumbers,
     ...radiantExperienceNumbers,
-    0
+    0,
   );
   const maxValue = Math.max(
     ...radiantNetworthNumbers,
     ...radiantExperienceNumbers,
-    0
+    0,
   );
 
   const gradientOffset = () => {
@@ -62,36 +62,15 @@ export default function MatchGraph({ data, heroes }: Props) {
       className="max-w-[50rem] rounded-large border border-divider p-1"
       height={300}
     >
-      <AreaChart
-        data={chartData}
-        height={300}
-        width={800}
-      >
+      <AreaChart data={chartData} height={300} width={800}>
         <defs>
-          <linearGradient
-            id="splitColor"
-            x1="0"
-            x2="0"
-            y1="0"
-            y2="1"
-          >
-            <stop
-              offset={off}
-              stopColor="#16a34a"
-              stopOpacity={0.8}
-            />
-            <stop
-              offset={off}
-              stopColor="#ef4444"
-              stopOpacity={0.8}
-            />
+          <linearGradient id="splitColor" x1="0" x2="0" y1="0" y2="1">
+            <stop offset={off} stopColor="#16a34a" stopOpacity={0.8} />
+            <stop offset={off} stopColor="#ef4444" stopOpacity={0.8} />
           </linearGradient>
         </defs>
         <CartesianGrid stroke="#666" />
-        <XAxis
-          dataKey="time"
-          interval={9}
-        />
+        <XAxis dataKey="time" interval={9} />
         <YAxis
           allowDataOverflow={true}
           domain={["auto", "auto"]}
@@ -164,10 +143,7 @@ function CustomLegend({ payload }: any) {
   return (
     <div className="flex items-center justify-center gap-2">
       {payload.map((entry: any, index: number) => (
-        <div
-          className="flex items-center gap-1"
-          key={`item-${index}`}
-        >
+        <div className="flex items-center gap-1" key={`item-${index}`}>
           <span className="block rounded-full" />
           {entry.dataKey === "networthLead" ? (
             <>

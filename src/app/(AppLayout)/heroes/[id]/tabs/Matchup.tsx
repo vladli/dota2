@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { useQuery } from "@apollo/client";
-import { Progress, Select, Selection, SelectItem } from "@nextui-org/react";
+import { Progress, Select, Selection, SelectItem } from "@heroui/react";
 import { ColumnDef } from "@tanstack/react-table";
 
 import HeroImage from "@/components/HeroImage";
@@ -25,7 +25,7 @@ export default function Matchup({ hero, allHeroes }: Props) {
     },
   });
   const [selectedOption, setSelectedOption] = useState<Selection>(
-    new Set(["bestVersus"])
+    new Set(["bestVersus"]),
   );
   const selectedValue = [...selectedOption][0] || "";
 
@@ -40,23 +40,23 @@ export default function Matchup({ hero, allHeroes }: Props) {
         },
         sortingFn: (rowA, rowB, columnId) => {
           const heroA = allHeroes?.constants?.heroes?.find(
-            (hero) => hero?.id === rowA.getValue(columnId)
+            (hero) => hero?.id === rowA.getValue(columnId),
           )?.displayName!;
           const heroB = allHeroes?.constants?.heroes?.find(
-            (hero) => hero?.id === rowB.getValue(columnId)
+            (hero) => hero?.id === rowB.getValue(columnId),
           )?.displayName!;
           return heroA < heroB ? 1 : heroA > heroB ? -1 : 0;
         },
         filterFn: (row, id, filterValue) => {
           const value = row.getValue(id);
           const hero = allHeroes?.constants?.heroes?.find(
-            (hero) => hero?.id === value
+            (hero) => hero?.id === value,
           );
           return hero!.displayName!.toLowerCase().includes(filterValue);
         },
         cell: (row: any) => {
           const hero = allHeroes?.constants?.heroes?.find(
-            (hero) => hero?.id === row.getValue()
+            (hero) => hero?.id === row.getValue(),
           );
           return (
             <HeroImage
@@ -108,7 +108,7 @@ export default function Matchup({ hero, allHeroes }: Props) {
         id: "spacer",
         header: "",
         size: 50,
-        cell: () => <div className="h-10 w-[1px] bg-divider" />,
+        cell: () => <div className="h-10 w-px bg-divider" />,
       },
       {
         header: "With",
@@ -145,7 +145,7 @@ export default function Matchup({ hero, allHeroes }: Props) {
         cell: (row: any) => `${row.getValue().toFixed(1)}%`,
       },
     ],
-    []
+    [],
   );
   if (!data || loading) return <Loading />;
   const matches = data.heroStats?.heroVsHeroMatchup?.advantage?.[0];
@@ -155,7 +155,7 @@ export default function Matchup({ hero, allHeroes }: Props) {
       matchCountVs: vsItem?.matchCount,
       synergyVs: vsItem?.synergy,
       winCountVs: vsItem?.winCount,
-    })
+    }),
   );
 
   const withRows =
@@ -166,12 +166,12 @@ export default function Matchup({ hero, allHeroes }: Props) {
         matchCount: withItem?.matchCount,
         synergy: withItem?.synergy,
         winCount: withItem?.winCount,
-      })
+      }),
     );
 
   const combinedRows = withRows?.map((withItem) => {
     const correspondingVsItem = vsRows?.find(
-      (vsItem) => vsItem?.heroId2 === withItem?.heroId2
+      (vsItem) => vsItem?.heroId2 === withItem?.heroId2,
     );
     return {
       ...withItem,
@@ -180,19 +180,19 @@ export default function Matchup({ hero, allHeroes }: Props) {
   });
 
   const bestVersus = matches?.vs?.toSorted(
-    (a, b) => (b?.synergy ?? 0) - (a?.synergy ?? 0)
+    (a, b) => (b?.synergy ?? 0) - (a?.synergy ?? 0),
   );
 
   const worstVersus = matches?.vs?.toSorted(
-    (a, b) => (a?.synergy ?? 0) - (b?.synergy ?? 0)
+    (a, b) => (a?.synergy ?? 0) - (b?.synergy ?? 0),
   );
 
   const bestWith = matches?.with?.toSorted(
-    (a, b) => (b?.synergy ?? 0) - (a?.synergy ?? 0)
+    (a, b) => (b?.synergy ?? 0) - (a?.synergy ?? 0),
   );
 
   const worstWith = matches?.with?.toSorted(
-    (a, b) => (a?.synergy ?? 0) - (b?.synergy ?? 0)
+    (a, b) => (a?.synergy ?? 0) - (b?.synergy ?? 0),
   );
   const renderSelectedCard = () => {
     switch (selectedValue) {

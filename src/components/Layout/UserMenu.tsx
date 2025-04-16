@@ -8,7 +8,7 @@ import {
   DropdownMenu,
   DropdownTrigger,
   User,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
 
@@ -17,10 +17,7 @@ export default function UserMenu() {
   return (
     <div className="font-medium">
       {!session ? (
-        <Button
-          onClick={() => signIn("steam")}
-          startContent={<FaSteam />}
-        >
+        <Button onClick={() => signIn("steam")} startContent={<FaSteam />}>
           LOGIN
         </Button>
       ) : (
@@ -37,10 +34,7 @@ export default function UserMenu() {
               name={session.user?.name}
             />
           </DropdownTrigger>
-          <DropdownMenu
-            aria-label="User Actions"
-            variant="flat"
-          >
+          <DropdownMenu aria-label="User Actions" variant="flat">
             <DropdownItem
               as={Link}
               href={`/players/${session.user?.steamId}`}
@@ -48,11 +42,7 @@ export default function UserMenu() {
             >
               My Profile
             </DropdownItem>
-            <DropdownItem
-              color="danger"
-              key="logout"
-              onClick={() => signOut()}
-            >
+            <DropdownItem color="danger" key="logout" onClick={() => signOut()}>
               Log Out
             </DropdownItem>
           </DropdownMenu>

@@ -1,4 +1,4 @@
-import { Image } from "@nextui-org/react";
+import { Image } from "@heroui/react";
 
 import Header from "@/components/Header";
 import { GetAllHeroesDocument } from "@/graphql/constants";
@@ -48,10 +48,7 @@ export default async function page(props: Props) {
       </Header>
       <main className="p-4">
         <section></section>
-        <Players
-          allHeroes={allHeroes}
-          data={data}
-        />
+        <Players allHeroes={allHeroes} data={data} />
       </main>
     </>
   );

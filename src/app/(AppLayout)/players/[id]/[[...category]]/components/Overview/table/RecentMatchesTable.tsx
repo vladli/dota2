@@ -1,4 +1,4 @@
-import { cn, Divider } from "@nextui-org/react";
+import { cn, Divider } from "@heroui/react";
 import NextLink from "next/link";
 
 import Container from "@/components/Container";
@@ -43,11 +43,11 @@ export default function RecentMatchesTable({ data }: Props) {
         Current Streak{" "}
         <span
           className={cn(
-            "size-6 inline-flex justify-center items-center rounded-small text-black font-semibold",
+            "inline-flex size-6 items-center justify-center rounded-small font-semibold text-black",
             {
               "bg-danger-500": currentLoseStreak,
               "bg-success-400": currentWinStreak,
-            }
+            },
           )}
         >
           {currentWinStreak ? currentWinStreak : currentLoseStreak}
@@ -74,18 +74,15 @@ export default function RecentMatchesTable({ data }: Props) {
               <Divider orientation="vertical" />
 
               <div className="shrink-0">
-                <RoleImage
-                  lane={player?.lane}
-                  role={player?.role}
-                />
+                <RoleImage lane={player?.lane} role={player?.role} />
               </div>
               <div
                 className={cn(
-                  "flex-initial shrink-0 w-6 h-6 flex items-center justify-center rounded-small text-black font-semibold",
+                  "flex h-6 w-6 flex-initial shrink-0 items-center justify-center rounded-small font-semibold text-black",
                   {
                     "bg-success-400": match?.players![0]?.isVictory,
                     "bg-danger-500": !match?.players![0]?.isVictory,
-                  }
+                  },
                 )}
               >
                 {match?.players![0]?.isVictory ? "W" : "L"}
@@ -101,7 +98,7 @@ export default function RecentMatchesTable({ data }: Props) {
                 <div>
                   <Divider orientation="vertical" />
                 </div>
-                <div className="flex w-28 flex-initial flex-col items-end ">
+                <div className="flex w-28 flex-initial flex-col items-end">
                   <span>{secondsToTime(match?.durationSeconds!)}</span>
                   <span className="text-xs text-foreground-500">
                     {dayjs(match?.endDateTime * 1000).fromNow()}

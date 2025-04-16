@@ -1,4 +1,4 @@
-import { Image } from "@nextui-org/react";
+import { Image } from "@heroui/react";
 
 import { GetHeroByIdQuery } from "@/graphql/constants";
 import { HERO_ATTRIBUTE, IMAGE } from "@/lib/constants";

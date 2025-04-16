@@ -1,4 +1,4 @@
-import { Image } from "@nextui-org/react";
+import { Image } from "@heroui/react";
 import NextImage from "next/image";
 import Link from "next/link";
 
@@ -73,6 +73,7 @@ type CardProps = {
       } | null)[]
     | undefined;
 };
+
 function HeroesCard({ allHeroes, data, role, lane }: CardProps) {
   const getHero = (id: number) =>
     allHeroes?.constants?.heroes?.find((hero) => hero?.id === id);
@@ -91,17 +92,19 @@ function HeroesCard({ allHeroes, data, role, lane }: CardProps) {
         />
         {getRoleInfo(role, lane)?.name}
       </div>
-      {data?.slice(0, 3).map((hero, index) => (
-        <CardItem
-          heroId={hero?.heroId}
-          heroImage={getHero(hero?.heroId)?.shortName}
-          heroName={getHero(hero?.heroId)?.displayName}
-          key={hero?.heroId}
-          lane={lane}
-          role={role}
-          winRate={((hero?.winCount || 0) / (hero?.matchCount || 0)) * 100}
-        />
-      ))}
+      {data
+        ?.slice(0, 3)
+        .map((hero, index) => (
+          <CardItem
+            heroId={hero?.heroId}
+            heroImage={getHero(hero?.heroId)?.shortName}
+            heroName={getHero(hero?.heroId)?.displayName}
+            key={hero?.heroId}
+            lane={lane}
+            role={role}
+            winRate={((hero?.winCount || 0) / (hero?.matchCount || 0)) * 100}
+          />
+        ))}
     </div>
   );
 }

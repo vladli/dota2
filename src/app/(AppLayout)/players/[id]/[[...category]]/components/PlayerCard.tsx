@@ -1,5 +1,5 @@
 import { FaSteam } from "react-icons/fa";
-import { Button, Image, Link } from "@nextui-org/react";
+import { Button, Image, Link } from "@heroui/react";
 
 import { roboto_mono } from "@/app/fonts";
 import PlayerName from "@/components/PlayerName";

@@ -8,7 +8,7 @@ import {
   CardHeader,
   cn,
   Image,
-} from "@nextui-org/react";
+} from "@heroui/react";
 
 import { GetAbilitiesQuery, GetHeroByIdQuery } from "@/graphql/constants";
 import { IMAGE, UNIT_DAMAGE_TYPE } from "@/lib/constants";
@@ -37,7 +37,7 @@ export default function AbilityCard({ abilities, data }: Props) {
               >
                 <Image
                   alt=""
-                  className={cn("hover:scale-105 cursor-pointer", {
+                  className={cn("cursor-pointer hover:scale-105", {
                     grayscale: selectedAbility?.id !== ability?.ability?.id,
                   })}
                   draggable={false}
@@ -45,7 +45,7 @@ export default function AbilityCard({ abilities, data }: Props) {
                   width={120}
                 />
               </div>
-            )
+            ),
         )}
       </div>
       {abilities && selectedAbility ? (
@@ -112,12 +112,7 @@ const AbilityDescription = ({ ability }: { ability: AbilityType }) => {
           <section className="mt-2">
             {ability.language?.attributes
               ?.filter((attribute) => !attribute?.includes(":%"))
-              .map((attribute) => (
-                <Ability
-                  key={attribute}
-                  text={attribute}
-                />
-              ))}
+              .map((attribute) => <Ability key={attribute} text={attribute} />)}
           </section>
           <section className="relative mt-4 flex w-full">
             {ability.stat?.cooldown && (
@@ -166,10 +161,7 @@ const Ability = ({
       ) : null}
       {Array.isArray(text) ? (
         text.map((item, index) => (
-          <span
-            className="font-medium"
-            key={index}
-          >
+          <span className="font-medium" key={index}>
             <span
               dangerouslySetInnerHTML={{
                 __html: item!,
@@ -212,10 +204,7 @@ const HealthMana = ({ text }: { img?: string; text: (number | null)[] }) => {
     <div className="flex gap-1">
       {Array.isArray(text) ? (
         text.map((item, index) => (
-          <span
-            className="font-medium"
-            key={index}
-          >
+          <span className="font-medium" key={index}>
             {item}
             {index !== text.length - 1 && " /"}
           </span>

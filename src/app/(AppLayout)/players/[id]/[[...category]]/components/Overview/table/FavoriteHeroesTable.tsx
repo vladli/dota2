@@ -8,7 +8,7 @@ import {
   TableColumn,
   TableHeader,
   TableRow,
-} from "@nextui-org/react";
+} from "@heroui/react";
 
 import { GetMostPlayedHeroesQuery } from "@/graphql/player";
 import { IMAGE } from "@/lib/constants";
@@ -23,7 +23,7 @@ type Props = {
 export default function FavoriteHeroesTable({ data }: Props) {
   const player = data.player;
   const heroes = player?.heroesGroupBy?.toSorted(
-    (a: any, b: any) => b.matchCount - a.matchCount
+    (a: any, b: any) => b.matchCount - a.matchCount,
   );
   return (
     <Table
@@ -54,15 +54,12 @@ export default function FavoriteHeroesTable({ data }: Props) {
                     width={60}
                   />
                   <div className="flex flex-col">
-                    <Link
-                      className="w-fit"
-                      href={`/heroes/${hero.heroId}`}
-                    >
+                    <Link className="w-fit" href={`/heroes/${hero.heroId}`}>
                       {hero.hero?.displayName}
                     </Link>
                     <span className="text-foreground-500">
                       {dayjs(
-                        new Date(hero.lastMatchDateTime! * 1000)
+                        new Date(hero.lastMatchDateTime! * 1000),
                       ).fromNow()}
                     </span>
                   </div>

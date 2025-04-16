@@ -1,6 +1,6 @@
 "use client";
 import toast from "react-hot-toast";
-import { Button } from "@nextui-org/react";
+import { Button } from "@heroui/react";
 import { icons } from "lucide-react";
 
 import RankImage from "@/components/RankImage";
@@ -16,10 +16,7 @@ export default function MatchInfo({ data }: Props) {
   return (
     <div className="flex h-12 w-full items-center justify-between border-y-1 border-divider bg-black px-4 text-sm">
       <div className="flex gap-4">
-        <Item
-          icon="Globe2"
-          text={getRegionName(match?.regionId)}
-        />
+        <Item icon="Globe2" text={getRegionName(match?.regionId)} />
         <Button
           className="hidden cursor-copy lg:flex"
           onClick={() => {
@@ -29,20 +26,14 @@ export default function MatchInfo({ data }: Props) {
           size="sm"
           variant="light"
         >
-          <Item
-            icon="Files"
-            text={match?.id}
-          />
+          <Item icon="Files" text={match?.id} />
         </Button>
         {match?.rank ? (
           <Item
             text={
               <div className="flex items-center gap-1">
                 <div className="relative my-auto">
-                  <RankImage
-                    rank={match.rank}
-                    width={30}
-                  />
+                  <RankImage rank={match.rank} width={30} />
                 </div>
                 <span>{getRankName(match?.rank?.toString()[0]!)}</span>
               </div>
@@ -71,16 +62,11 @@ function Item({
   return (
     <span
       className={cn(
-        "flex items-center gap-1 font-medium text-foreground-600 select-none",
-        className
+        "flex select-none items-center gap-1 font-medium text-foreground-600",
+        className,
       )}
     >
-      {LucideIcon && (
-        <LucideIcon
-          name={icon}
-          size={20}
-        />
-      )}
+      {LucideIcon && <LucideIcon name={icon} size={20} />}
       {text}
     </span>
   );

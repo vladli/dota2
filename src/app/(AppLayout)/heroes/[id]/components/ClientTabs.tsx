@@ -1,6 +1,6 @@
 "use client";
 
-import { Tab } from "@nextui-org/react";
+import { Tab } from "@heroui/react";
 import { LandPlot } from "lucide-react";
 
 import TabHeader from "@/components/Tabs/TabHeader";
@@ -28,34 +28,11 @@ export default function ClientTabs({
 }: Props) {
   return (
     <Tabs defaultSelectedKey="Overview">
-      <Tab
-        key="Overview"
-        title={
-          <TabHeader
-            icon={LandPlot}
-            text="Overview"
-          />
-        }
-      >
-        <OverView
-          abilities={abilities}
-          data={data}
-        />
+      <Tab key="Overview" title={<TabHeader icon={LandPlot} text="Overview" />}>
+        <OverView abilities={abilities} data={data} />
       </Tab>
-      <Tab
-        key="Matchup"
-        title={
-          <TabHeader
-            icon={LandPlot}
-            text="Matchup"
-          />
-        }
-      >
-        <Matchup
-          allHeroes={allHeroes}
-          hero={data}
-          heroId={heroId}
-        />
+      <Tab key="Matchup" title={<TabHeader icon={LandPlot} text="Matchup" />}>
+        <Matchup allHeroes={allHeroes} hero={data} heroId={heroId} />
       </Tab>
     </Tabs>
   );

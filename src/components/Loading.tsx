@@ -1,12 +1,9 @@
-import { Spinner } from "@nextui-org/react";
+import { Spinner } from "@heroui/react";
 
 export default function Loading() {
   return (
-    <div className="flex h-full w-full justify-center ">
-      <Spinner
-        color="primary"
-        label="Loading..."
-      />
+    <div className="flex size-full justify-center">
+      <Spinner color="primary" label="Loading..." />
     </div>
   );
 }

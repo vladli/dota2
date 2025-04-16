@@ -1,5 +1,5 @@
 "use client";
-import { Image } from "@nextui-org/react";
+import { Image } from "@heroui/react";
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 
 import { GetPlayerBySteamIdQuery } from "@/graphql/player";
@@ -43,14 +43,8 @@ export default function Trends({ data }: Props) {
   heroStatsArray.sort((a, b) => b.count - a.count);
   return (
     <div className="size-[320px]">
-      <ResponsiveContainer
-        height="100%"
-        width="100%"
-      >
-        <PieChart
-          height={320}
-          width={320}
-        >
+      <ResponsiveContainer height="100%" width="100%">
+        <PieChart height={320} width={320}>
           <Pie
             cx="50%"
             cy="50%"
@@ -110,13 +104,7 @@ const RenderCustomizedLabel = ({
   const x = cx + radius * Math.cos(-midAngle * RADIAN);
   const y = cy + radius * Math.sin(-midAngle * RADIAN);
   return (
-    <svg
-      height={24}
-      textAnchor={"middle"}
-      width={24}
-      x={x - 12}
-      y={y - 12}
-    >
+    <svg height={24} textAnchor={"middle"} width={24} x={x - 12} y={y - 12}>
       <image
         height="100%"
         href={IMAGE.url + heroStatsArray[index].shortName + IMAGE.icon}
@@ -134,10 +122,7 @@ function CustomTooltip({ active, payload }: any) {
     const wins = payload[0]?.payload?.wins;
     return (
       <div className="flex items-center gap-2 rounded-large bg-content1 p-2">
-        <Image
-          alt="Icon"
-          src={IMAGE.url + shortName + IMAGE.icon}
-        />
+        <Image alt="Icon" src={IMAGE.url + shortName + IMAGE.icon} />
         <div className="flex flex-col items-center">
           <p>{displayName}</p>
           <p>

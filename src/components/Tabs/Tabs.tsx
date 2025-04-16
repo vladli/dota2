@@ -1,4 +1,5 @@
-import { Tabs as NextTabs, TabsProps } from "@nextui-org/react";
+import { Tabs as NextTabs, TabsProps } from "@heroui/react";
+
 type Props = {
   children: React.ReactNode;
   className?: string;

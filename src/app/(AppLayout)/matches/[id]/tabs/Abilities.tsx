@@ -1,4 +1,4 @@
-import { Divider, Image } from "@nextui-org/react";
+import { Divider, Image } from "@heroui/react";
 
 import HeroImage from "@/components/HeroImage";
 import PlayerName from "@/components/PlayerName";
@@ -44,10 +44,7 @@ export default function Abilities({ data }: Props) {
         <div className="w-36 shrink-0" />
         <div className="size-8 shrink-0" />
         {Array.from({ length: 30 }).map((item, i) => (
-          <div
-            className="flex size-12 shrink-0 justify-center"
-            key={i + 1}
-          >
+          <div className="flex size-12 shrink-0 justify-center" key={i + 1}>
             <span
               className={cn({
                 "text-yellow-500": i + 1 == 6 || i + 1 == 12 || i + 1 == 18,
@@ -95,15 +92,12 @@ function Table({
           });
         }
         return (
-          <div
-            className="px-2"
-            key={player?.heroId}
-          >
-            <div className="flex items-center gap-2 ">
-              <div className="w-5 shrink-0 ">
+          <div className="px-2" key={player?.heroId}>
+            <div className="flex items-center gap-2">
+              <div className="w-5 shrink-0">
                 <RoleImage position={player?.position} />
               </div>
-              <div className="w-20 shrink-0 ">
+              <div className="w-20 shrink-0">
                 <HeroImage
                   displayName={player?.hero?.displayName!}
                   heroId={player?.heroId}
@@ -124,10 +118,7 @@ function Table({
                 const ability = abilities?.[i];
 
                 return (
-                  <div
-                    className="flex size-12 shrink-0 items-center"
-                    key={i}
-                  >
+                  <div className="flex size-12 shrink-0 items-center" key={i}>
                     {!ability?.isTalent ? (
                       <Tooltip
                         content={
@@ -154,11 +145,7 @@ function Table({
                           "+2 to All Attributes"
                         }
                       >
-                        <Image
-                          alt=""
-                          src="/img/other/talents.png"
-                          width={40}
-                        />
+                        <Image alt="" src="/img/other/talents.png" width={40} />
                       </Tooltip>
                     )}
                   </div>

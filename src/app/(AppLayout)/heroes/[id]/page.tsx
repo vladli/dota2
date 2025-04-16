@@ -11,9 +11,10 @@ import ClientTabs from "./components/ClientTabs";
 import HeroHeader from "./components/HeroHeader";
 
 export async function generateMetadata({ params }: Props) {
+  const { id } = await params;
   const { data } = await getClient().query({
     query: GetHeroByIdDocument,
-    variables: { id: Number(params.id) },
+    variables: { id: Number(id) },
   });
   return {
     title: data?.constants?.hero?.displayName || "UNKNOWN",
@@ -21,17 +22,18 @@ export async function generateMetadata({ params }: Props) {
 }
 
 type Props = {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 };
 
 export default async function page({ params }: Props) {
-  if (isNaN(+params.id)) return notFound();
+  const { id } = await params;
+  if (isNaN(+id)) return notFound();
   const { data } = await getClient().query({
     query: GetHeroByIdDocument,
     variables: {
-      id: Number(params.id),
+      id: Number(id),
     },
   });
   const { data: abilities } = await getClient().query({
@@ -49,7 +51,7 @@ export default async function page({ params }: Props) {
         abilities={abilities}
         allHeroes={allHeroes}
         data={data}
-        heroId={Number(params.id)}
+        heroId={Number(id)}
       />
     </main>
   );
